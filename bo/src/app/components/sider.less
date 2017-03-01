@@ -1,0 +1,44 @@
+
+@import "../vars.less";
+.sider {
+  width: 224px;
+  position: absolute;
+  overflow: visible;
+  padding-bottom: 24px;
+  height: 100vh;
+  transition: @transition-ease-out;
+  box-shadow: @shadow-1;
+  z-index: 520;
+  color: #999;
+  background: #fff;
+
+    .ant-menu-dark,
+    .ant-menu-dark .ant-menu-sub {
+      color: #999;
+    }
+
+    .ant-menu-root {
+      height: ~"calc(100vh - 144px)";
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+
+      &:hover {
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    .ant-menu {
+      transition: @transition-ease-out;
+
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        overflow: hidden;
+        white-space: normal;
+      }
+    }
+}
