@@ -5,9 +5,11 @@ import React from 'react';
 import { Form, Icon, Input, Button, notification} from 'antd';
 import LoginActions from '../actions/LoginActions';
 import LoginStore from '../stores/LoginStore';
+import createHistory from 'history/lib/createHashHistory';
 import './login.less';
 
 const FormItem = Form.Item;
+const history = createHistory();
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +31,7 @@ class LoginPage extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        LoginActions.signIn(this.state.username, this.state.password);
+        LoginActions.signIn(this.state.username, this.state.password, history);
     }
 
     render() {

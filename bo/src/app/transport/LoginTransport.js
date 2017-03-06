@@ -10,10 +10,10 @@ class LoginTransport extends Transport{
 
     login(name, password) {
         return this.ajaxRequest({
-            method: 'post',
-            url: '/api/login',
+            method: 'get',
+            url: 'http://localhost:8080/api/login',
             requestBody: {
-                name: name,
+                username: name,
                 password: password
             }
         });

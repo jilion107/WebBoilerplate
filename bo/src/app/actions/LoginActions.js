@@ -3,6 +3,7 @@
  */
 import alt from '../common/alt';
 import LoginTransport from '../transport/LoginTransport';
+import _ from 'underscore';
 
 class LoginActions {
     constructor() {
@@ -15,9 +16,10 @@ class LoginActions {
         );
     }
 
-    signIn(name, password) {
+    signIn(name, password, history) {
         let signInstance = new LoginTransport();
         signInstance.login(name, password).then((response) => {
+            _.assign(response, history)
             this.loginSuccess(response);
         },(response) => {
             this.loginFail(response);

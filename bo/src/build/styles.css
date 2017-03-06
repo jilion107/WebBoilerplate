@@ -3459,11 +3459,6 @@ textarea.ant-input {
 .ant-input-preSuffix-wrapper .ant-input:not(:last-child) {
   padding-right: 24px;
 }
-@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
-  input.ant-input {
-    line-height: inherit;
-  }
-}
 legend {
   display: block;
   width: 100%;

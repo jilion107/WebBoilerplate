@@ -15,10 +15,10 @@ class Transport {
                 data: reqeust.requestBody
             })
             .done((data) => {
-                resolve(data.message);
+                resolve(data);
             })
-            .fail((jqxhr) => {
-                reject(jqxhr.responseText);
+            .fail((error) => {
+                reject(error);
             });
         });
     }

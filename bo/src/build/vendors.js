@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 478);
+/******/ 	return __webpack_require__(__webpack_require__.s = 480);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -5831,7 +5831,7 @@ var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.d
 
 exports.__esModule = true;
 
-var _AsyncUtils = __webpack_require__(180);
+var _AsyncUtils = __webpack_require__(181);
 
 var _PathUtils = __webpack_require__(20);
 
@@ -12509,7 +12509,7 @@ var _BrowserProtocol = __webpack_require__(64);
 
 var BrowserProtocol = _interopRequireWildcard(_BrowserProtocol);
 
-var _RefreshProtocol = __webpack_require__(182);
+var _RefreshProtocol = __webpack_require__(183);
 
 var RefreshProtocol = _interopRequireWildcard(_RefreshProtocol);
 
@@ -12595,6 +12595,160 @@ exports.default = createBrowserHistory;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _warning = __webpack_require__(18);
+
+var _warning2 = _interopRequireDefault(_warning);
+
+var _invariant = __webpack_require__(8);
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+var _ExecutionEnvironment = __webpack_require__(65);
+
+var _DOMUtils = __webpack_require__(48);
+
+var _HashProtocol = __webpack_require__(182);
+
+var HashProtocol = _interopRequireWildcard(_HashProtocol);
+
+var _createHistory = __webpack_require__(66);
+
+var _createHistory2 = _interopRequireDefault(_createHistory);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DefaultQueryKey = '_k';
+
+var addLeadingSlash = function addLeadingSlash(path) {
+  return path.charAt(0) === '/' ? path : '/' + path;
+};
+
+var HashPathCoders = {
+  hashbang: {
+    encodePath: function encodePath(path) {
+      return path.charAt(0) === '!' ? path : '!' + path;
+    },
+    decodePath: function decodePath(path) {
+      return path.charAt(0) === '!' ? path.substring(1) : path;
+    }
+  },
+  noslash: {
+    encodePath: function encodePath(path) {
+      return path.charAt(0) === '/' ? path.substring(1) : path;
+    },
+    decodePath: addLeadingSlash
+  },
+  slash: {
+    encodePath: addLeadingSlash,
+    decodePath: addLeadingSlash
+  }
+};
+
+var createHashHistory = function createHashHistory() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  !_ExecutionEnvironment.canUseDOM ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'Hash history needs a DOM') : (0, _invariant2.default)(false) : void 0;
+
+  var queryKey = options.queryKey,
+      hashType = options.hashType;
+
+
+  process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(queryKey !== false, 'Using { queryKey: false } no longer works. Instead, just don\'t ' + 'use location state if you don\'t want a key in your URL query string') : void 0;
+
+  if (typeof queryKey !== 'string') queryKey = DefaultQueryKey;
+
+  if (hashType == null) hashType = 'slash';
+
+  if (!(hashType in HashPathCoders)) {
+    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(false, 'Invalid hash type: %s', hashType) : void 0;
+
+    hashType = 'slash';
+  }
+
+  var pathCoder = HashPathCoders[hashType];
+
+  var getUserConfirmation = HashProtocol.getUserConfirmation;
+
+
+  var getCurrentLocation = function getCurrentLocation() {
+    return HashProtocol.getCurrentLocation(pathCoder, queryKey);
+  };
+
+  var pushLocation = function pushLocation(location) {
+    return HashProtocol.pushLocation(location, pathCoder, queryKey);
+  };
+
+  var replaceLocation = function replaceLocation(location) {
+    return HashProtocol.replaceLocation(location, pathCoder, queryKey);
+  };
+
+  var history = (0, _createHistory2.default)(_extends({
+    getUserConfirmation: getUserConfirmation }, options, {
+    getCurrentLocation: getCurrentLocation,
+    pushLocation: pushLocation,
+    replaceLocation: replaceLocation,
+    go: HashProtocol.go
+  }));
+
+  var listenerCount = 0,
+      stopListener = void 0;
+
+  var startListener = function startListener(listener, before) {
+    if (++listenerCount === 1) stopListener = HashProtocol.startListener(history.transitionTo, pathCoder, queryKey);
+
+    var unlisten = before ? history.listenBefore(listener) : history.listen(listener);
+
+    return function () {
+      unlisten();
+
+      if (--listenerCount === 0) stopListener();
+    };
+  };
+
+  var listenBefore = function listenBefore(listener) {
+    return startListener(listener, true);
+  };
+
+  var listen = function listen(listener) {
+    return startListener(listener, false);
+  };
+
+  var goIsSupportedWithoutReload = (0, _DOMUtils.supportsGoWithoutReloadUsingHash)();
+
+  var go = function go(n) {
+    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(goIsSupportedWithoutReload, 'Hash history go(n) causes a full page reload in this browser') : void 0;
+
+    history.go(n);
+  };
+
+  var createHref = function createHref(path) {
+    return '#' + pathCoder.encodePath(history.createHref(path));
+  };
+
+  return _extends({}, history, {
+    listenBefore: listenBefore,
+    listen: listen,
+    go: go,
+    createHref: createHref
+  });
+};
+
+exports.default = createHashHistory;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
@@ -12648,9 +12802,9 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 
 
 /***/ }),
-/* 149 */,
 /* 150 */,
-/* 151 */
+/* 151 */,
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12660,9 +12814,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _flux = __webpack_require__(178);
+var _flux = __webpack_require__(179);
 
-var _StateFunctions = __webpack_require__(156);
+var _StateFunctions = __webpack_require__(157);
 
 var StateFunctions = _interopRequireWildcard(_StateFunctions);
 
@@ -12670,7 +12824,7 @@ var _functions = __webpack_require__(23);
 
 var fn = _interopRequireWildcard(_functions);
 
-var _store = __webpack_require__(155);
+var _store = __webpack_require__(156);
 
 var store = _interopRequireWildcard(_store);
 
@@ -12678,7 +12832,7 @@ var _AltUtils = __webpack_require__(58);
 
 var utils = _interopRequireWildcard(_AltUtils);
 
-var _actions = __webpack_require__(152);
+var _actions = __webpack_require__(153);
 
 var _actions2 = _interopRequireDefault(_actions);
 
@@ -13033,7 +13187,7 @@ exports['default'] = Alt;
 module.exports = exports['default'];
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13121,7 +13275,7 @@ function makeAction(alt, namespace, name, implementation, obj) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13289,7 +13443,7 @@ exports['default'] = AltStore;
 module.exports = exports['default'];
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13532,7 +13686,7 @@ exports['default'] = StoreMixin;
 module.exports = exports['default'];
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13554,11 +13708,11 @@ var _functions = __webpack_require__(23);
 
 var fn = _interopRequireWildcard(_functions);
 
-var _AltStore = __webpack_require__(153);
+var _AltStore = __webpack_require__(154);
 
 var _AltStore2 = _interopRequireDefault(_AltStore);
 
-var _StoreMixin = __webpack_require__(154);
+var _StoreMixin = __webpack_require__(155);
 
 var _StoreMixin2 = _interopRequireDefault(_StoreMixin);
 
@@ -13750,7 +13904,7 @@ function createStoreFromClass(alt, StoreModel, key) {
 }
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13828,7 +13982,6 @@ function filterSnapshots(instance, state, stores) {
 }
 
 /***/ }),
-/* 157 */,
 /* 158 */,
 /* 159 */,
 /* 160 */,
@@ -13848,7 +14001,8 @@ function filterSnapshots(instance, state, stores) {
 /* 174 */,
 /* 175 */,
 /* 176 */,
-/* 177 */
+/* 177 */,
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13904,7 +14058,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -13916,11 +14070,11 @@ module.exports = invariant;
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-module.exports.Dispatcher = __webpack_require__(179);
+module.exports.Dispatcher = __webpack_require__(180);
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13943,7 +14097,7 @@ exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var invariant = __webpack_require__(177);
+var invariant = __webpack_require__(178);
 
 var _prefix = 'ID_';
 
@@ -14158,7 +14312,7 @@ module.exports = Dispatcher;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14220,7 +14374,7 @@ var loopAsync = exports.loopAsync = function loopAsync(turns, work, callback) {
 };
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14363,7 +14517,7 @@ var replaceLocation = exports.replaceLocation = function replaceLocation(locatio
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14404,160 +14558,6 @@ var replaceLocation = exports.replaceLocation = function replaceLocation(locatio
   window.location.replace((0, _PathUtils.createPath)(location));
   return false; // Don't update location
 };
-
-/***/ }),
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-exports.__esModule = true;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _warning = __webpack_require__(18);
-
-var _warning2 = _interopRequireDefault(_warning);
-
-var _invariant = __webpack_require__(8);
-
-var _invariant2 = _interopRequireDefault(_invariant);
-
-var _ExecutionEnvironment = __webpack_require__(65);
-
-var _DOMUtils = __webpack_require__(48);
-
-var _HashProtocol = __webpack_require__(181);
-
-var HashProtocol = _interopRequireWildcard(_HashProtocol);
-
-var _createHistory = __webpack_require__(66);
-
-var _createHistory2 = _interopRequireDefault(_createHistory);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var DefaultQueryKey = '_k';
-
-var addLeadingSlash = function addLeadingSlash(path) {
-  return path.charAt(0) === '/' ? path : '/' + path;
-};
-
-var HashPathCoders = {
-  hashbang: {
-    encodePath: function encodePath(path) {
-      return path.charAt(0) === '!' ? path : '!' + path;
-    },
-    decodePath: function decodePath(path) {
-      return path.charAt(0) === '!' ? path.substring(1) : path;
-    }
-  },
-  noslash: {
-    encodePath: function encodePath(path) {
-      return path.charAt(0) === '/' ? path.substring(1) : path;
-    },
-    decodePath: addLeadingSlash
-  },
-  slash: {
-    encodePath: addLeadingSlash,
-    decodePath: addLeadingSlash
-  }
-};
-
-var createHashHistory = function createHashHistory() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-  !_ExecutionEnvironment.canUseDOM ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'Hash history needs a DOM') : (0, _invariant2.default)(false) : void 0;
-
-  var queryKey = options.queryKey,
-      hashType = options.hashType;
-
-
-  process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(queryKey !== false, 'Using { queryKey: false } no longer works. Instead, just don\'t ' + 'use location state if you don\'t want a key in your URL query string') : void 0;
-
-  if (typeof queryKey !== 'string') queryKey = DefaultQueryKey;
-
-  if (hashType == null) hashType = 'slash';
-
-  if (!(hashType in HashPathCoders)) {
-    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(false, 'Invalid hash type: %s', hashType) : void 0;
-
-    hashType = 'slash';
-  }
-
-  var pathCoder = HashPathCoders[hashType];
-
-  var getUserConfirmation = HashProtocol.getUserConfirmation;
-
-
-  var getCurrentLocation = function getCurrentLocation() {
-    return HashProtocol.getCurrentLocation(pathCoder, queryKey);
-  };
-
-  var pushLocation = function pushLocation(location) {
-    return HashProtocol.pushLocation(location, pathCoder, queryKey);
-  };
-
-  var replaceLocation = function replaceLocation(location) {
-    return HashProtocol.replaceLocation(location, pathCoder, queryKey);
-  };
-
-  var history = (0, _createHistory2.default)(_extends({
-    getUserConfirmation: getUserConfirmation }, options, {
-    getCurrentLocation: getCurrentLocation,
-    pushLocation: pushLocation,
-    replaceLocation: replaceLocation,
-    go: HashProtocol.go
-  }));
-
-  var listenerCount = 0,
-      stopListener = void 0;
-
-  var startListener = function startListener(listener, before) {
-    if (++listenerCount === 1) stopListener = HashProtocol.startListener(history.transitionTo, pathCoder, queryKey);
-
-    var unlisten = before ? history.listenBefore(listener) : history.listen(listener);
-
-    return function () {
-      unlisten();
-
-      if (--listenerCount === 0) stopListener();
-    };
-  };
-
-  var listenBefore = function listenBefore(listener) {
-    return startListener(listener, true);
-  };
-
-  var listen = function listen(listener) {
-    return startListener(listener, false);
-  };
-
-  var goIsSupportedWithoutReload = (0, _DOMUtils.supportsGoWithoutReloadUsingHash)();
-
-  var go = function go(n) {
-    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(goIsSupportedWithoutReload, 'Hash history go(n) causes a full page reload in this browser') : void 0;
-
-    history.go(n);
-  };
-
-  var createHref = function createHref(path) {
-    return '#' + pathCoder.encodePath(history.createHref(path));
-  };
-
-  return _extends({}, history, {
-    listenBefore: listenBefore,
-    listen: listen,
-    go: go,
-    createHref: createHref
-  });
-};
-
-exports.default = createHashHistory;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 184 */
@@ -25799,7 +25799,7 @@ function getRouteParams(route, params) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_history_lib_createHashHistory__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_history_lib_createHashHistory__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_history_lib_createHashHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_history_lib_createHashHistory__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__createRouterHistory__ = __webpack_require__(138);
 
@@ -26299,7 +26299,7 @@ function matchRoutes(routes, location, callback, remainingPathname) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__ = __webpack_require__(149);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hoist_non_react_statics__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ContextUtils__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__PropTypes__ = __webpack_require__(86);
@@ -28657,13 +28657,15 @@ module.exports = function (str) {
 /* 475 */,
 /* 476 */,
 /* 477 */,
-/* 478 */
+/* 478 */,
+/* 479 */,
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
 __webpack_require__(36);
 __webpack_require__(97);
-module.exports = __webpack_require__(151);
+module.exports = __webpack_require__(152);
 
 
 /***/ })
