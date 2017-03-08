@@ -6,7 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 
 const FormItem = Form.Item;
 
-class Company extends React.Component {
+class CompanyPage extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -36,4 +36,5 @@ class Company extends React.Component {
 
 }
 
+let Company = Form.create()(CompanyPage);
 export default Company;

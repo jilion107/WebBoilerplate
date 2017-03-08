@@ -18,10 +18,12 @@ class App extends React.Component {
             <div className="zhijian-main">
                 <HeaderPage username="Jilion"/>
                 <Content>
-                    <SiderPage />
-                    <div>
-                        {this.props.children}
-                    </div>
+                    <Layout>
+                        <SiderPage />
+                        <Content>
+                            {this.props.children}
+                        </Content>
+                    </Layout>
                 </Content>
             </div>
         );

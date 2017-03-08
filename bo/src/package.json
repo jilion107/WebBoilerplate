@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "alt": "^0.18.4",
-    "antd": "^2.7.3",
+    "antd": "^2.8.0",
     "async": "^1.5.0",
     "classnames": "^2.2.5",
     "jquery": "^3.1.1",

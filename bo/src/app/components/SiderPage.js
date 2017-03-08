@@ -20,7 +20,7 @@ class SiderPage extends React.Component {
                             <Icon type="switcher" />
                             <span className="nav-text">数据采集及临时库管理</span>
                         </Menu.Item>
-                        <SubMenu key="sub2" title={<span><Icon type="switcher" /><span className="nav-text">正式库管理</span></span>}>
+                        <SubMenu key="sub2" title={<span><Icon type="database" /><span className="nav-text">正式库管理</span></span>}>
                             <Menu.Item key="2">
                                 <Icon type="bars" />
                                 <span className="nav-text">正式库列表</span>
@@ -72,7 +72,7 @@ class SiderPage extends React.Component {
                                 <span className="nav-text">账号管理</span>
                             </Menu.Item>
                             <Menu.Item key="11">
-                                <Icon type="plus-circle" />
+                                <Icon type="user-add" />
                                 <span className="nav-text">新建账号</span>
                             </Menu.Item>
                             <Menu.Item key="12">
