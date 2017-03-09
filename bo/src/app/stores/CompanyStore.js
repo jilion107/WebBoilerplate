@@ -10,7 +10,8 @@ class CompanyStore {
         this.bindActions(ComapnyActions);
         this.state = {
             companies: [],
-            isLoad: false
+            isLoad: false,
+            companyName: ''
         }
     }
 
@@ -26,6 +27,20 @@ class CompanyStore {
     }
 
     onUpdateCompanyFail(data) {
+        message.error('修改: ' + data + ' 请联系管理员');
+    }
+
+    onUpdateCompanyName(event) {
+      this.setState({
+          companyName: event.target.value
+      });
+    }
+
+    onAddCompanySuccess(data) {
+        message.info('添加成功: ' + data.companyName);
+    }
+
+    onAddCompanyFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
 }

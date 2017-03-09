@@ -27,6 +27,18 @@ class CompanyTransport extends Transport {
             }
         });
     }
+
+    addCompany(company) {
+        return this.ajaxRequest({
+            method: 'post',
+            url: 'http://localhost:8080/api/company',
+            requestBody: JSON.stringify(company),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 }
 
 export  default  CompanyTransport;

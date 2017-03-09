@@ -11,7 +11,10 @@ class CompanyActions {
             'getAllCompanySuccess',
             'getAllCompanyFail',
             'updateCompanySuccess',
-            'updateCompanyFail'
+            'updateCompanyFail',
+            'updateCompanyName',
+            'addCompanySuccess',
+            'addCompanyFail',
         );
         this.companyInstance = new CompanyTransport();
     }
@@ -31,6 +34,14 @@ class CompanyActions {
             this.updateCompanySuccess(response);
         }, (response) => {
             this.updateCompanyFail(response);
+        });
+    }
+
+    addCompany(company) {
+        this.companyInstance.addCompany(company).then((response) => {
+            this.addCompanySuccess(response);
+        }, (response) => {
+            this.addCompanyFail(response);
         });
     }
 }

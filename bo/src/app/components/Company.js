@@ -29,8 +29,25 @@ class CompanyPage extends React.Component {
         this.setState(state);
     }
 
-    handleSubmit(e) {
-
+    handleAdd() {
+        let { companies, companyName } = this.state;
+        let company = CompanyActions.addCompany({ companyName: companyName });
+        let newCompany = {
+            key: companies.length,
+            id: {
+                editable: false,
+                value: company.id,
+                changeable: false
+            },
+            companyName: {
+                editable: false,
+                value: company.companyName,
+                changeable: true
+            }
+        };
+        this.setState({
+            companies: [...companies, newCompany]
+        });
     }
 
     handleUpdate(data) {
@@ -85,7 +102,7 @@ class CompanyPage extends React.Component {
                         {getFieldDecorator('companyname', {
                             rules: [{ required: true, message: '请输入公司名！'}]
                         })(
-                            <Input size="large"  onChange={null}/>
+                            <Input size="large"  onChange={CompanyActions.onUpdateCompanyName}/>
                         )}
                     </FormItem>
                     <FormItem>
