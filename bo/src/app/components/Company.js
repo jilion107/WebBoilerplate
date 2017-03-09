@@ -3,34 +3,97 @@
  */
 import React from 'react';
 import { Form, Icon, Input, Button} from 'antd';
+import EditableTable from '../common/EditableTable';
+import CompanyStore from '../stores/CompanyStore';
+import CompanyActions from '../actions/CompanyActions';
 
 const FormItem = Form.Item;
 
 class CompanyPage extends React.Component {
     constructor(props) {
         super(props);
+        this.state = CompanyStore.getState();
+        this.onChange = this.onChange.bind(this);
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        LoginActions.signIn(this.state.username, this.state.password, history);
+    componentDidMount() {
+        CompanyStore.listen(this.onChange);
+        CompanyActions.getAllCompany();
+    }
+
+    componentWillUnmount() {
+        CompanyStore.unlisten(this.onChange);
+    }
+
+    onChange(state) {
+        this.setState(state);
+    }
+
+    handleSubmit(e) {
+
+    }
+
+    handleUpdate(data) {
+        let company = {
+            id: data.id.value,
+            companyName: data.companyName.value
+        }
+        CompanyActions.updateCompany(company);
+    }
+
+    createDataSource(store) {
+        return store.map((item, index) => {
+            return {
+                key: index,
+                id: {
+                    editable: false,
+                    value: item.id,
+                    changeable: false
+                },
+                companyName: {
+                    editable: false,
+                    value: item.companyName,
+                    changeable: true
+                }
+            }
+        });
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        return (
-            <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
-                <FormItem label="公司名">
-                    {getFieldDecorator('companyname', {
-                        rules: [{ required: true, message: '请输入公司名！'}]
-                    })(
-                        <Input size="large"  onChange={null}/>
-                    )}
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" htmlType="submit">添加</Button>
-                </FormItem>
-            </Form>
+        let companies = this.state.companies;
+        let dataSource = this.createDataSource(companies);
+        let columns = [
+            {
+                title: '序号',
+                dataIndex: 'id',
+                width: '10%'
+            }, {
+                title: '公司名',
+                dataIndex: 'companyName',
+                width: '50%'
+            }, {
+                title: '操作',
+                dataIndex: 'operation'
+            }
+        ];
+
+        return ( this.state.isLoad ?
+            <div>
+                <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
+                    <FormItem label="公司名">
+                        {getFieldDecorator('companyname', {
+                            rules: [{ required: true, message: '请输入公司名！'}]
+                        })(
+                            <Input size="large"  onChange={null}/>
+                        )}
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" htmlType="submit">添加</Button>
+                    </FormItem>
+                </Form>
+                <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 2 }/>
+            </div> : null
         );
     }
 

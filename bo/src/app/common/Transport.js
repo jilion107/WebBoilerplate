@@ -12,7 +12,8 @@ class Transport {
             $.ajax({
                 type: reqeust.method,
                 url: reqeust.url,
-                data: reqeust.requestBody
+                data: reqeust.requestBody,
+                headers: reqeust.headers || {'Content-Type': 'multipart/form-data'}
             })
             .done((data) => {
                 resolve(data);
