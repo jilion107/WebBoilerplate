@@ -12,7 +12,8 @@ class UsersStore {
             users: [],
             isLoad: false,
             searchName: '',
-            searchPhone: ''
+            searchPhone: '',
+            dataSource: []
         }
     }
 

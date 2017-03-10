@@ -11,7 +11,9 @@ class UsersActions {
             'getAllUsersSuccess',
             'getAllUsersFail',
             'updateUserSuccess',
-            'updateUserFail'
+            'updateUserFail',
+            'onUpdateSearchName',
+            'onUpdateSearchPhone'
         );
         this.userInstance = new UsersTransport();
     }

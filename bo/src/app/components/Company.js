@@ -51,10 +51,10 @@ class CompanyPage extends React.Component {
     }
 
     handleUpdate(data) {
-        let company = {
-            id: data.id.value,
-            companyName: data.companyName.value
-        }
+        let company = this.state.companies.find((item) => {
+            return item.id === data.id.value;
+        });
+        company.companyName = data.companyName.value
         CompanyActions.updateCompany(company);
     }
 
@@ -97,7 +97,7 @@ class CompanyPage extends React.Component {
 
         return ( this.state.isLoad ?
             <div>
-                <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
+                <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
                     <FormItem label="公司名">
                         {getFieldDecorator('companyname', {
                             rules: [{ required: true, message: '请输入公司名！'}]

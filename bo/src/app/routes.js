@@ -8,6 +8,7 @@ import Home from './components/Home';
 import App from './components/App';
 import Company from './components/Company';
 import Users from './components/Users';
+import AddUser from './components/AddUser';
 
 let routes =
     <Router>
@@ -15,6 +16,7 @@ let routes =
         <Route path="home" components={ App }>
             <Route path='company' component={ Company } />
             <Route path='users' component={ Users } />
+            <Route path='addUser' component={ AddUser } />
         </Route>
     </Router>
 

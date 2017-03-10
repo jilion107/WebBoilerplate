@@ -35,6 +35,9 @@ class EditableTable extends React.Component {
                                                 :
                                                     <span>
                                                         <a onClick={() => this.edit(index)}>修改</a>
+                                                        <Popconfirm title="Sure to Delete?" onConfirm={() => this.deleteDone(index, 'delete')}>
+                                                            <a>删除</a>
+                                                        </Popconfirm>
                                                     </span>
                                             }
                                         </div>
@@ -42,6 +45,10 @@ class EditableTable extends React.Component {
                             }
             };
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ data: nextProps.data });
     }
 
     renderColumns(data, index, key, text) {
@@ -95,6 +102,13 @@ class EditableTable extends React.Component {
                     delete data[index][item].status;
                 }
             });
+        });
+    }
+
+    deleteDone(index) {
+        this.setState({ data : this.state.data.map((record) => {
+                return record.id !== index;
+            })
         });
     }
 

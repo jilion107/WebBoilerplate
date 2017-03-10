@@ -15,6 +15,7 @@ class CompanyActions {
             'updateCompanyName',
             'addCompanySuccess',
             'addCompanyFail',
+            'onUpdateCompanyName'
         );
         this.companyInstance = new CompanyTransport();
     }

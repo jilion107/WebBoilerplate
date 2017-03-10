@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
+import Search from '../common/Search';
 
 const FormItem = Form.Item;
 
@@ -30,15 +31,24 @@ class UsersPage extends React.Component {
     }
 
     handleUpdate(data) {
-        let user = {
-            id: data.id.value,
-            userName: data.userName.value,
-            loginName: data.loginName.value,
-            phone: data.phone.value,
-            role: data.role.value
-        }
+        let user = this.state.users.find((item) => {
+            return item.id === data.id.value;
+        });
+        user.userName = data.userName.value;
+        user.loginName = data.loginName.value;
+        user.phone = data.phone.value;
+        user.role = data.role.value;
         UsersActions.updateUser(user);
     }
+
+    handleSearch() {
+        const search = new Search();
+        let data = search.onSearch(this.state.users, this.state.searchName, 'userName');
+        this.setState({
+            users: data
+        });
+    };
+
 
     createDataSource(store) {
         return store.map((item, index) => {
@@ -72,7 +82,7 @@ class UsersPage extends React.Component {
                 createTime: {
                     editable: false,
                     value: item.createTime,
-                    changeable: true
+                    changeable: false
                 }
             }
         });
@@ -115,7 +125,7 @@ class UsersPage extends React.Component {
 
         return( this.state.isLoad ?
                 <div>
-                    <Form layout="inline" onSubmit={this.handleSubmit.bind(this)}>
+                    <Form layout="inline" onSubmit={this.handleUpdate.bind(this)}>
                         <FormItem label="姓名">
                             {getFieldDecorator('searchName', {
                                 rules: []
@@ -123,7 +133,7 @@ class UsersPage extends React.Component {
                                 <Input size="large"  onChange={UsersActions.onUpdateSearchName}/>
                             )}
                         </FormItem>
-                        <FormItem label="姓名">
+                        <FormItem label="电话">
                             {getFieldDecorator('searchPhone', {
                                 rules: []
                             })(
@@ -131,7 +141,7 @@ class UsersPage extends React.Component {
                             )}
                         </FormItem>
                         <FormItem>
-                            <Button type="primary" htmlType="submit">搜索</Button>
+                            <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
                         </FormItem>
                     </Form>
                     <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 6 }/>
