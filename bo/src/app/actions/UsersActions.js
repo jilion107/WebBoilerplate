@@ -13,7 +13,8 @@ class UsersActions {
             'updateUserSuccess',
             'updateUserFail',
             'onUpdateSearchName',
-            'onUpdateSearchPhone'
+            'onUpdateSearchPhone',
+            'addUser'
         );
         this.userInstance = new UsersTransport();
     }
@@ -32,6 +33,14 @@ class UsersActions {
             this.updateUserSuccess(response);
         }, (response) => {
             this.updateUserFail(response);
+        });
+    }
+
+    addUser(user) {
+        this.userInstance.addUser(user).then((response) => {
+            this.addUserSuccess(response);
+        }, (response) => {
+            this.addUserFail(response);
         });
     }
 }

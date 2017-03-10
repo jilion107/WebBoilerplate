@@ -27,6 +27,26 @@ class UsersTransport extends Transport {
             }
         });
     }
+
+    addUser(user) {
+        return this.ajaxRequest({
+            method: 'post',
+            url: 'http://localhost:8080/api/user',
+            requestBody: JSON.stringify(user),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    getUser(id) {
+        return this.ajaxRequest({
+            method: 'get',
+            url: 'http://localhost:8080/api/user/' + id
+        });
+    }
+
 }
 
 export default UsersTransport;

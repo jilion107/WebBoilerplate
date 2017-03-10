@@ -13,7 +13,15 @@ class UsersStore {
             isLoad: false,
             searchName: '',
             searchPhone: '',
-            dataSource: []
+            dataSource: [],
+            userInfo: {
+                loginName: '',
+                userName: '',
+                phone: '',
+                company: '',
+                role: '',
+                isAdmin: false
+            }
         }
     }
 
@@ -38,6 +46,14 @@ class UsersStore {
 
     onUpdateSearchPhone(event) {
         this.setState({ searchPhone: event.target.value});
+    }
+
+    onAddUserSuccess(data) {
+        message.info('新增: ' + data.userName);
+    }
+
+    onAddUserFail(data) {
+        message.error('新增: ' + data + ' 请联系管理员');
     }
 }
 
