@@ -4,25 +4,25 @@
 import React from 'react';
 import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
-import ColorStore from '../stores/ColorStore';
-import ColorActions from '../actions/ColorActions';
+import ColourStore from '../stores/ColourStore';
+import ColourActions from '../actions/ColourActions';
 
 const FormItem = Form.Item;
 
-class ColorPage extends React.Component {
+class ColourPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = ColorStore.getState();
+        this.state = ColourStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        ColorStore.listen(this.onChange);
-        ColorActions.getAllColors();
+        ColourStore.listen(this.onChange);
+        ColourActions.getAllColours();
     }
 
     componentWillUnmount() {
-        ColorStore.unlisten(this.onChange);
+        ColourStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -30,37 +30,37 @@ class ColorPage extends React.Component {
     }
 
     handleAdd() {
-        let { colors, colorName } = this.state;
-        let color = ColorActions.addColor({ name: colorName });
-        let newColor = {
-            key: colors.length,
+        let { colours, colourName } = this.state;
+        let colour = ColourActions.addColour({ name: colourName });
+        let newColour = {
+            key: colours.length,
             id: {
                 editable: false,
-                value: color.id,
+                value: colour.id,
                 changeable: false
             },
-            colorName: {
+            colourName: {
                 editable: false,
-                value: color.name,
+                value: colour.name,
                 changeable: true
             },
             createTime: {
                 editable: false,
-                value: color.createTime,
+                value: colour.createTime,
                 changeable: false
             }
         };
         this.setState({
-            colors: [...colors, newColor]
+            colours: [...colours, newColour]
         });
     }
 
     handleUpdate(data) {
-        let color = this.state.colors.find((item) => {
+        let colour = this.state.colours.find((item) => {
             return item.id === data.id.value;
         });
-        color.name = data.colorName.value
-        ColorActions.updateColor(color);
+        colour.name = data.colourName.value
+        ColourActions.updateColour(colour);
     }
 
     createDataSource(store) {
@@ -72,7 +72,7 @@ class ColorPage extends React.Component {
                     value: item.id,
                     changeable: false
                 },
-                colorName: {
+                colourName: {
                     editable: false,
                     value: item.name,
                     changeable: true
@@ -88,8 +88,8 @@ class ColorPage extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let colors = this.state.colors;
-        let dataSource = this.createDataSource(colors);
+        let colours = this.state.colours;
+        let dataSource = this.createDataSource(colours);
         let columns = [
             {
                 title: '序号',
@@ -97,7 +97,7 @@ class ColorPage extends React.Component {
                 width: '10%'
             }, {
                 title: '颜色',
-                dataIndex: 'colorName',
+                dataIndex: 'colourName',
                 width: '30%'
             }, {
                 title: '创建时间',
@@ -113,10 +113,10 @@ class ColorPage extends React.Component {
                 <div>
                     <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
                         <FormItem label="颜 色:">
-                            {getFieldDecorator('colorName', {
+                            {getFieldDecorator('colourName', {
                                 rules: [{ required: true, message: '请输入颜色！'}]
                             })(
-                                <Input size="large"  onChange={ColorActions.onUpdateColorName}/>
+                                <Input size="large"  onChange={ColourActions.onUpdateColourName}/>
                             )}
                         </FormItem>
                         <FormItem>
@@ -130,5 +130,5 @@ class ColorPage extends React.Component {
 
 }
 
-let Color = Form.create()(ColorPage);
-export default Color;
+let Colour = Form.create()(ColourPage);
+export default Colour;

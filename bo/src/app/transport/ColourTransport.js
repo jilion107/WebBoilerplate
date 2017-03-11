@@ -3,24 +3,24 @@
  */
 import Transport from '../common/Transport';
 
-class ColorTransport extends Transport {
+class ColourTransport extends Transport {
     constructor(props) {
         super(props);
     }
 
-    getAllColors() {
+    getAllColours() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/colors',
+            url: 'http://localhost:8080/api/colours',
             requestBody: {}
         });
     }
 
-    updateColor(color) {
+    updateColour(colour) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/colors/' + color.id,
-            requestBody: JSON.stringify(color),
+            url: 'http://localhost:8080/api/colours/' + colour.id,
+            requestBody: JSON.stringify(colour),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -28,11 +28,11 @@ class ColorTransport extends Transport {
         });
     }
 
-    addColor(color) {
+    addColour(colour) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/color',
-            requestBody: JSON.stringify(color),
+            url: 'http://localhost:8080/api/colour',
+            requestBody: JSON.stringify(colour),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -41,4 +41,4 @@ class ColorTransport extends Transport {
     }
 }
 
-export default ColorTransport;
+export default ColourTransport;

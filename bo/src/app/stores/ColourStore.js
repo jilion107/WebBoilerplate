@@ -2,47 +2,47 @@
  * Created by Jilion on 2017/3/10.
  */
 import alt from '../common/alt';
-import ColorActions from '../actions/ColorActions';
+import ColourActions from '../actions/ColourActions';
 import { message } from 'antd';
 
-class ColorStore {
+class ColourStore {
     constructor() {
-        this.bindActions(ColorActions);
+        this.bindActions(ColourActions);
         this.state = {
-            colors: [],
+            colours: [],
             isLoad: false,
-            colorName: ''
+            colourName: ''
         }
     }
 
-    onGetAllColorsSuccess(data) {
+    onGetAllColoursSuccess(data) {
         this.setState({
-            colors: data,
+            colours: data,
             isLoad: true
         });
     }
 
-    onUpdateColorSuccess(data) {
+    onUpdateColourSuccess(data) {
         message.info('修改成功: ' + data.name);
     }
 
-    onUpdateColorFail(data) {
+    onUpdateColourFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
 
-    onUpdateColorName(event) {
+    onUpdateColourName(event) {
         this.setState({
-            colorName: event.target.value
+            colourName: event.target.value
         });
     }
 
-    onAddColorSuccess(data) {
+    onAddColourSuccess(data) {
         message.info('添加成功: ' + data.name);
     }
 
-    onAddColorFail(data) {
+    onAddColourFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
 }
 
-export default alt.createStore(ColorStore);
+export default alt.createStore(ColourStore);

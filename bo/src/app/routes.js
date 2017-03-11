@@ -9,10 +9,11 @@ import App from './components/App';
 import Company from './components/Company';
 import Users from './components/Users';
 import AddUser from './components/AddUser';
-import Color from './components/Color';
+import Colour from './components/Colour';
 import Size from './components/Size';
 import Category from './components/Category';
 import Tort from './components/Tort';
+import TmpProducts from './components/TmpProducts'
 
 let routes =
     <Router>
@@ -21,8 +22,11 @@ let routes =
             <Route path='companies' component={ Company } />
             <Route path='users' component={ Users } />
             <Route path='addUser' component={ AddUser } />
-            <Route path='colors' component={ Color } />
+            <Route path='colours' component={ Colour } />
+            <Route path='sizes' component={ Size } />
+            <Route path='categories' component={ Category } />
             <Route path='torts' component={ Tort } />
+            <Route path='tmpProducts' component={ TmpProducts } />
         </Route>
     </Router>
 
