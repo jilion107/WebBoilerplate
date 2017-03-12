@@ -11,7 +11,7 @@ class ColourTransport extends Transport {
     getAllColours() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/colours',
+            url: 'http://localhost:8080/api/product-colour',
             requestBody: {}
         });
     }

@@ -38,9 +38,9 @@ class AddUserPage extends React.Component {
         return (
             <div className="zhijian-addUser">
                 <Form layout="horizontal" onSubmit={this.handleAdd.bind(this)}>
-                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="登录名：">
+                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="登录：">
                         {getFieldDecorator('loginName', {
-                            rules: [{ required: true, message: '请输入登录名！'}]
+                            rules: [{ required: true, message: '请输入登录！'}]
                         })(
                             <Input size="large"  />
                         )}

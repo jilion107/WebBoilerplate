@@ -1,26 +1,39 @@
 /**
- * Created by jilion.chen on 3/8/2017.
+ * Created by jilion.chen on 3/12/2017.
  */
 import React from 'react';
-import TmpProductsStore from '../stores/TmpProductsStore';
-import TmpProductsActions from '../actions/TmpProductsActions';
+import FormalProductsStore from '../stores/FormalProductsStore';
+import FormalProductsActions from '../actions/FormalProductsActions';
 import moment from 'moment';
 import { Form, Select, Input, Button, Checkbox, DatePicker, Card } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
+const CheckboxGroup = Checkbox.Group;
 const dateFormat = 'YYYY/MM/DD';
+const sizeOptions = [
+    { label: 'S', value: 's' },
+    { label: 'M', value: 'm' },
+    { label: 'L', value: 'l' },
+    { label: 'XL', value: 'xl' },
+    { label: 'XXL', value: 'xxl' },
+];
+const colourOptions = [
+    { label: '白色', value: 'white' },
+    { label: '黑色', value: 'black' },
+    { label: '黄色', value: 'yellow' },
+    { label: '绿色', value: 'green' },
+    { label: '蓝色', value: 'blue' },
+];
 
-const all = 20;
-
-class TmpProductsPage extends React.Component {
+class FormalProductsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: 0,
             amount: 100,
-            tmpProducts: [{
+            formalProducts: [{
                 img: 'bg.png',
                 name: "Men's Online ",
                 price: '50$'
@@ -66,12 +79,12 @@ class TmpProductsPage extends React.Component {
     }
 
     componentDidMount() {
-        TmpProductsStore.listen(this.onChange);
-        TmpProductsActions.getAllTmpProducts();
+        FormalProductsStore.listen(this.onChange);
+        FormalProductsActions.getAllFormalProducts();
     }
 
     componentWillUnmount() {
-        TmpProductsStore.unlisten(this.onChange);
+        FormalProductsStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -82,6 +95,13 @@ class TmpProductsPage extends React.Component {
 
     }
 
+    onColorChange(checkedValues) {
+        console.log('checked = ', checkedValues);
+    }
+
+    onSizeChange(checkedValues) {
+        console.log('checked = ', checkedValues);
+    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -115,6 +135,14 @@ class TmpProductsPage extends React.Component {
                         })(
                             <Input size="large" />
                         )}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="颜色：">
+                        <Checkbox className="zhijian-selectAll"> Check all</Checkbox>
+                        <CheckboxGroup options={colourOptions} defaultValue={['white']} onChange={this.onColorChange.bind(this)} />
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="尺寸：">
+                        <Checkbox className="zhijian-selectAll"> Check all</Checkbox>
+                        <CheckboxGroup options={sizeOptions} defaultValue={['s']} onChange={this.onSizeChange.bind(this)} />
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
@@ -161,7 +189,7 @@ class TmpProductsPage extends React.Component {
                 </div>
                 <div>
                     <ul>
-                        {this.state.tmpProducts.map((item) => {
+                        {this.state.formalProducts.map((item) => {
                             return <li className="ant-col-6" key={item.name}>
                                 <Card>
                                     <div>
@@ -187,7 +215,8 @@ class TmpProductsPage extends React.Component {
             </div>
         );
     }
+
 }
 
-let TmpProducts = Form.create()(TmpProductsPage);
-export default TmpProducts;
+let FormalProducts = Form.create()(FormalProductsPage);
+export default FormalProducts;

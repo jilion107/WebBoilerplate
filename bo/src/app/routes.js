@@ -14,6 +14,7 @@ import Size from './components/Size';
 import Category from './components/Category';
 import Tort from './components/Tort';
 import TmpProducts from './components/TmpProducts'
+import FormalProducts from './components/FormalProducts'
 
 let routes =
     <Router>
@@ -27,6 +28,7 @@ let routes =
             <Route path='categories' component={ Category } />
             <Route path='torts' component={ Tort } />
             <Route path='tmpProducts' component={ TmpProducts } />
+            <Route path='formalProducts' component={ FormalProducts } />
         </Route>
     </Router>
 
