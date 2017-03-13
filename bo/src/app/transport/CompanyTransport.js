@@ -39,6 +39,18 @@ class CompanyTransport extends Transport {
             }
         });
     }
+
+    deleteCompany(companyId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/companies/' + companyId,
+            requestBody: {},
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 }
 
 export  default  CompanyTransport;

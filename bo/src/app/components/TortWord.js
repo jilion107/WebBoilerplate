@@ -4,25 +4,25 @@
 import React from 'react';
 import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
-import TortStore from '../stores/TortStore';
-import TortActions from '../actions/TortActions';
+import TortWordsStore from '../stores/TortWordsStore';
+import TortWordsActions from '../actions/TortWordsActions';
 
 const FormItem = Form.Item;
 
-class TortPage extends React.Component {
+class TortWordsPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = TortStore.getState();
+        this.state = TortWordsStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        TortStore.listen(this.onChange);
-        TortActions.getAllTorts();
+        TortWordsStore.listen(this.onChange);
+        TortWordsActions.getAllTortWords();
     }
 
     componentWillUnmount() {
-        TortStore.unlisten(this.onChange);
+        TortWordsStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -30,37 +30,37 @@ class TortPage extends React.Component {
     }
 
     handleAdd() {
-        let { torts, tortName } = this.state;
-        let tort = TortActions.addTort({ name: tortName });
-        let newTort = {
-            key: torts.length,
+        let { tortWords, tortWordName } = this.state;
+        let tortWord = TortWordsActions.addTortWord({ name: tortWordName });
+        let newTortWord = {
+            key: tortWord.length,
             id: {
                 editable: false,
-                value: tort.id,
+                value: tortWord.id,
                 changeable: false
             },
-            tortName: {
+            tortWordsName: {
                 editable: false,
-                value: tort.name,
+                value: tortWord.name,
                 changeable: true
             },
             createTime: {
                 editable: false,
-                value: tort.createTime,
+                value: tortWord.createTime,
                 changeable: false
             }
         };
         this.setState({
-            torts: [...torts, newTort]
+            torts: [...tortWords, newTortWord]
         });
     }
 
     handleUpdate(data) {
-        let tort = this.state.torts.find((item) => {
+        let tortWord = this.state.torts.find((item) => {
             return item.id === data.id.value;
         });
-        tort.name = data.tortName.value
-        TortActions.updateTort(tort);
+        tortWord.name = data.tortWordName.value
+        TortWordsActions.updateTortWord(tortWord);
     }
 
     createDataSource(store) {
@@ -72,7 +72,7 @@ class TortPage extends React.Component {
                     value: item.id,
                     changeable: false
                 },
-                tortName: {
+                tortWordName: {
                     editable: false,
                     value: item.name,
                     changeable: true
@@ -88,8 +88,8 @@ class TortPage extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let torts = this.state.torts;
-        let dataSource = this.createDataSource(torts);
+        let tortWords = this.state.tortWords;
+        let dataSource = this.createDataSource(tortWords);
         let columns = [
             {
                 title: '序号',
@@ -97,7 +97,7 @@ class TortPage extends React.Component {
                 width: '10%'
             }, {
                 title: '侵权词',
-                dataIndex: 'tortName',
+                dataIndex: 'tortWordName',
                 width: '30%'
             }, {
                 title: '创建时间',
@@ -113,10 +113,10 @@ class TortPage extends React.Component {
                 <div>
                     <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
                         <FormItem label="侵权词:">
-                            {getFieldDecorator('tortName', {
+                            {getFieldDecorator('tortWordName', {
                                 rules: [{ required: true, message: '请输入颜色！'}]
                             })(
-                                <Input size="large"  onChange={TortActions.onUpdateTortName}/>
+                                <Input size="large"  onChange={TortWordsActions.onUpdateTortWordName}/>
                             )}
                         </FormItem>
                         <FormItem>
@@ -130,5 +130,5 @@ class TortPage extends React.Component {
 
 }
 
-let Tort = Form.create()(TortPage);
-export default Tort;
+let TortWords = Form.create()(TortWordsPage);
+export default TortWords;

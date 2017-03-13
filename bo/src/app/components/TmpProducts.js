@@ -23,43 +23,53 @@ class TmpProductsPage extends React.Component {
             tmpProducts: [{
                 img: 'bg.png',
                 name: "Men's Online ",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "WOW Warrior Sigil T ack",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "es WOW Warrior Sigil ",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "MeOW Warrior Sigil T Shirck",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "MeWarrior Sigil T t Black",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "Men's t Black",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "M Warrior Sigil T Shirt Blak",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "Men'sior Sigil T Shirtck",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "M Sigil T Shirt Blackdddddddddddddddddddddddddddddd",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             },{
                 img: 'bg.png',
                 name: "Men's Onlick",
-                price: '50$'
+                price: '50$',
+                productId: 'FADAFADS13'
             }
             ]
         }
@@ -154,11 +164,7 @@ class TmpProductsPage extends React.Component {
                 <div>
                     <InnerPagination total={this.state.amount} />
                 </div>
-                <div>
-                    <div>
-
-                    </div>
-                </div>
+                <div className="zhijian-clear"></div>
                 <div>
                     <ul>
                         {this.state.tmpProducts.map((item) => {
@@ -172,6 +178,9 @@ class TmpProductsPage extends React.Component {
                                     </div>
                                     <div className="zhijian-price">
                                         <span>价格：{item.price}</span>
+                                    </div>
+                                    <div className="zhijian-productId">
+                                        <span>{item.productId}</span>
                                     </div>
                                     <div>
                                         <Button type="primary" htmlType="submit" className="zhijian-button-margin">删除</Button>

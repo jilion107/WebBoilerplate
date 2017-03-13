@@ -43,6 +43,14 @@ class CompanyStore {
     onAddCompanyFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
+
+    onDeleteCompanySuccess(data) {
+        message.info('删除成功. ');
+    }
+
+    onDeleteCompanyFail(data) {
+        message.error('删除失败: ' + data + ' 请联系管理员');
+    }
 }
 
 export default alt.createStore(CompanyStore);

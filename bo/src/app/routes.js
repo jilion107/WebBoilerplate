@@ -4,7 +4,6 @@
 import React from 'react';
 import { Router, Route } from 'react-router';
 import Login from './components/Login';
-import Home from './components/Home';
 import App from './components/App';
 import Company from './components/Company';
 import Users from './components/Users';
@@ -12,9 +11,14 @@ import AddUser from './components/AddUser';
 import Colour from './components/Colour';
 import Size from './components/Size';
 import Category from './components/Category';
-import Tort from './components/Tort';
-import TmpProducts from './components/TmpProducts'
-import FormalProducts from './components/FormalProducts'
+import Filter from './components/Filter';
+import AddFilter from './components/AddFilter';
+import TortWords from './components/TortWord';
+import TmpProducts from './components/TmpProducts';
+import FormalProducts from './components/FormalProducts';
+import TortProducts from './components/TortProducts';
+import FormalRemit from './components/FormalRemit';
+import TortRemit from './components/TortRemit';
 
 let routes =
     <Router>
@@ -26,9 +30,14 @@ let routes =
             <Route path='colours' component={ Colour } />
             <Route path='sizes' component={ Size } />
             <Route path='categories' component={ Category } />
-            <Route path='torts' component={ Tort } />
+            <Route path='tortWords' component={ TortWords } />
+            <Route path='filter' component={ Filter } />
+            <Route path='addFilter' component={ AddFilter } />
             <Route path='tmpProducts' component={ TmpProducts } />
             <Route path='formalProducts' component={ FormalProducts } />
+            <Route path='tortProducts' component={ TortProducts } />
+            <Route path='formalRemit' component={ FormalRemit } />
+            <Route path='tortRemit' component={ TortRemit } />
         </Route>
     </Router>
 

@@ -1,11 +1,11 @@
 /**
- * Created by jilion.chen on 3/12/2017.
+ * Created by jilion.chen on 3/13/2017.
  */
 import React from 'react';
-import FormalProductsStore from '../stores/FormalProductsStore';
-import FormalProductsActions from '../actions/FormalProductsActions';
+import TortProductsStore from '../stores/TortProductsStore';
+import TortProductsActions from '../actions/TortProductsActions';
 import moment from 'moment';
-import { Form, Select, Input, Button, Checkbox, DatePicker, Card } from 'antd';
+import { Form, Input, Button, Checkbox, DatePicker, Card } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 
 const { RangePicker } = DatePicker;
@@ -27,13 +27,13 @@ const colourOptions = [
     { label: '蓝色', value: 'blue' },
 ];
 
-class FormalProductsPage extends React.Component {
+class TortProductsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selected: 0,
             amount: 100,
-            formalProducts: [{
+            tortProducts: [{
                 img: 'bg.png',
                 name: "Men's Online ",
                 price: '50$',
@@ -89,12 +89,12 @@ class FormalProductsPage extends React.Component {
     }
 
     componentDidMount() {
-        FormalProductsStore.listen(this.onChange);
-        FormalProductsActions.getAllFormalProducts();
+        TortProductsStore.listen(this.onChange);
+        TortProductsActions.getAllTortProducts();
     }
 
     componentWillUnmount() {
-        FormalProductsStore.unlisten(this.onChange);
+        TortProductsStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -196,7 +196,7 @@ class FormalProductsPage extends React.Component {
                 </div>
                 <div>
                     <ul>
-                        {this.state.formalProducts.map((item) => {
+                        {this.state.tortProducts.map((item) => {
                             return <li className="ant-col-6" key={item.name}>
                                 <Card>
                                     <div>
@@ -228,5 +228,5 @@ class FormalProductsPage extends React.Component {
 
 }
 
-let FormalProducts = Form.create()(FormalProductsPage);
-export default FormalProducts;
+let TortProducts = Form.create()(TortProductsPage);
+export default TortProducts;

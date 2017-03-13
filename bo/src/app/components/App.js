@@ -5,6 +5,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import HeaderPage from './HeaderPage';
 import SiderPage from './SiderPage';
+import './main.less';
 
 const { Content } = Layout;
 

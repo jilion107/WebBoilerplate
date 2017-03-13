@@ -2,47 +2,47 @@
  * Created by Jilion on 2017/3/10.
  */
 import alt from '../common/alt';
-import TortActions from '../actions/TortActions';
+import TortWordsActions from '../actions/TortWordsActions';
 import { message } from 'antd';
 
-class TortStore {
+class TortWordsStore {
     constructor() {
-        this.bindActions(TortActions);
+        this.bindActions(TortWordsActions);
         this.state = {
-            torts: [],
+            tortWords: [],
             isLoad: false,
-            tortName: ''
+            tortWordName: ''
         }
     }
 
-    onGetAllTortsSuccess(data) {
+    onGetAllTortWordsSuccess(data) {
         this.setState({
-            torts: data,
+            tortWords: data,
             isLoad: true
         });
     }
 
-    onUpdateTortSuccess(data) {
+    onUpdateTortWordSuccess(data) {
         message.info('修改成功: ' + data.name);
     }
 
-    onUpdateTortFail(data) {
+    onUpdateTortWordFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
 
-    onUpdateTortName(event) {
+    onUpdateTortWordName(event) {
         this.setState({
-            tortName: event.target.value
+            tortWordName: event.target.value
         });
     }
 
-    onAddTortSuccess(data) {
+    onAddTortWordSuccess(data) {
         message.info('添加成功: ' + data.name);
     }
 
-    onAddTortFail(data) {
+    onAddTortWordFail(data) {
         message.error('修改: ' + data + ' 请联系管理员');
     }
 }
 
-export default alt.createStore(TortStore);
+export default alt.createStore(TortWordsStore);

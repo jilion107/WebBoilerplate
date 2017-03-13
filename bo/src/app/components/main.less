@@ -46,13 +46,21 @@
   }
 }
 
+.zhijian-remit {
+  margin: 0 80px;
+  width: 450px;
+  border: 1px solid #fff;
+  padding: 20px 25px;
+  background-color: white;
+}
+
 .zhijian-tmpProducts {
-  width: 100%;
+  width: 80%;
   border: 1px solid #fff;
   padding: 20px 25px;
   background-color: white;
   .ant-form {
-    width: 50%;
+    width: 40%;
   }
   .action-form {
     width: 100%;
@@ -64,7 +72,11 @@
     }
   }
   .ant-pagination {
-    margin: 20px 0;
+    margin: 10px 0;
+    .ant-pagination-options {
+      float: right;
+      margin-right: 20px;
+    }
   }
   ul li {
     text-align: center;
@@ -72,8 +84,9 @@
     padding: 3px 3px 0 0;
   }
   .ant-card-body {
+    position: relative;
     .ant-btn {
-      margin: 0 5px;
+      margin: 10px 5px;
    }
   }
 }
@@ -83,9 +96,15 @@
 }
 
 .zhijian-price {
-  position: relative;
-  top: -100px;
-  left: 146px;
+  position: absolute;
+  bottom: 120px;
+  right: 10px;
+}
+
+.zhijian-productId {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .zhijan-productName {
@@ -94,4 +113,20 @@
 
 .zhijian-selectAll {
   float: left;
+}
+
+.zhijian-search {
+  float: right;
+}
+
+.zhijian-addFilter {
+  margin: 0 80px;
+  width: 600px;
+  border: 1px solid #fff;
+  padding: 20px 25px;
+  background-color: white;
+  .checkbox {
+    margin-top: -20px;
+    margin-bottom: 0px;
+  }
 }

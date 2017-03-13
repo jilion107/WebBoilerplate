@@ -3,24 +3,24 @@
  */
 import Transport from '../common/Transport';
 
-class TortTransport extends Transport {
+class TortWordsTransport extends Transport {
     constructor(props) {
         super(props);
     }
 
-    getAllTorts() {
+    getAllTortWords() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/torts',
+            url: 'http://localhost:8080/api/tortWords',
             requestBody: {}
         });
     }
 
-    updateTort(tort) {
+    updateTortWord(tortWord) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/torts/' + tort.id,
-            requestBody: JSON.stringify(tort),
+            url: 'http://localhost:8080/api/tortWords/' + tortWord.id,
+            requestBody: JSON.stringify(tortWord),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -28,11 +28,11 @@ class TortTransport extends Transport {
         });
     }
 
-    addTort(tort) {
+    addTortWord(tortWord) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/tort',
-            requestBody: JSON.stringify(tort),
+            url: 'http://localhost:8080/api/tortWord',
+            requestBody: JSON.stringify(tortWord),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -41,4 +41,4 @@ class TortTransport extends Transport {
     }
 }
 
-export default TortTransport;
+export default TortWordsTransport;

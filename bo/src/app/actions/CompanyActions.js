@@ -15,7 +15,9 @@ class CompanyActions {
             'updateCompanyName',
             'addCompanySuccess',
             'addCompanyFail',
-            'onUpdateCompanyName'
+            'onUpdateCompanyName',
+            'deleteCompanySuccess',
+            'deleteCompanyFail'
         );
         this.companyInstance = new CompanyTransport();
     }
@@ -43,6 +45,14 @@ class CompanyActions {
             this.addCompanySuccess(response);
         }, (response) => {
             this.addCompanyFail(response);
+        });
+    }
+
+    deleteCompany(companyId) {
+        this.companyInstance.deleteCompany(companyId).then((response) => {
+            this.deleteCompanySuccess(response);
+        }, (response) => {
+            this.deleteCompanyFail(response);
         });
     }
 }

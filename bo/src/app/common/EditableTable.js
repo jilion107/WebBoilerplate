@@ -28,14 +28,14 @@ class EditableTable extends React.Component {
                                                 editable ?
                                                     <span>
                                                         <a onClick={() => this.editDone(index, 'save')}>保存</a>
-                                                        <Popconfirm title="Sure to cancel?" onConfirm={() => this.editDone(index, 'cancel')}>
+                                                        <Popconfirm title="确认取消修改?" onConfirm={() => this.editDone(index, 'cancel')}>
                                                             <a>取消</a>
                                                         </Popconfirm>
                                                     </span>
                                                 :
                                                     <span>
                                                         <a onClick={() => this.edit(index)}>修改</a>
-                                                        <Popconfirm title="Sure to Delete?" onConfirm={() => this.deleteDone(index, 'delete')}>
+                                                        <Popconfirm title="确认删除?" onConfirm={() => this.deleteDone(index, 'delete')}>
                                                             <a>删除</a>
                                                         </Popconfirm>
                                                     </span>
@@ -74,7 +74,7 @@ class EditableTable extends React.Component {
         });
         if (this.sellsUpdated == this.props.fields) {
             this.sellsUpdated = 0;
-            this.props.callback && this.props.callback(data[index]);
+            this.props.updateHandler && this.props.updateHandler(data[index]);
         }
     }
 
@@ -106,10 +106,11 @@ class EditableTable extends React.Component {
     }
 
     deleteDone(index) {
-        this.setState({ data : this.state.data.map((record) => {
+       /* this.setState({ data : this.state.data.map((record) => {
                 return record.id !== index;
             })
-        });
+        });*/
+       this.props.deleteHandler && this.props.deleteHandler(this.state.data[index]);
     }
 
     render() {

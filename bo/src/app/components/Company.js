@@ -58,6 +58,10 @@ class CompanyPage extends React.Component {
         CompanyActions.updateCompany(company);
     }
 
+    handleDelete(data){
+        CompanyActions.deleteCompany(data.id.value);
+    }
+
     createDataSource(store) {
         return store.map((item, index) => {
             return {
@@ -109,7 +113,7 @@ class CompanyPage extends React.Component {
                         <Button type="primary" htmlType="submit">添加</Button>
                     </FormItem>
                 </Form>
-                <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 2 }/>
+                <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 2 }/>
             </div> : null
         );
     }
