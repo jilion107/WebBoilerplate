@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import CompanyStore from '../stores/CompanyStore';
 import CompanyActions from '../actions/CompanyActions';
+import { message } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -29,61 +30,41 @@ class CompanyPage extends React.Component {
         this.setState(state);
     }
 
-    handleAdd() {
-        let { companies, companyName } = this.state;
-        let company = CompanyActions.addCompany({ companyName: companyName });
-        let newCompany = {
-            key: companies.length,
-            id: {
-                editable: false,
-                value: company.id,
-                changeable: false
-            },
-            companyName: {
-                editable: false,
-                value: company.companyName,
-                changeable: true
+    handleAdd(e) {
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                message.error('公司名称不能为空！');
+                e.preventDefault();
+            } else {
+                CompanyActions.addCompany({ companyName: this.state.companyName });
             }
-        };
-        this.setState({
-            companies: [...companies, newCompany]
         });
     }
 
-    handleUpdate(data) {
-        let company = this.state.companies.find((item) => {
-            return item.id === data.id.value;
-        });
-        company.companyName = data.companyName.value
-        CompanyActions.updateCompany(company);
-    }
-
-    handleDelete(data){
-        CompanyActions.deleteCompany(data.id.value);
-    }
-
-    createDataSource(store) {
-        return store.map((item, index) => {
-            return {
-                key: index,
-                id: {
-                    editable: false,
-                    value: item.id,
-                    changeable: false
-                },
-                companyName: {
-                    editable: false,
-                    value: item.companyName,
-                    changeable: true
+    handleUpdate(data, index) {
+        let rawCompany = data[index];
+        let newCompany = {};
+        let isCancel = false;
+        Object.keys(rawCompany).forEach((prop) => {
+            if(prop !== "key") {
+                newCompany[prop] = rawCompany[prop].value
+                if(rawCompany[prop].status === "cancel") {
+                    isCancel = true;
                 }
             }
         });
+        CompanyActions.updateCompany(newCompany, data, isCancel);
     }
+
+    handleDelete(index){
+        let companyId = this.state.dataSource[index]["id"].value;
+        CompanyActions.deleteCompany(index, companyId);
+    }
+
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let companies = this.state.companies;
-        let dataSource = this.createDataSource(companies);
+        let dataSource = this.state.dataSource;
         let columns = [
             {
                 title: '序号',
@@ -101,7 +82,7 @@ class CompanyPage extends React.Component {
 
         return ( this.state.isLoad ?
             <div>
-                <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
+                <Form layout="inline">
                     <FormItem label="公司名">
                         {getFieldDecorator('companyname', {
                             rules: [{ required: true, message: '请输入公司名！'}]
@@ -110,7 +91,7 @@ class CompanyPage extends React.Component {
                         )}
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" htmlType="submit">添加</Button>
+                        <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                     </FormItem>
                 </Form>
                 <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 2 }/>

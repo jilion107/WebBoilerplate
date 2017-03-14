@@ -23,7 +23,6 @@ class CompanyActions {
     }
 
     getAllCompany() {
-        //let companyInstance = new CompanyTransport();
         this.companyInstance.getAllCompany().then((response) => {
             _.assign(response, history)
             this.getAllCompanySuccess(response);
@@ -32,8 +31,12 @@ class CompanyActions {
         });
     }
 
-    updateCompany(company) {
+    updateCompany(company, dataSource, isCancel) {
         this.companyInstance.updateCompany(company).then((response) => {
+            response = _.assign(response, {
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
             this.updateCompanySuccess(response);
         }, (response) => {
             this.updateCompanyFail(response);
@@ -42,14 +45,19 @@ class CompanyActions {
 
     addCompany(company) {
         this.companyInstance.addCompany(company).then((response) => {
-            this.addCompanySuccess(response);
+            if(response.result === "fail") {
+                this.addCompanyFail(response.message);
+            } else {
+                this.addCompanySuccess(response.company);
+            }
         }, (response) => {
             this.addCompanyFail(response);
         });
     }
 
-    deleteCompany(companyId) {
+    deleteCompany(index, companyId) {
         this.companyInstance.deleteCompany(companyId).then((response) => {
+            response = { index: index };
             this.deleteCompanySuccess(response);
         }, (response) => {
             this.deleteCompanyFail(response);

@@ -9,21 +9,40 @@ class CompanyStore {
     constructor() {
         this.bindActions(ComapnyActions);
         this.state = {
-            companies: [],
             isLoad: false,
-            companyName: ''
+            companyName: '',
+            dataSource: []
         }
+    }
+
+    createDataSource(store) {
+        return store.map((item, index) => {
+            return {
+                key: index,
+                id: {
+                    editable: false,
+                    value: item.id,
+                    changeable: false
+                },
+                companyName: {
+                    editable: false,
+                    value: item.companyName,
+                    changeable: true
+                }
+            }
+        });
     }
 
     onGetAllCompanySuccess(data) {
         this.setState({
-            companies: data,
+            dataSource: this.createDataSource(data),
             isLoad: true
         });
     }
 
     onUpdateCompanySuccess(data) {
-        message.info('修改成功: ' + data.companyName);
+        message.info(data.isCancel ? '已取消修改.' : '修改成功. ');
+        this.setState({ dataSource : data.dataSource });
     }
 
     onUpdateCompanyFail(data) {
@@ -38,14 +57,35 @@ class CompanyStore {
 
     onAddCompanySuccess(data) {
         message.info('添加成功: ' + data.companyName);
+        let dataSource = [...this.state.dataSource];
+        let newCompany = {
+            key: dataSource.length,
+            id: {
+                editable: false,
+                value: data.id,
+                changeable: false
+            },
+            companyName: {
+                editable: false,
+                value: data.companyName,
+                changeable: true
+            }
+        };
+        this.setState({
+            dataSource: [...dataSource, newCompany]
+        });
     }
 
     onAddCompanyFail(data) {
-        message.error('修改: ' + data + ' 请联系管理员');
+        message.error(data);
     }
 
     onDeleteCompanySuccess(data) {
         message.info('删除成功. ');
+        const dataSource = [...this.state.dataSource];
+        dataSource.splice(data.index, 1);
+        this.setState({ dataSource });
+
     }
 
     onDeleteCompanyFail(data) {

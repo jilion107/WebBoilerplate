@@ -18,31 +18,31 @@ class EditableTable extends React.Component {
                 dataIndex: col.dataIndex,
                 width: col.width || null,
                 render: col.dataIndex != "operation" ?
-                            (text, record, index) => this.renderColumns(this.state.data, index, col.dataIndex, text)
-                        :
-                            (text, record, index) => {
-                                const { editable } = this.state.data[index].id;
-                                return (
-                                        <div className="editable-row-operations">
-                                            {
-                                                editable ?
-                                                    <span>
+                    (text, record, index) => this.renderColumns(this.state.data, index, col.dataIndex, text)
+                    :
+                    (text, record, index) => {
+                        const { editable } = this.state.data[index].id;
+                        return (
+                            <div className="editable-row-operations">
+                                {
+                                    editable ?
+                                        <span>
                                                         <a onClick={() => this.editDone(index, 'save')}>保存</a>
                                                         <Popconfirm title="确认取消修改?" onConfirm={() => this.editDone(index, 'cancel')}>
                                                             <a>取消</a>
                                                         </Popconfirm>
                                                     </span>
-                                                :
-                                                    <span>
+                                        :
+                                        <span>
                                                         <a onClick={() => this.edit(index)}>修改</a>
                                                         <Popconfirm title="确认删除?" onConfirm={() => this.deleteDone(index, 'delete')}>
                                                             <a>删除</a>
                                                         </Popconfirm>
                                                     </span>
-                                            }
-                                        </div>
-                                        );
-                            }
+                                }
+                            </div>
+                        );
+                    }
             };
         });
     }
@@ -74,7 +74,7 @@ class EditableTable extends React.Component {
         });
         if (this.sellsUpdated == this.props.fields) {
             this.sellsUpdated = 0;
-            this.props.updateHandler && this.props.updateHandler(data[index]);
+            this.props.updateHandler && this.props.updateHandler(data, index);
         }
     }
 
@@ -106,12 +106,9 @@ class EditableTable extends React.Component {
     }
 
     deleteDone(index) {
-       /* this.setState({ data : this.state.data.map((record) => {
-                return record.id !== index;
-            })
-        });*/
-       this.props.deleteHandler && this.props.deleteHandler(this.state.data[index]);
+        this.props.deleteHandler && this.props.deleteHandler(index);
     }
+
 
     render() {
         const { data } = this.state;

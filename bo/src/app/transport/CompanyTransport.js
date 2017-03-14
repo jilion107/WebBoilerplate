@@ -18,7 +18,7 @@ class CompanyTransport extends Transport {
 
     updateCompany(company) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/companies/' + company.id,
             requestBody: JSON.stringify(company),
             headers: {

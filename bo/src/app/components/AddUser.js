@@ -5,6 +5,8 @@ import React from 'react';
 import { Form, Select, Input, Button, Checkbox} from 'antd';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
+import CompanyActions from '../actions/CompanyActions';
+import CompanyStore from '../stores/CompanyStore';
 
 const FormItem = Form.Item;
 
@@ -12,15 +14,20 @@ class AddUserPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = UsersStore.getState();
+        this.state = CompanyStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         UsersStore.listen(this.onChange);
+        CompanyStore.listen(this.onChange);
+        UsersActions.getAllUsers();
+        CompanyActions.getAllCompany();
     }
 
     componentWillUnmount() {
         UsersStore.unlisten(this.onChange);
+        CompanyStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -29,18 +36,19 @@ class AddUserPage extends React.Component {
 
     handleAdd() {
         let userInfo = this.props.form.getFieldsValue();
-        this.setState({ userInfo: userInfo});
+        //this.setState({ userInfo: userInfo});
         UsersActions.addUser(userInfo);
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const companyOptions = this.state.dataSource.map(company => <Option key={company.id.value}>{company.companyName.value}</Option>);
         return (
             <div className="zhijian-addUser">
-                <Form layout="horizontal" onSubmit={this.handleAdd.bind(this)}>
-                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="登录：">
+                <Form layout="horizontal">
+                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="登录名：">
                         {getFieldDecorator('loginName', {
-                            rules: [{ required: true, message: '请输入登录！'}]
+                            rules: [{ required: true, message: '请输入登录名！'}]
                         })(
                             <Input size="large"  />
                         )}
@@ -64,8 +72,7 @@ class AddUserPage extends React.Component {
                             rules: [{ required: true, message: '请选择公司！'}]
                         })(
                             <Select placeholder="选择公司">
-                                <Option value="1">指间科技</Option>
-                                <Option value="2">翼华科技</Option>
+                                {companyOptions}
                             </Select>
                         )}
                     </FormItem>
@@ -88,7 +95,7 @@ class AddUserPage extends React.Component {
                         )}
                     </FormItem>
                     <FormItem wrapperCol={{ span: 3, offset: 17 }}>
-                        <Button type="primary" htmlType="submit">添加</Button>
+                        <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                     </FormItem>
                 </Form>
             </div>

@@ -3,6 +3,7 @@
  */
 import alt from '../common/alt';
 import UsersTransport from '../transport/UsersTransport';
+import CompanyTransport from '../transport/CompanyTransport';
 import _ from 'underscore';
 
 class UsersActions {
@@ -17,6 +18,7 @@ class UsersActions {
             'addUser'
         );
         this.userInstance = new UsersTransport();
+        this.companyInstance = new CompanyTransport();
     }
 
     getAllUsers() {
@@ -25,6 +27,10 @@ class UsersActions {
             this.getAllUsersSuccess(response);
         }, (response) => {
             this.getAllUsersFail(response);
+        }).then(() => {
+            this.companyInstance.getAllCompany().then((response) => {
+
+            });
         });
     }
 
