@@ -13,7 +13,7 @@ class UsersStore {
             isLoad: false,
             searchName: '',
             searchPhone: '',
-            dataSource: [],
+            companies: [],
             userInfo: {
                 loginName: '',
                 userName: '',
@@ -37,7 +37,7 @@ class UsersStore {
     }
 
     onUpdateUserFail(data) {
-        message.error('修改: ' + data + ' 请联系管理员');
+        message.error('修改失败: ' + data + ' 请联系管理员');
     }
 
     onUpdateSearchName(event) {
@@ -49,11 +49,11 @@ class UsersStore {
     }
 
     onAddUserSuccess(data) {
-        message.info('新增: ' + data.userName);
+        message.info('添加成功: ' + data.userName);
     }
 
     onAddUserFail(data) {
-        message.error('新增: ' + data + ' 请联系管理员');
+        message.error('添加失败: ' + data + ' 请联系管理员');
     }
 }
 

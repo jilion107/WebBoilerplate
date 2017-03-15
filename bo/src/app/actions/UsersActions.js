@@ -15,7 +15,8 @@ class UsersActions {
             'updateUserFail',
             'onUpdateSearchName',
             'onUpdateSearchPhone',
-            'addUser'
+            'addUserSuccess',
+            'addUserFail'
         );
         this.userInstance = new UsersTransport();
         this.companyInstance = new CompanyTransport();

@@ -9,6 +9,7 @@ import CompanyActions from '../actions/CompanyActions';
 import CompanyStore from '../stores/CompanyStore';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class AddUserPage extends React.Component {
     constructor(props) {
@@ -21,7 +22,6 @@ class AddUserPage extends React.Component {
     componentDidMount() {
         UsersStore.listen(this.onChange);
         CompanyStore.listen(this.onChange);
-        UsersActions.getAllUsers();
         CompanyActions.getAllCompany();
     }
 
@@ -36,7 +36,7 @@ class AddUserPage extends React.Component {
 
     handleAdd() {
         let userInfo = this.props.form.getFieldsValue();
-        //this.setState({ userInfo: userInfo});
+        this.setState({ userInfo: userInfo});
         UsersActions.addUser(userInfo);
     }
 

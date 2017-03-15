@@ -11,7 +11,8 @@ class CompanyStore {
         this.state = {
             isLoad: false,
             companyName: '',
-            dataSource: []
+            dataSource: [],
+            companies: [] // for user page to load all companies
         }
     }
 
@@ -35,6 +36,7 @@ class CompanyStore {
 
     onGetAllCompanySuccess(data) {
         this.setState({
+            companies: data,
             dataSource: this.createDataSource(data),
             isLoad: true
         });
