@@ -31,14 +31,6 @@ class UsersPage extends React.Component {
     }
 
     handleUpdate(data, index) {
-     /*   let user = this.state.users.find((item) => {
-            return item.id === data.id.value;
-        });
-        user.userName = data.userName.value;
-        user.loginName = data.loginName.value;
-        user.phone = data.phone.value;
-        user.role = data.role.value;
-        UsersActions.updateUser(user);*/
         let rawUser = data[index];
         let newUser = {};
         let isCancel = false;
@@ -57,7 +49,7 @@ class UsersPage extends React.Component {
         const search = new Search();
         let data = search.onSearch(this.state.users, this.state.searchName, 'userName');
         this.setState({
-            users: data
+            dataSource: data
         });
     }
 

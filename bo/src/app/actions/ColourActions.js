@@ -15,7 +15,9 @@ class ColourActions {
             'updateColourName',
             'addColourSuccess',
             'addColourFail',
-            'onUpdateColourName'
+            'onUpdateColourName',
+            'deleteColourSuccess',
+            'deleteColourFail'
         );
         this.colourInstance = new ColourTransport();
     }
@@ -29,19 +31,51 @@ class ColourActions {
         });
     }
 
-    updateColour(colour) {
-        this.colourInstance.updateColour(colour).then((response) => {
-            this.updateColourSuccess(response);
-        }, (response) => {
-            this.updateColourFail(response);
-        });
+    updateColour(colour, dataSource, isCancel) {
+        if(isCancel) {
+            this.updateColourSuccess({
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
+        } else {
+            this.colourInstance.updateColour(colour).then((response) => {
+                if(response.result === "fail") {
+                    this.updateColourFail(response.message);
+                } else {
+                    response = _.assign(response, {
+                        dataSource: dataSource,
+                        isCancel: isCancel
+                    });
+                    this.updateColourSuccess(response);
+                }
+            }, (response) => {
+                this.updateColourFail(response);
+            });
+        }
     }
 
     addColour(colour) {
         this.colourInstance.addColour(colour).then((response) => {
-            this.addColourSuccess(response);
+            if(response.result === "fail") {
+                this.addColourFail(response.message);
+            } else {
+                this.addColourSuccess(response);
+            }
         }, (response) => {
             this.addColourFail(response);
+        });
+    }
+
+    deleteColour(index, colourId) {
+        this.colourInstance.deleteColour(colourId).then((response) => {
+            if(response.result === "fail") {
+                this.deleteColourFail(response.message);
+            } else {
+                response = { index: index };
+                this.deleteColourSuccess(response);
+            }
+        }, (response) => {
+            this.deleteColourFail(response);
         });
     }
 }

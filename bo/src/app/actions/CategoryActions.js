@@ -15,7 +15,9 @@ class CategoryActions {
             'updateCategoryName',
             'addCategorySuccess',
             'addCategoryFail',
-            'onUpdateCategoryName'
+            'onUpdateCategoryName',
+            'deleteCategorySuccess',
+            'deleteCategoryFail'
         );
         this.categoryInstance = new CategoryTransport();
     }
@@ -29,19 +31,47 @@ class CategoryActions {
         });
     }
 
-    updateCategory(category) {
-        this.categoryInstance.updateCategory(category).then((response) => {
-            this.updateCategorySuccess(response);
-        }, (response) => {
-            this.updateCategoryFail(response);
-        });
+    updateCategory(category, dataSource, isCancel) {
+        if(isCancel) {
+            this.updateCategorySuccess({
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
+        } else {
+            this.categoryInstance.updateCategory(category).then((response) => {
+                this.updateCategorySuccess(response);
+            }, (response) => {
+                this.updateCategoryFail(response);
+            });
+        }
     }
 
     addCategory(category) {
         this.categoryInstance.addCategory(category).then((response) => {
-            this.addCategorySuccess(response);
+            if(response.result === "fail") {
+                this.addCategoryFail(response.message);
+            } else {
+                response = _.assign(response, {
+                    dataSource: dataSource,
+                    isCancel: isCancel
+                });
+                this.addCategorySuccess(response);
+            }
         }, (response) => {
             this.addCategoryFail(response);
+        });
+    }
+
+    deleteCategory(index, categoryId) {
+        this.categoryInstance.deleteCategory(categoryId).then((response) => {
+            if(response.result === "fail") {
+                this.deleteCategoryFail(response.message);
+            } else {
+                response = { index: index };
+                this.deleteCategorySuccess(response);
+            }
+        }, (response) => {
+            this.deleteCategoryFail(response);
         });
     }
 }

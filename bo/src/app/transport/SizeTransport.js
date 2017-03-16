@@ -18,7 +18,7 @@ class SizeTransport extends Transport {
 
     updateSize(size) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/sizes/' + size.id,
             requestBody: JSON.stringify(size),
             headers: {
@@ -33,6 +33,18 @@ class SizeTransport extends Transport {
             method: 'post',
             url: 'http://localhost:8080/api/size',
             requestBody: JSON.stringify(size),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    deleteSize(sizeId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/sizes/' + sizeId,
+            requestBody: {},
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

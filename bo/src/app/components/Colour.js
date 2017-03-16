@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import ColourStore from '../stores/ColourStore';
 import ColourActions from '../actions/ColourActions';
+import { message } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -30,66 +31,39 @@ class ColourPage extends React.Component {
     }
 
     handleAdd() {
-        let { colours, colourName } = this.state;
-        let colour = ColourActions.addColour({ name: colourName });
-        let newColour = {
-            key: colours.length,
-            id: {
-                editable: false,
-                value: colour.id,
-                changeable: false
-            },
-            colourName: {
-                editable: false,
-                value: colour.name,
-                changeable: true
-            },
-            createTime: {
-                editable: false,
-                value: colour.createTime,
-                changeable: false
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                message.error('颜色名称不能为空！');
+                e.preventDefault();
+            } else {
+                ColourActions.addColour({ colourName: this.state.colourName });
             }
-        };
-        this.setState({
-            colours: [...colours, newColour]
         });
     }
 
-    handleUpdate(data) {
-        let colour = this.state.colours.find((item) => {
-            return item.id === data.id.value;
-        });
-        colour.name = data.colourName.value
-        ColourActions.updateColour(colour);
-    }
-
-    createDataSource(store) {
-        return store.map((item, index) => {
-            return {
-                key: index,
-                id: {
-                    editable: false,
-                    value: item.id,
-                    changeable: false
-                },
-                colourName: {
-                    editable: false,
-                    value: item.name,
-                    changeable: true
-                },
-                createTime: {
-                    editable: false,
-                    value: item.createTime,
-                    changeable: false
+    handleUpdate(data, index) {
+        let rawColour = data[index];
+        let newColour = {};
+        let isCancel = false;
+        Object.keys(rawColour).forEach((prop) => {
+            if(prop !== "key") {
+                newColour[prop] = rawColour[prop].value
+                if(rawColour[prop].status === "cancel") {
+                    isCancel = true;
                 }
             }
         });
+        ColourActions.updateColour(newColour, data, isCancel);
+    }
+
+    handleDelete(index){
+        let colourId = this.state.dataSource[index]["id"].value;
+        ColourActions.deleteColour(index, colourId);
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let colours = this.state.colours;
-        let dataSource = this.createDataSource(colours);
+        let dataSource = this.state.dataSource;
         let columns = [
             {
                 title: '序号',
@@ -111,7 +85,7 @@ class ColourPage extends React.Component {
 
         return ( this.state.isLoad ?
                 <div>
-                    <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
+                    <Form layout="inline">
                         <FormItem label="颜 色:">
                             {getFieldDecorator('colourName', {
                                 rules: [{ required: true, message: '请输入颜色！'}]
@@ -120,10 +94,10 @@ class ColourPage extends React.Component {
                             )}
                         </FormItem>
                         <FormItem>
-                            <Button type="primary" htmlType="submit">添加</Button>
+                            <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                         </FormItem>
                     </Form>
-                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 3 }/>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 3 }/>
                 </div> : null
         );
     }

@@ -12,10 +12,11 @@ class FilterActions {
             'getAllFiltersFail',
             'updateFilterSuccess',
             'updateFilterFail',
-            'updateFilterName',
+            'onUpdateSearchName',
             'addFilterSuccess',
             'addFilterFail',
-            'onUpdateFilterName'
+            'deleteFilterSuccess',
+            'deleteFilterFail'
         );
         this.filterInstance = new FilterTransport();
     }
@@ -29,19 +30,47 @@ class FilterActions {
         });
     }
 
-    updateFilter(filter) {
-        this.filterInstance.updateFilter(filter).then((response) => {
-            this.updateFilterSuccess(response);
-        }, (response) => {
-            this.updateFilterFail(response);
-        });
+    updateFilter(filter, dataSource, isCancel) {
+        if(isCancel) {
+            this.updateFilterSuccess({
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
+        } else {
+            this.filterInstance.updateFilter(filter).then((response) => {
+                if(response.result === "fail") {
+                    this.updateFilterFail(response.message);
+                } else {
+                    this.updateFilterSuccess(response.filter);
+                }
+            }, (response) => {
+                this.updateFilterFail(response);
+            });
+        }
     }
 
     addFilter(filter) {
         this.filterInstance.addFilter(filter).then((response) => {
-            this.addFilterSuccess(response);
+            if(response.result === "fail") {
+                this.addFilterFail(response.message);
+            } else {
+                this.addFilterSuccess(response);
+            }
         }, (response) => {
             this.addFilterFail(response);
+        });
+    }
+
+    deleteFilter(index, filterId) {
+        this.filterInstance.deleteFilter(filterId).then((response) => {
+            if(response.result === "fail") {
+                this.deleteFilterFail(response.message);
+            } else {
+                response = { index: index };
+                this.deleteFilterSuccess(response);
+            }
+        }, (response) => {
+            this.deleteFilterFail(response);
         });
     }
 }

@@ -18,7 +18,7 @@ class CategoryTransport extends Transport {
 
     updateCategory(category) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/categories/' + category.id,
             requestBody: JSON.stringify(category),
             headers: {
@@ -33,6 +33,18 @@ class CategoryTransport extends Transport {
             method: 'post',
             url: 'http://localhost:8080/api/category',
             requestBody: JSON.stringify(category),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    deleteCategory(categoryId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/Categories/' + categoryId,
+            requestBody: {},
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

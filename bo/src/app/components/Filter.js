@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
+import Search from '../common/Search';
 
 const FormItem = Form.Item;
 
@@ -55,50 +56,37 @@ class FilterPage extends React.Component {
         });
     }
 
-    handleUpdate(data) {
-        let filter = this.state.filters.find((item) => {
-            return item.id === data.id.value;
-        });
-        filter.name = data.filterName.value
-        FilterActions.updateFilter(filter);
-    }
-
-    handleAdd() {
-
-    }
-
-    createDataSource(store) {
-        return store.map((item, index) => {
-            return {
-                key: index,
-                id: {
-                    editable: false,
-                    value: item.id,
-                    changeable: false
-                },
-                categoryName: {
-                    editable: false,
-                    value: item.category.name,
-                    changeable: true
-                },
-                colourName: {
-                    editable: false,
-                    value: item.colour.name,
-                    changeable: true
-                },
-                sizeName: {
-                    editable: false,
-                    value: item.size.name,
-                    changeable: true
+    handleUpdate(data, index) {
+        let rawFilter = data[index];
+        let newFilter = {};
+        let isCancel = false;
+        Object.keys(rawFilter).forEach((prop) => {
+            if(prop !== "key") {
+                newFilter[prop] = rawFilter[prop].value
+                if(rawFilter[prop].status === "cancel") {
+                    isCancel = true;
                 }
             }
         });
+        FilterActions.updateFilter(newFilter, data, isCancel);
+    }
+
+    handleSearch() {
+        const search = new Search();
+        let data = search.onSearch(this.state.filters, this.state.searchName, 'categoryName');
+        this.setState({
+            dataSource: data
+        });
+    }
+
+    handleDelete(index){
+        let filterId = this.state.dataSource[index]["id"].value;
+        FilterActions.deleteFilter(index, filterId);
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let filters = this.state.filters;
-        let dataSource = this.createDataSource(filters);
+        let dataSource = this.state.dataSource;
         let columns = [
             {
                 title: '序号',
@@ -139,7 +127,7 @@ class FilterPage extends React.Component {
                             <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>新建</Button>
                         </FormItem>
                     </Form>
-                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 4 }/>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 }/>
                 </div> : null
         );
     }

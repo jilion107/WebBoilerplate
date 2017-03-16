@@ -11,14 +11,14 @@ class ColourTransport extends Transport {
     getAllColours() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/product-colour',
+            url: 'http://localhost:8080/api/colours',
             requestBody: {}
         });
     }
 
     updateColour(colour) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/colours/' + colour.id,
             requestBody: JSON.stringify(colour),
             headers: {
@@ -33,6 +33,18 @@ class ColourTransport extends Transport {
             method: 'post',
             url: 'http://localhost:8080/api/colour',
             requestBody: JSON.stringify(colour),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    deleteColour(colourId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/colours/' + colourId,
+            requestBody: {},
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

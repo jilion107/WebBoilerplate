@@ -18,7 +18,7 @@ class FilterTransport extends Transport {
 
     updateFilter(filter) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/filters/' + filter.id,
             requestBody: JSON.stringify(filter),
             headers: {
@@ -33,6 +33,18 @@ class FilterTransport extends Transport {
             method: 'post',
             url: 'http://localhost:8080/api/filter',
             requestBody: JSON.stringify(filter),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    deleteFilter(filterId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/filters/' + filterId,
+            requestBody: {},
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

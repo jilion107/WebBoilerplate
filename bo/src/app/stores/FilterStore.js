@@ -9,39 +9,86 @@ class FilterStore {
     constructor() {
         this.bindActions(FilterActions);
         this.state = {
-            filters: [],
+            dataSource: [],
             isLoad: false,
-            filterName: ''
+            searchName: '',
+            filterInfo: {
+                categoryId: '',
+                colourId: '',
+                sizeId: ''
+            },
+            isAddSuccess: false
         }
+    }
+
+    createDataSource(store) {
+        return store.map((item, index) => {
+            return {
+                key: index,
+                id: {
+                    editable: false,
+                    value: item.id,
+                    changeable: false
+                },
+                categoryName: {
+                    editable: false,
+                    value: item.category.name,
+                    changeable: true
+                },
+                colourName: {
+                    editable: false,
+                    value: item.colour.name,
+                    changeable: true
+                },
+                sizeName: {
+                    editable: false,
+                    value: item.size.name,
+                    changeable: true
+                }
+            }
+        });
     }
 
     onGetAllFiltersSuccess(data) {
         this.setState({
-            filters: data,
+            dataSource: this.createDataSource(data),
             isLoad: true
         });
     }
 
     onUpdateFilterSuccess(data) {
-        message.info('修改成功: ' + data.name);
+        message.info(data.isCancel ? '已取消修改.' : '修改成功. ');
+        this.setState({ dataSource : data.dataSource });
     }
 
     onUpdateFilterFail(data) {
-        message.error('修改: ' + data + ' 请联系管理员');
+        message.error('修改失败: ' + data);
     }
 
     onUpdateFilterName(event) {
         this.setState({
-            filterName: event.target.value
+            searchName: event.target.value
         });
     }
 
     onAddFilterSuccess(data) {
-        message.info('添加成功: ' + data.name);
+        message.info('添加成功: ' + data.user.loginName);
+        this.setState({ isAddSuccess: true });
     }
 
     onAddFilterFail(data) {
-        message.error('修改: ' + data + ' 请联系管理员');
+        message.error('添加失败: ' + data);
+    }
+
+    onDeleteFilterSuccess(data) {
+        message.info('删除成功. ');
+        const dataSource = [...this.state.dataSource];
+        dataSource.splice(data.index, 1);
+        this.setState({ dataSource });
+    }
+
+    onDeleteUserFail(data) {
+        message.error('删除失败: ' + data);
     }
 }
 
