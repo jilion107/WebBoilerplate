@@ -8,6 +8,7 @@ import App from './components/App';
 import Company from './components/Company';
 import Users from './components/Users';
 import AddUser from './components/AddUser';
+import UpdateUser from './components/UpdateUser';
 import Colour from './components/Colour';
 import Size from './components/Size';
 import Category from './components/Category';
@@ -27,6 +28,7 @@ let routes =
             <Route path='companies' component={ Company } />
             <Route path='users' component={ Users } />
             <Route path='addUser' component={ AddUser } />
+            <Route path='updateUser/:id' component={ UpdateUser } />
             <Route path='colours' component={ Colour } />
             <Route path='sizes' component={ Size } />
             <Route path='categories' component={ Category } />

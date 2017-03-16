@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import ComapnyActions from '../actions/CompanyActions';
 import { message } from 'antd';
+import Util from '../common/Util';
 
 class CompanyStore {
     constructor() {
@@ -48,7 +49,10 @@ class CompanyStore {
     }
 
     onUpdateCompanyFail(data) {
-        message.error('修改: ' + data + ' 请联系管理员');
+        message.error('修改失败: ' + data);
+        setTimeout(function() {
+            Util.changLocation("/home/companies")
+        }, 500);
     }
 
     onUpdateCompanyName(event) {
@@ -91,7 +95,7 @@ class CompanyStore {
     }
 
     onDeleteCompanyFail(data) {
-        message.error('删除失败: ' + data + ' 请联系管理员');
+        message.error('删除失败: ' + data);
     }
 }
 

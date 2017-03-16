@@ -31,7 +31,7 @@ class LoginPage extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        LoginActions.signIn(this.state.username, this.state.password, history);
+        LoginActions.login(this.state.username, this.state.password, history);
     }
 
     render() {

@@ -2,11 +2,12 @@
  * Created by jilion.chen on 3/10/2017.
  */
 import React from 'react';
-import { Form, Select, Input, Button, Checkbox} from 'antd';
+import { Form, Select, Input, Button, Checkbox, Modal} from 'antd';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
 import CompanyActions from '../actions/CompanyActions';
 import CompanyStore from '../stores/CompanyStore';
+import Util from '../common/Util';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -35,14 +36,27 @@ class AddUserPage extends React.Component {
     }
 
     handleAdd() {
-        let userInfo = this.props.form.getFieldsValue();
-        this.setState({ userInfo: userInfo});
-        UsersActions.addUser(userInfo);
+        this.props.form.validateFields((err, values) => {
+           if(err) {
+               return;
+           } else {
+               this.setState({ values});
+               UsersActions.addUser(values);
+           }
+        });
+    }
+
+    addMore() {
+        Util.changLocation("/home/addUser")
+    }
+
+    goToUsers() {
+        Util.changLocation("/home/users")
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const companyOptions = this.state.dataSource.map(company => <Option key={company.id.value}>{company.companyName.value}</Option>);
+        const companyOptions = this.state.companies.map(company => <Option key={company.id} value={company.id}>{company.companyName}</Option>);
         return (
             <div className="zhijian-addUser">
                 <Form layout="horizontal">
@@ -50,14 +64,14 @@ class AddUserPage extends React.Component {
                         {getFieldDecorator('loginName', {
                             rules: [{ required: true, message: '请输入登录名！'}]
                         })(
-                            <Input size="large"  />
+                            <Input size="large" />
                         )}
                     </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="姓  名：">
                         {getFieldDecorator('userName', {
                             rules: [{ required: true, message: '请输入姓名！'}]
                         })(
-                            <Input size="large"  />
+                            <Input size="large" />
                         )}
                     </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="电  话：">
@@ -98,6 +112,15 @@ class AddUserPage extends React.Component {
                         <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                     </FormItem>
                 </Form>
+                <Modal title="添加成功"
+                       visible={this.state.isAddSuccess}
+                       onOk={this.addMore.bind(this)}
+                       onCancel={this.goToUsers.bind(this)}
+                       maskClosable
+                       width="300"
+                >
+                    <p>继续添加用户?</p>
+                </Modal>
             </div>
         );
     }

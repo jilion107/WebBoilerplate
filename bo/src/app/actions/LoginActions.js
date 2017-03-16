@@ -8,7 +8,6 @@ import _ from 'underscore';
 class LoginActions {
     constructor() {
         this.generateActions(
-            'login',
             'loginSuccess',
             'loginFail',
             'onUpdateUserName',
@@ -16,11 +15,15 @@ class LoginActions {
         );
     }
 
-    signIn(name, password, history) {
-        let signInstance = new LoginTransport();
-        signInstance.login(name, password).then((response) => {
-            _.assign(response, history)
-            this.loginSuccess(response);
+    login(name, password, history) {
+        let loginInstance = new LoginTransport();
+        loginInstance.login(name, password).then((response) => {
+            if(response.result === "fail") {
+                this.loginFail(response.message);
+            } else {
+                _.assign(response, history)
+                this.loginSuccess(response.user);
+            }
         },(response) => {
             this.loginFail(response);
         });

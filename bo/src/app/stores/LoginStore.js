@@ -4,7 +4,7 @@
 import alt from '../common/alt';
 import LoginActions from '../actions/LoginActions';
 import { message } from 'antd';
-import util from '../common/Util'
+import Util from '../common/Util'
 
 class LoginStore {
     constructor() {
@@ -17,7 +17,8 @@ class LoginStore {
 
     onLoginSuccess(data) {
         message.info('登录成功, 账号: ' + data.userName);
-        util.changLocation('/home');
+        Util.writeCookie("loginUserId", data.id);
+        Util.changLocation('/home/tmpProducts');
     }
 
     onLoginFail(data) {

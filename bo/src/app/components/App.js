@@ -5,6 +5,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import HeaderPage from './HeaderPage';
 import SiderPage from './SiderPage';
+import util from '../common/Util';
 import './main.less';
 
 const { Content } = Layout;
@@ -12,6 +13,9 @@ const { Content } = Layout;
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loginUserId: util.readCookie("loginUserId")
+        }
     }
 
     render() {
@@ -20,7 +24,7 @@ class App extends React.Component {
                 <HeaderPage username="Jilion"/>
                 <Content>
                     <Layout>
-                        <SiderPage />
+                        <SiderPage loginUserId={this.state.loginUserId}/>
                         <Content>
                             {this.props.children}
                         </Content>

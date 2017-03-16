@@ -18,7 +18,7 @@ class UsersTransport extends Transport {
 
     updateUser(user) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/users/' + user.id,
             requestBody: JSON.stringify(user),
             headers: {
@@ -43,7 +43,19 @@ class UsersTransport extends Transport {
     getUser(id) {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/user/' + id
+            url: 'http://localhost:8080/api/users/' + id
+        });
+    }
+
+    deleteUser(userId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/users/' + userId,
+            requestBody: {},
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
     }
 

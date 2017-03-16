@@ -16,7 +16,11 @@ class UsersActions {
             'onUpdateSearchName',
             'onUpdateSearchPhone',
             'addUserSuccess',
-            'addUserFail'
+            'addUserFail',
+            'getUserSuccess',
+            'getUserFail',
+            'deleteUserSuccess',
+            'deleteUserFail'
         );
         this.userInstance = new UsersTransport();
         this.companyInstance = new CompanyTransport();
@@ -28,26 +32,62 @@ class UsersActions {
             this.getAllUsersSuccess(response);
         }, (response) => {
             this.getAllUsersFail(response);
-        }).then(() => {
-            this.companyInstance.getAllCompany().then((response) => {
-
-            });
         });
     }
 
-    updateUser(user) {
-        this.userInstance.updateUser(user).then((response) => {
-            this.updateUserSuccess(response);
-        }, (response) => {
-            this.updateUserFail(response);
-        });
+    updateUser(user, dataSource, isCancel) {
+        if(isCancel) {
+            this.updateUserSuccess({
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
+        } else {
+            this.userInstance.updateUser(user).then((response) => {
+                if(response.result === "fail") {
+                    this.updateUserFail(response.message);
+                } else {
+                    this.updateUserSuccess(response.user);
+                }
+            }, (response) => {
+                this.updateUserFail(response);
+            });
+        }
     }
 
     addUser(user) {
         this.userInstance.addUser(user).then((response) => {
-            this.addUserSuccess(response);
+            if(response.result === "fail") {
+                this.addUserFail(response.message);
+            } else {
+                this.addUserSuccess(response);
+            }
         }, (response) => {
             this.addUserFail(response);
+        });
+    }
+
+    getUserById(id) {
+        this.userInstance.getUser(id).then((response) => {
+            if(response.result === "fail") {
+                this.getUserFail(response.message);
+            } else {
+                this.getUserSuccess(response.user);
+            }
+        }, (response) => {
+            this.getUserFail(response);
+        });
+    }
+
+    deleteUser(index, userId) {
+        this.userInstance.deleteUser(userId).then((response) => {
+            if(response.result === "fail") {
+                this.deleteUserFail(response.message);
+            } else {
+                response = { index: index };
+                this.deleteUserSuccess(response);
+            }
+        }, (response) => {
+            this.deleteUserFail(response);
         });
     }
 }

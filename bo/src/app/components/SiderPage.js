@@ -15,6 +15,7 @@ class SiderPage extends React.Component {
     }
 
     render() {
+        let updateUserPath = "/home/updateUser/" + this.props.loginUserId;
         return (
                 <Sider>
                     <Menu mode="inline" defaultSelectedKeys={['1']}>
@@ -79,7 +80,7 @@ class SiderPage extends React.Component {
                             </MenuItem>
                             <MenuItem key="12">
                                 <Icon type="setting" />
-                                <span className="nav-text"><Link to="/home/addUser">修改账号</Link></span>
+                                <span className="nav-text"><Link to={updateUserPath}>修改账号</Link></span>
                             </MenuItem>
                             <MenuItem key="13">
                                 <Icon type="team" />
