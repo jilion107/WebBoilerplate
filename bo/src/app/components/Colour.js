@@ -30,7 +30,7 @@ class ColourPage extends React.Component {
         this.setState(state);
     }
 
-    handleAdd() {
+    handleAdd(e) {
         this.props.form.validateFields((err, values) => {
             if (err) {
                 message.error('颜色名称不能为空！');

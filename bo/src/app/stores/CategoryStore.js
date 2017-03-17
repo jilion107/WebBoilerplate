@@ -12,7 +12,8 @@ class CategoryStore {
         this.state = {
             dataSource: [],
             isLoad: false,
-            categoryName: ''
+            categoryName: '',
+            categories: [] // for filter page to load all categories
         }
     }
 
@@ -27,7 +28,7 @@ class CategoryStore {
                 },
                 categoryName: {
                     editable: false,
-                    value: item.name,
+                    value: item.categoryName,
                     changeable: true
                 },
                 createTime: {
@@ -41,6 +42,7 @@ class CategoryStore {
 
     onGetAllCategoriesSuccess(data) {
         this.setState({
+            categories: data,
             dataSource: this.createDataSource(data),
             isLoad: true
         });
@@ -78,6 +80,11 @@ class CategoryStore {
                 editable: false,
                 value: data.categoryName,
                 changeable: true
+            },
+            createTime: {
+                editable: false,
+                value: data.createTime,
+                changeable: false
             }
         };
         this.setState({

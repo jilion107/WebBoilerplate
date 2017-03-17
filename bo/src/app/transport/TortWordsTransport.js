@@ -18,7 +18,7 @@ class TortWordsTransport extends Transport {
 
     updateTortWord(tortWord) {
         return this.ajaxRequest({
-            method: 'post',
+            method: 'put',
             url: 'http://localhost:8080/api/tortWords/' + tortWord.id,
             requestBody: JSON.stringify(tortWord),
             headers: {
@@ -33,6 +33,18 @@ class TortWordsTransport extends Transport {
             method: 'post',
             url: 'http://localhost:8080/api/tortWord',
             requestBody: JSON.stringify(tortWord),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    deleteTortWord(tortWordId) {
+        return this.ajaxRequest({
+            method: 'delete',
+            url: 'http://localhost:8080/api/tortWords/' + tortWordId,
+            requestBody: {},
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

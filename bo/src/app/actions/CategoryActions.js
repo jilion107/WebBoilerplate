@@ -39,7 +39,15 @@ class CategoryActions {
             });
         } else {
             this.categoryInstance.updateCategory(category).then((response) => {
-                this.updateCategorySuccess(response);
+                if(response.result === "fail") {
+                    this.updateCategoryFail(response.message);
+                } else {
+                    response = _.assign(response, {
+                        dataSource: dataSource,
+                        isCancel: isCancel
+                    });
+                    this.updateCategorySuccess(response);
+                }
             }, (response) => {
                 this.updateCategoryFail(response);
             });
@@ -51,11 +59,7 @@ class CategoryActions {
             if(response.result === "fail") {
                 this.addCategoryFail(response.message);
             } else {
-                response = _.assign(response, {
-                    dataSource: dataSource,
-                    isCancel: isCancel
-                });
-                this.addCategorySuccess(response);
+                this.addCategorySuccess(response.category);
             }
         }, (response) => {
             this.addCategoryFail(response);

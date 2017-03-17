@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import TortWordsStore from '../stores/TortWordsStore';
 import TortWordsActions from '../actions/TortWordsActions';
+import { message } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -29,67 +30,40 @@ class TortWordsPage extends React.Component {
         this.setState(state);
     }
 
-    handleAdd() {
-        let { tortWords, tortWordName } = this.state;
-        let tortWord = TortWordsActions.addTortWord({ name: tortWordName });
-        let newTortWord = {
-            key: tortWord.length,
-            id: {
-                editable: false,
-                value: tortWord.id,
-                changeable: false
-            },
-            tortWordsName: {
-                editable: false,
-                value: tortWord.name,
-                changeable: true
-            },
-            createTime: {
-                editable: false,
-                value: tortWord.createTime,
-                changeable: false
+    handleAdd(e) {
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                message.error('侵权词名称不能为空！');
+                e.preventDefault();
+            } else {
+                TortWordsActions.addTortWord({ tortWordName: this.state.tortWordName });
             }
-        };
-        this.setState({
-            torts: [...tortWords, newTortWord]
         });
     }
 
-    handleUpdate(data) {
-        let tortWord = this.state.torts.find((item) => {
-            return item.id === data.id.value;
-        });
-        tortWord.name = data.tortWordName.value
-        TortWordsActions.updateTortWord(tortWord);
-    }
-
-    createDataSource(store) {
-        return store.map((item, index) => {
-            return {
-                key: index,
-                id: {
-                    editable: false,
-                    value: item.id,
-                    changeable: false
-                },
-                tortWordName: {
-                    editable: false,
-                    value: item.name,
-                    changeable: true
-                },
-                createTime: {
-                    editable: false,
-                    value: item.createTime,
-                    changeable: false
+    handleUpdate(data, index) {
+        let rawTortWord = data[index];
+        let newTortWord = {};
+        let isCancel = false;
+        Object.keys(rawTortWord).forEach((prop) => {
+            if(prop !== "key") {
+                newTortWord[prop] = rawTortWord[prop].value
+                if(rawTortWord[prop].status === "cancel") {
+                    isCancel = true;
                 }
             }
         });
+        TortWordsActions.updateTortWord(newTortWord, data, isCancel);
+    }
+
+    handleDelete(index){
+        let tortWordId = this.state.dataSource[index]["id"].value;
+        TortWordsActions.deleteTortWord(index, tortWordId);
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let tortWords = this.state.tortWords;
-        let dataSource = this.createDataSource(tortWords);
+        let dataSource = this.state.dataSource;
         let columns = [
             {
                 title: '序号',
@@ -111,19 +85,19 @@ class TortWordsPage extends React.Component {
 
         return ( this.state.isLoad ?
                 <div>
-                    <Form layout="inline" onSubmit={this.handleAdd.bind(this)}>
+                    <Form layout="inline">
                         <FormItem label="侵权词:">
                             {getFieldDecorator('tortWordName', {
-                                rules: [{ required: true, message: '请输入颜色！'}]
+                                rules: [{ required: true, message: '请输入侵权词！'}]
                             })(
                                 <Input size="large"  onChange={TortWordsActions.onUpdateTortWordName}/>
                             )}
                         </FormItem>
                         <FormItem>
-                            <Button type="primary" htmlType="submit">添加</Button>
+                            <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                         </FormItem>
                     </Form>
-                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } callback={this.handleUpdate.bind(this)} fields={ 3 }/>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 3 }/>
                 </div> : null
         );
     }

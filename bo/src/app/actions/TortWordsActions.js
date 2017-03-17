@@ -15,7 +15,9 @@ class TortWordsActions {
             'updateTortWordName',
             'addTortWordSuccess',
             'addTortWordFail',
-            'onUpdateTortWordName'
+            'onUpdateTortWordName',
+            'deleteTortWordSuccess',
+            'deleteTortWordFail'
         );
         this.tortWordsInstance = new TortWordsTransport();
     }
@@ -29,19 +31,51 @@ class TortWordsActions {
         });
     }
 
-    updateTortWord(tortWord) {
-        this.tortWordsInstance.updateTortWord(tortWord).then((response) => {
-            this.updateTortWordSuccess(response);
-        }, (response) => {
-            this.updateTortWordFail(response);
-        });
+    updateTortWord(tortWord, dataSource, isCancel) {
+        if(isCancel) {
+            this.updateTortWordSuccess({
+                dataSource: dataSource,
+                isCancel: isCancel
+            });
+        } else {
+            this.tortWordsInstance.updateTortWord(tortWord).then((response) => {
+                if(response.result === "fail") {
+                    this.updateTortWordFail(response.message);
+                } else {
+                    response = _.assign(response, {
+                        dataSource: dataSource,
+                        isCancel: isCancel
+                    });
+                    this.updateTortWordSuccess(response);
+                }
+            }, (response) => {
+                this.updateTortWordFail(response);
+            });
+        }
     }
 
     addTortWord(tortWord) {
         this.tortWordsInstance.addTortWord(tortWord).then((response) => {
-            this.addTortWordSuccess(response);
+            if(response.result === "fail") {
+                this.addTortWordFail(response.message);
+            } else {
+                this.addTortWordSuccess(response.tortWord);
+            }
         }, (response) => {
             this.addTortWordFail(response);
+        });
+    }
+
+    deleteTortWord(index, tortWordId) {
+        this.tortWordsInstance.deleteTortWord(tortWordId).then((response) => {
+            if(response.result === "fail") {
+                this.deleteTortWordFail(response.message);
+            } else {
+                response = { index: index };
+                this.deleteTortWordSuccess(response);
+            }
+        }, (response) => {
+            this.deleteTortWordFail(response);
         });
     }
 }

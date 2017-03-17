@@ -12,7 +12,8 @@ class SizeStore {
         this.state = {
             dataSource: [],
             isLoad: false,
-            sizeName: ''
+            sizeName: '',
+            sizes: [] // for filter page to load all sizes
         }
     }
 
@@ -27,7 +28,7 @@ class SizeStore {
                 },
                 sizeName: {
                     editable: false,
-                    value: item.name,
+                    value: item.sizeName,
                     changeable: true
                 },
                 createTime: {
@@ -41,6 +42,7 @@ class SizeStore {
 
     onGetAllSizesSuccess(data) {
         this.setState({
+            sizes: data,
             dataSource: this.createDataSource(data),
             isLoad: true
         });
@@ -78,6 +80,11 @@ class SizeStore {
                 editable: false,
                 value: data.sizeName,
                 changeable: true
+            },
+            createTime: {
+                editable: false,
+                value: data.createTime,
+                changeable: false
             }
         };
         this.setState({

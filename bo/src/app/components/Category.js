@@ -33,7 +33,7 @@ class CategoryPage extends React.Component {
     handleAdd() {
         this.props.form.validateFields((err, values) => {
             if (err) {
-                message.error('分类名称不能为空！');
+                message.error('类别名称不能为空！');
                 e.preventDefault();
             } else {
                 CategoryActions.addCategory({ categoryName: this.state.categoryName });

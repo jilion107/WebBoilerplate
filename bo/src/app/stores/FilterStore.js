@@ -3,11 +3,15 @@
  */
 import alt from '../common/alt';
 import FilterActions from '../actions/FilterActions';
+import SizeActions from '../actions/SizeActions';
+import CategoryActions from '../actions/CategoryActions';
+import ColourActions from '../actions/ColourActions';
 import { message } from 'antd';
+import Util from '../common/Util';
 
 class FilterStore {
     constructor() {
-        this.bindActions(FilterActions);
+        this.bindActions([FilterActions, SizeActions, CategoryActions, ColourActions]);
         this.state = {
             dataSource: [],
             isLoad: false,
@@ -17,7 +21,12 @@ class FilterStore {
                 colourId: '',
                 sizeId: ''
             },
-            isAddSuccess: false
+            isAddSuccess: false,
+            modalType: null,
+            modalVisible: false,
+            sizes: [],
+            categories: [],
+            colours: []
         }
     }
 
@@ -32,18 +41,23 @@ class FilterStore {
                 },
                 categoryName: {
                     editable: false,
-                    value: item.category.name,
-                    changeable: true
+                    value: item.categoryName,
+                    changeable: false
                 },
                 colourName: {
                     editable: false,
-                    value: item.colour.name,
-                    changeable: true
+                    value: item.colourName,
+                    changeable: false
                 },
                 sizeName: {
                     editable: false,
-                    value: item.size.name,
-                    changeable: true
+                    value: item.sizeName,
+                    changeable: false
+                },
+                createTime: {
+                    editable: false,
+                    value: item.createTime,
+                    changeable: false
                 }
             }
         });
@@ -56,6 +70,24 @@ class FilterStore {
         });
     }
 
+    onGetAllSizesSuccess(data) {
+        this.setState({
+            sizes: data
+        });
+    }
+
+    onGetAllColoursSuccess(data) {
+        this.setState({
+            colours: data
+        });
+    }
+
+    onGetAllCategoriesSuccess(data) {
+        this.setState({
+            categories: data
+        });
+    }
+
     onUpdateFilterSuccess(data) {
         message.info(data.isCancel ? '已取消修改.' : '修改成功. ');
         this.setState({ dataSource : data.dataSource });
@@ -65,14 +97,14 @@ class FilterStore {
         message.error('修改失败: ' + data);
     }
 
-    onUpdateFilterName(event) {
+    onUpdateSearchName(event) {
         this.setState({
             searchName: event.target.value
         });
     }
 
     onAddFilterSuccess(data) {
-        message.info('添加成功: ' + data.user.loginName);
+        message.info('添加成功: ' + data.filter.loginName);
         this.setState({ isAddSuccess: true });
     }
 

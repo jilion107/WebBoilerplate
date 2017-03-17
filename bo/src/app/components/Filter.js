@@ -2,11 +2,19 @@
  * Created by Jilion on 2017/3/11.
  */
 import React from 'react';
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Icon, Input, Button, Modal} from 'antd';
 import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
 import Search from '../common/Search';
+import CategoryStore from '../stores/CategoryStore';
+import CategoryActions from '../actions/CategoryActions';
+import ColourStore from '../stores/ColourStore';
+import ColourActions from '../actions/ColourActions';
+import SizeStore from '../stores/SizeStore';
+import SizeActions from '../actions/SizeActions';
+import FilterModal from './FilterModal';
+
 
 const FormItem = Form.Item;
 
@@ -14,16 +22,29 @@ class FilterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = FilterStore.getState();
+        //this.state = CategoryStore.getState();
+        //this.state = ColourStore.getState();
+        //this.state = SizeStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         FilterStore.listen(this.onChange);
+        //CategoryStore.listen(this.onChange);
+       //ColourStore.listen(this.onChange);
+        //SizeStore.listen(this.onChange);
+
+       //ColourActions.getAllColours();
+        //SizeActions.getAllSizes();
+        //CategoryActions.getAllCategories();
         FilterActions.getAllFilters();
     }
 
     componentWillUnmount() {
         FilterStore.unlisten(this.onChange);
+        //CategoryStore.unlisten(this.onChange);
+        //ColourStore.unlisten(this.onChange);
+        //SizeStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -31,28 +52,13 @@ class FilterPage extends React.Component {
     }
 
     handleAdd() {
-        let { filters, filterName } = this.state;
-        let filter = FilterActions.addFilter({ name: filterName });
-        let newFilter = {
-            key: filters.length,
-            id: {
-                editable: false,
-                value: filter.id,
-                changeable: false
-            },
-            filterName: {
-                editable: false,
-                value: filter.name,
-                changeable: true
-            },
-            createTime: {
-                editable: false,
-                value: filter.createTime,
-                changeable: false
+        this.props.form.validateFields((err, values) => {
+            if(err) {
+                return;
+            } else {
+                this.setState({ values});
+                FilterActions.addFilter(values);
             }
-        };
-        this.setState({
-            filters: [...filters, newFilter]
         });
     }
 
@@ -73,6 +79,7 @@ class FilterPage extends React.Component {
 
     handleSearch() {
         const search = new Search();
+        // to do more filter
         let data = search.onSearch(this.state.filters, this.state.searchName, 'categoryName');
         this.setState({
             dataSource: data
@@ -82,6 +89,20 @@ class FilterPage extends React.Component {
     handleDelete(index){
         let filterId = this.state.dataSource[index]["id"].value;
         FilterActions.deleteFilter(index, filterId);
+    }
+
+    onAdd() {
+        this.setState({
+            modalType: 'create',
+            modalVisible: true
+        });
+    }
+
+    onUpdate() {
+        this.setState({
+            modalType: 'update',
+            modalVisible: true
+        });
     }
 
     render() {
@@ -109,6 +130,24 @@ class FilterPage extends React.Component {
                 dataIndex: 'operation'
             }
         ];
+        const categoryOptions = this.state.categories && this.state.categories.map(category => <Option key={category.id} value={category.id}>{category.categoryName}</Option>);
+        const colourOptions = this.state.colours && this.state.colours.map(colour => <Option key={colour.id} value={colour.id}>{colour.colourName}</Option>);
+        const sizeOptions = this.state.sizes && this.state.sizes.map(size => <Option key={size.id} value={size.id}>{size.sizeName}</Option>);
+
+        const selectOptions = {
+            categories: categoryOptions,
+            colours: colourOptions,
+            sizes: sizeOptions
+        }
+
+        const modalOpts = {
+            title: this.state.modalType == "create" ? '添加过滤器' : '修改过滤器',
+            visible: this.state.modalVisible,
+            onOk: this.state.modalType == "create" ? '添加' : '修改',
+            onCancel: null,
+            maskClosable: true,
+            width: "300"
+        }
 
         return ( this.state.isLoad ?
                 <div>
@@ -124,10 +163,11 @@ class FilterPage extends React.Component {
                             <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
                         </FormItem>
                         <FormItem>
-                            <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>新建</Button>
+                            <Button type="primary" htmlType="submit" onClick={this.onAdd.bind(this)}>新建</Button>
                         </FormItem>
                     </Form>
-                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 }/>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.onUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 }/>
+                    <FilterModal modalOpts= {modalOpts} selectOptions= {selectOptions}/>
                 </div> : null
         );
     }

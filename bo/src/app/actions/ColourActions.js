@@ -59,7 +59,7 @@ class ColourActions {
             if(response.result === "fail") {
                 this.addColourFail(response.message);
             } else {
-                this.addColourSuccess(response);
+                this.addColourSuccess(response.colour);
             }
         }, (response) => {
             this.addColourFail(response);

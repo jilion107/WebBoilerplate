@@ -3,7 +3,6 @@
  */
 import alt from '../common/alt';
 import UsersTransport from '../transport/UsersTransport';
-import CompanyTransport from '../transport/CompanyTransport';
 import _ from 'underscore';
 
 class UsersActions {
@@ -23,7 +22,6 @@ class UsersActions {
             'deleteUserFail'
         );
         this.userInstance = new UsersTransport();
-        this.companyInstance = new CompanyTransport();
     }
 
     getAllUsers() {

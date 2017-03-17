@@ -3,6 +3,7 @@
  */
 import alt from '../common/alt';
 import FilterTransport from '../transport/FilterTransport';
+import SizeTransport from '../transport/SizeTransport';
 import _ from 'underscore';
 
 class FilterActions {
@@ -16,18 +17,29 @@ class FilterActions {
             'addFilterSuccess',
             'addFilterFail',
             'deleteFilterSuccess',
-            'deleteFilterFail'
+            'deleteFilterFail',
+            'getAllSizesSuccess'
         );
         this.filterInstance = new FilterTransport();
+        this.sizeInstance = new SizeTransport();
+    }
+
+
+    getAllSizes() {
+        return this.sizeInstance.getAllSizes().then((response) => {
+            _.assign(response, history)
+            this.getAllSizesSuccess(response);
+        });
     }
 
     getAllFilters() {
-        this.filterInstance.getAllFilters().then((response) => {
+        let sizes = this.getAllSizes();
+        Promise.all([sizes]).then(this.filterInstance.getAllFilters().then((response) => {
             _.assign(response, history)
             this.getAllFiltersSuccess(response);
         }, (response) => {
             this.getAllFiltersFail(response);
-        });
+        }));
     }
 
     updateFilter(filter, dataSource, isCancel) {

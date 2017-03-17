@@ -43,7 +43,7 @@ class CategoryTransport extends Transport {
     deleteCategory(categoryId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/Categories/' + categoryId,
+            url: 'http://localhost:8080/api/categories/' + categoryId,
             requestBody: {},
             headers: {
                 'Accept': 'application/json',

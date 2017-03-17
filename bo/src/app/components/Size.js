@@ -41,7 +41,7 @@ class SizePage extends React.Component {
         });
     }
 
-    handleUpdate(data) {
+    handleUpdate(data, index) {
         let rawSize = data[index];
         let newSize = {};
         let isCancel = false;

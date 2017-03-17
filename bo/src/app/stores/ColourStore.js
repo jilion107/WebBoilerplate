@@ -12,7 +12,8 @@ class ColourStore {
         this.state = {
             dataSource: [],
             isLoad: false,
-            colourName: ''
+            colourName: '',
+            colours: [] // for filter page to load all colours
         }
     }
 
@@ -27,7 +28,7 @@ class ColourStore {
                 },
                 colourName: {
                     editable: false,
-                    value: item.name,
+                    value: item.colourName,
                     changeable: true
                 },
                 createTime: {
@@ -41,6 +42,7 @@ class ColourStore {
 
     onGetAllColoursSuccess(data) {
         this.setState({
+            colours: data,
             dataSource: this.createDataSource(data),
             isLoad: true
         });
@@ -54,7 +56,7 @@ class ColourStore {
     onUpdateColourFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/companies")
+            Util.changLocation("/home/colours")
         }, 500);
     }
 
@@ -78,6 +80,11 @@ class ColourStore {
                 editable: false,
                 value: data.colourName,
                 changeable: true
+            },
+            createTime: {
+                editable: false,
+                value: data.createTime,
+                changeable: false
             }
         };
         this.setState({
