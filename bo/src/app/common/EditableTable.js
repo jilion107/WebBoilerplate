@@ -79,13 +79,17 @@ class EditableTable extends React.Component {
     }
 
     edit(index) {
-        const { data } = this.state;
-        Object.keys(data[index]).forEach((item) => {
-            if (data[index][item] && typeof data[index][item].editable !== 'undefined') {
-                data[index][item].editable = true;
-            }
-        });
-        this.setState({ data });
+        if(this.props.modalUpdate) {
+            this.props.updateHandler && this.props.updateHandler(this.state.data, index);
+        } else {
+            const { data } = this.state;
+            Object.keys(data[index]).forEach((item) => {
+                if (data[index][item] && typeof data[index][item].editable !== 'undefined') {
+                    data[index][item].editable = true;
+                }
+            });
+            this.setState({ data });
+        }
     }
 
     editDone(index, type) {

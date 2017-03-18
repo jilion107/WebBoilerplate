@@ -33,7 +33,7 @@ let routes =
             <Route path='sizes' component={ Size } />
             <Route path='categories' component={ Category } />
             <Route path='tortWords' component={ TortWords } />
-            <Route path='filter' component={ Filter } />
+            <Route path='filters' component={ Filter } />
             <Route path='addFilter' component={ AddFilter } />
             <Route path='tmpProducts' component={ TmpProducts } />
             <Route path='formalProducts' component={ FormalProducts } />

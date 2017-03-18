@@ -2,17 +2,11 @@
  * Created by Jilion on 2017/3/11.
  */
 import React from 'react';
-import { Form, Icon, Input, Button, Modal} from 'antd';
+import { Form, Select, Input, Button, Modal} from 'antd';
 import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
 import Search from '../common/Search';
-import CategoryStore from '../stores/CategoryStore';
-import CategoryActions from '../actions/CategoryActions';
-import ColourStore from '../stores/ColourStore';
-import ColourActions from '../actions/ColourActions';
-import SizeStore from '../stores/SizeStore';
-import SizeActions from '../actions/SizeActions';
 import FilterModal from './FilterModal';
 
 
@@ -22,29 +16,16 @@ class FilterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = FilterStore.getState();
-        //this.state = CategoryStore.getState();
-        //this.state = ColourStore.getState();
-        //this.state = SizeStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         FilterStore.listen(this.onChange);
-        //CategoryStore.listen(this.onChange);
-       //ColourStore.listen(this.onChange);
-        //SizeStore.listen(this.onChange);
-
-       //ColourActions.getAllColours();
-        //SizeActions.getAllSizes();
-        //CategoryActions.getAllCategories();
         FilterActions.getAllFilters();
     }
 
     componentWillUnmount() {
         FilterStore.unlisten(this.onChange);
-        //CategoryStore.unlisten(this.onChange);
-        //ColourStore.unlisten(this.onChange);
-        //SizeStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -56,25 +37,33 @@ class FilterPage extends React.Component {
             if(err) {
                 return;
             } else {
-                this.setState({ values});
-                FilterActions.addFilter(values);
+                let filterInfo = {
+                    productCategoryId: values.categoryId,
+                    productColourId: values.colourId,
+                    productSizeId: values.sizeId
+                };
+                this.setState({ filterInfo: filterInfo });
+                FilterActions.addFilter(filterInfo);
             }
         });
     }
 
-    handleUpdate(data, index) {
-        let rawFilter = data[index];
-        let newFilter = {};
-        let isCancel = false;
-        Object.keys(rawFilter).forEach((prop) => {
-            if(prop !== "key") {
-                newFilter[prop] = rawFilter[prop].value
-                if(rawFilter[prop].status === "cancel") {
-                    isCancel = true;
-                }
+    handleUpdate() {
+        let filterId = this.state.filterInfo.id;
+        this.props.form.validateFields((err, values) => {
+            if(err) {
+                return;
+            } else {
+                let filterInfo = {
+                    id: filterId,
+                    productCategoryId: values.categoryId,
+                    productColourId: values.colourId,
+                    productSizeId: values.sizeId
+                };
+                this.setState({ filterInfo: filterInfo });
+                FilterActions.updateFilter(filterInfo);
             }
         });
-        FilterActions.updateFilter(newFilter, data, isCancel);
     }
 
     handleSearch() {
@@ -91,23 +80,45 @@ class FilterPage extends React.Component {
         FilterActions.deleteFilter(index, filterId);
     }
 
-    onAdd() {
+    onClose(e) {
+        this.setState({
+            modalVisible: false
+        });
+        e.preventDefault();
+    }
+
+    onAdd(e) {
         this.setState({
             modalType: 'create',
             modalVisible: true
         });
+        e.preventDefault();
     }
 
-    onUpdate() {
+    onUpdate(data, index) {
+        let rawFilter = data[index];
+        let filterInfo = {
+            id: data[index]["id"].value,
+            productCategoryId: this.findIdByOptionName(this.state.categories, 'categoryName' ,rawFilter.categoryName.value)[0].id,
+            productColourId: this.findIdByOptionName(this.state.colours, 'colourName' ,rawFilter.colourName.value)[0].id,
+            productSizeId: this.findIdByOptionName(this.state.sizes, 'sizeName' ,rawFilter.sizeName.value)[0].id,
+        };
         this.setState({
             modalType: 'update',
-            modalVisible: true
+            modalVisible: true,
+            filterInfo: filterInfo
+        });
+    }
+
+    findIdByOptionName(obj, prop ,name) {
+        return obj.filter((item) => {
+            return item[prop] == name;
         });
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        let dataSource = this.state.dataSource;
+        let { dataSource, filterInfo } = this.state;
         let columns = [
             {
                 title: '序号',
@@ -134,19 +145,21 @@ class FilterPage extends React.Component {
         const colourOptions = this.state.colours && this.state.colours.map(colour => <Option key={colour.id} value={colour.id}>{colour.colourName}</Option>);
         const sizeOptions = this.state.sizes && this.state.sizes.map(size => <Option key={size.id} value={size.id}>{size.sizeName}</Option>);
 
-        const selectOptions = {
-            categories: categoryOptions,
-            colours: colourOptions,
-            sizes: sizeOptions
+        const modalOpts = {
+            title: this.state.modalType == "create" ? '新建过滤器' : '修改过滤器',
+            visible: this.state.modalVisible,
+            onOk: this.state.modalType == "create" ? this.handleAdd.bind(this) : this.handleUpdate.bind(this),
+            onCancel: this.onClose.bind(this),
+            maskClosable: true
         }
 
-        const modalOpts = {
-            title: this.state.modalType == "create" ? '添加过滤器' : '修改过滤器',
-            visible: this.state.modalVisible,
-            onOk: this.state.modalType == "create" ? '添加' : '修改',
-            onCancel: null,
-            maskClosable: true,
-            width: "300"
+        const formItemLayout = {
+            labelCol: {
+                span: 6
+            },
+            wrapperCol: {
+                span: 15
+            }
         }
 
         return ( this.state.isLoad ?
@@ -166,8 +179,41 @@ class FilterPage extends React.Component {
                             <Button type="primary" htmlType="submit" onClick={this.onAdd.bind(this)}>新建</Button>
                         </FormItem>
                     </Form>
-                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.onUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 }/>
-                    <FilterModal modalOpts= {modalOpts} selectOptions= {selectOptions}/>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.onUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 } modalUpdate={true}/>
+                    <Modal {...modalOpts}>
+                        <Form layout="horizontal">
+                            <FormItem {...formItemLayout} label="类别：">
+                                {getFieldDecorator('categoryId', {
+                                    rules: [{ required: true, message: '请选择类别！'}],
+                                    initialValue: filterInfo ? filterInfo.productCategoryId : ''
+                                })(
+                                    <Select placeholder="选择类别">
+                                        {categoryOptions}
+                                    </Select>
+                                )}
+                            </FormItem>
+                            <FormItem {...formItemLayout} label="尺寸：">
+                                {getFieldDecorator('sizeId', {
+                                    rules: [{ required: true, message: '请选择尺寸！'}],
+                                    initialValue: filterInfo ? filterInfo.productSizeId : ''
+                                })(
+                                    <Select placeholder="选择尺寸">
+                                        {sizeOptions}
+                                    </Select>
+                                )}
+                            </FormItem>
+                            <FormItem {...formItemLayout} label="颜色：">
+                                {getFieldDecorator('colourId', {
+                                    rules: [{ required: true, message: '请选择颜色！'}],
+                                    initialValue: filterInfo ? filterInfo.productColourId : ''
+                                })(
+                                    <Select placeholder="选择颜色">
+                                        {colourOptions}
+                                    </Select>
+                                )}
+                            </FormItem>
+                        </Form>
+                    </Modal>
                 </div> : null
         );
     }

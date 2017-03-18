@@ -59,10 +59,10 @@ class SiderPage extends React.Component {
                             <Icon type="chrome" />
                             <span className="nav-text"><Link to="/home/colours">颜色管理</Link></span>
                         </MenuItem>
-                        <SubMenu key="sub5" title={<span><Icon type="filter" /><span className="nav-text"><Link to="/home/filter">过滤尺寸和颜色管理</Link></span></span>}>
+                        <SubMenu key="sub5" title={<span><Icon type="filter" /><span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色管理</Link></span></span>}>
                             <MenuItem key="10">
                                 <Icon type="filter" />
-                                <span className="nav-text"><Link to="/home/filter">过滤尺寸和颜色列表</Link></span>
+                                <span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色列表</Link></span>
                             </MenuItem>
                             <MenuItem key="11">
                                 <Icon type="bars" />

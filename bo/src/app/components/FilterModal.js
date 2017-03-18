@@ -2,7 +2,7 @@
  * Created by jilion.chen on 3/17/2017.
  */
 import React from 'react';
-import { Form, Modal } from 'antd'
+import { Form, Modal, Select } from 'antd'
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -20,9 +20,10 @@ class FilterModal extends React.Component {
     }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
             <Modal {...this.props.modalOpts}>
-                <Form horizontal>
+                <Form layout="horizontal">
                     <FormItem {...formItemLayout} label="类别：">
                         {getFieldDecorator('categoryId', {
                             rules: [{ required: true, message: '请选择类别！'}]

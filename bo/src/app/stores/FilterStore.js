@@ -11,15 +11,16 @@ import Util from '../common/Util';
 
 class FilterStore {
     constructor() {
-        this.bindActions([FilterActions, SizeActions, CategoryActions, ColourActions]);
+        this.bindActions(FilterActions);
         this.state = {
             dataSource: [],
             isLoad: false,
             searchName: '',
             filterInfo: {
-                categoryId: '',
-                colourId: '',
-                sizeId: ''
+                id: '',
+                productCategoryId: '',
+                productColourId: '',
+                productSizeId: ''
             },
             isAddSuccess: false,
             modalType: null,
@@ -41,17 +42,17 @@ class FilterStore {
                 },
                 categoryName: {
                     editable: false,
-                    value: item.categoryName,
+                    value: item.productCategoryName,
                     changeable: false
                 },
                 colourName: {
                     editable: false,
-                    value: item.colourName,
+                    value: item.productColourName,
                     changeable: false
                 },
                 sizeName: {
                     editable: false,
-                    value: item.sizeName,
+                    value: item.productSizeName,
                     changeable: false
                 },
                 createTime: {
@@ -65,32 +66,17 @@ class FilterStore {
 
     onGetAllFiltersSuccess(data) {
         this.setState({
-            dataSource: this.createDataSource(data),
+            sizes: data[0],
+            categories: data[1],
+            colours: data[2],
+            dataSource: this.createDataSource(data[3]),
             isLoad: true
         });
     }
 
-    onGetAllSizesSuccess(data) {
-        this.setState({
-            sizes: data
-        });
-    }
-
-    onGetAllColoursSuccess(data) {
-        this.setState({
-            colours: data
-        });
-    }
-
-    onGetAllCategoriesSuccess(data) {
-        this.setState({
-            categories: data
-        });
-    }
-
     onUpdateFilterSuccess(data) {
-        message.info(data.isCancel ? '已取消修改.' : '修改成功. ');
-        this.setState({ dataSource : data.dataSource });
+        message.info('修改成功. ');
+        Util.changLocation("/home/filters")
     }
 
     onUpdateFilterFail(data) {
@@ -104,8 +90,40 @@ class FilterStore {
     }
 
     onAddFilterSuccess(data) {
-        message.info('添加成功: ' + data.filter.loginName);
-        this.setState({ isAddSuccess: true });
+        message.info('添加成功!');
+        let dataSource = [...this.state.dataSource];
+        let newFilter = {
+            key: dataSource.length,
+            id: {
+                editable: false,
+                value: data.id,
+                changeable: false
+            },
+            categoryName: {
+                editable: false,
+                value: data.productCategoryName,
+                changeable: false
+            },
+            colourName: {
+                editable: false,
+                value: data.productColourName,
+                changeable: false
+            },
+            sizeName: {
+                editable: false,
+                value: data.productSizeName,
+                changeable: false
+            },
+            createTime: {
+                editable: false,
+                value: data.createTime,
+                changeable: false
+            }
+        };
+        this.setState({
+            dataSource: [...dataSource, newFilter],
+            modalVisible: false
+        });
     }
 
     onAddFilterFail(data) {

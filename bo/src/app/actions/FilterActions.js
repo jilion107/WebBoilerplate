@@ -4,6 +4,8 @@
 import alt from '../common/alt';
 import FilterTransport from '../transport/FilterTransport';
 import SizeTransport from '../transport/SizeTransport';
+import CategoryTransport from '../transport/CategoryTransport';
+import ColourTransport from '../transport/ColourTransport';
 import _ from 'underscore';
 
 class FilterActions {
@@ -17,48 +19,36 @@ class FilterActions {
             'addFilterSuccess',
             'addFilterFail',
             'deleteFilterSuccess',
-            'deleteFilterFail',
-            'getAllSizesSuccess'
+            'deleteFilterFail'
         );
         this.filterInstance = new FilterTransport();
         this.sizeInstance = new SizeTransport();
-    }
-
-
-    getAllSizes() {
-        return this.sizeInstance.getAllSizes().then((response) => {
-            _.assign(response, history)
-            this.getAllSizesSuccess(response);
-        });
+        this.categoryInstance = new CategoryTransport();
+        this.colourInstance = new ColourTransport();
     }
 
     getAllFilters() {
-        let sizes = this.getAllSizes();
-        Promise.all([sizes]).then(this.filterInstance.getAllFilters().then((response) => {
-            _.assign(response, history)
+        let getSizes = this.sizeInstance.getAllSizes();
+        let getCategories = this.categoryInstance.getAllCategories();
+        let getColours = this.colourInstance.getAllColours();
+        let getFilters = this.filterInstance.getAllFilters();
+        Promise.all([getSizes, getCategories, getColours, getFilters]).then((response) => {
             this.getAllFiltersSuccess(response);
         }, (response) => {
             this.getAllFiltersFail(response);
-        }));
+        });
     }
 
-    updateFilter(filter, dataSource, isCancel) {
-        if(isCancel) {
-            this.updateFilterSuccess({
-                dataSource: dataSource,
-                isCancel: isCancel
-            });
-        } else {
-            this.filterInstance.updateFilter(filter).then((response) => {
-                if(response.result === "fail") {
-                    this.updateFilterFail(response.message);
-                } else {
-                    this.updateFilterSuccess(response.filter);
-                }
-            }, (response) => {
-                this.updateFilterFail(response);
-            });
-        }
+    updateFilter(filter) {
+        this.filterInstance.updateFilter(filter).then((response) => {
+            if(response.result === "fail") {
+                this.updateFilterFail(response.message);
+            } else {
+                this.updateFilterSuccess(response.filter);
+            }
+        }, (response) => {
+            this.updateFilterFail(response);
+        });
     }
 
     addFilter(filter) {
@@ -66,7 +56,7 @@ class FilterActions {
             if(response.result === "fail") {
                 this.addFilterFail(response.message);
             } else {
-                this.addFilterSuccess(response);
+                this.addFilterSuccess(response.filter);
             }
         }, (response) => {
             this.addFilterFail(response);
