@@ -2,26 +2,34 @@
  * Created by jilion.chen on 2/28/2017.
  */
 import $ from 'jquery';
+import Util from '../common/Util';
 
 class Transport {
     constructor() {
     }
 
-    ajaxRequest(reqeust) {
-          return new Promise( function(resolve, reject) {
+    ajaxRequest(request) {
+          request.headers = request.headers || {'Content-Type': 'multipart/form-data'};
+          request.headers.Authorization = this.getAccessToken();
+          return new Promise( (resolve, reject) => {
             $.ajax({
-                type: reqeust.method,
-                url: reqeust.url,
-                data: reqeust.requestBody,
-                headers: reqeust.headers || {'Content-Type': 'multipart/form-data'}
+                type: request.method,
+                url: request.url,
+                data: request.requestBody,
+                headers: request.headers
             })
             .done((data) => {
                 resolve(data);
             })
             .fail((error) => {
-                reject(error);
+                Util.changLocation("/login")
+                //reject(error);
             });
         });
+    }
+
+    getAccessToken() {
+        return localStorage.getItem("accessToken");
     }
 }
 

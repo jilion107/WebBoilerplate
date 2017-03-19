@@ -22,7 +22,7 @@ class LoginActions {
                 this.loginFail(response.message);
             } else {
                 _.assign(response, history)
-                this.loginSuccess(response.user);
+                this.loginSuccess(response);
             }
         },(response) => {
             this.loginFail(response);

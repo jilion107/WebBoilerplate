@@ -16,8 +16,9 @@ class LoginStore {
     }
 
     onLoginSuccess(data) {
-        message.info('登录成功, 账号: ' + data.userName);
-        Util.writeCookie("loginUserId", data.id);
+        message.info('登录成功, 账号: ' + data.user.userName);
+        localStorage.setItem('accessToken', data.accessToken.access_token);
+        Util.writeCookie("loginUserId", data.user.id);
         Util.changLocation('/home/tmpProducts');
     }
 

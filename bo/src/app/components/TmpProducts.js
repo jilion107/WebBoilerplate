@@ -92,6 +92,10 @@ class TmpProductsPage extends React.Component {
 
     }
 
+    handleDelete(e) {
+        let a = this.state;
+    }
+
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -102,9 +106,10 @@ class TmpProductsPage extends React.Component {
             labelCol: { span: 6 },
             wrapperCol: { span: 15 },
         };
+        let deleter = this.handleDelete.bind(this);
         return (
             <div className="zhijian-tmpProducts">
-                <Form layout="horizontal" onSubmit={this.handleSearch.bind(this)}>
+                <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
                         {getFieldDecorator('brand', {
                             rules: [{}]
@@ -138,7 +143,7 @@ class TmpProductsPage extends React.Component {
                         )}
                     </FormItem>
                     <FormItem wrapperCol={{ span: 3, offset: 17 }}>
-                        <Button type="primary" htmlType="submit">搜索</Button>
+                        <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
                     </FormItem>
                 </Form>
                 <div>
@@ -167,7 +172,8 @@ class TmpProductsPage extends React.Component {
                 <div className="zhijian-clear"></div>
                 <div>
                     <ul>
-                        {this.state.tmpProducts.map((item) => {
+                        {this.state.tmpProducts.map((item,index) => {
+                            item.tmp = this.state.tmpProducts;
                             return <li className="ant-col-6" key={item.name}>
                                 <Card>
                                     <div>
@@ -183,9 +189,9 @@ class TmpProductsPage extends React.Component {
                                         <span>{item.productId}</span>
                                     </div>
                                     <div>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">删除</Button>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">出单</Button>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">修改</Button>
+                                        <Button type="primary"  className="zhijian-button-margin" onClick={this.handleDelete.bind(this, index)}>删除</Button>
+                                        <Button type="primary"  className="zhijian-button-margin">出单</Button>
+                                        <Button type="primary"  className="zhijian-button-margin">修改</Button>
                                     </div>
                                 </Card>
                             </li>
