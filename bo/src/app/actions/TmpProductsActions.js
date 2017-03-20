@@ -10,18 +10,77 @@ class TmpProductsActions {
         this.generateActions(
             'getAllTmpProductsSuccess',
             'getAllTmpProductsFail',
+            'getTmpProductsAmountSuccess',
+            'getTmpProductsAmountFail',
+            'deleteTmpProductSuccess',
+            'deleteTmpProductFail',
+            'addToFormalSuccess',
+            'addToFormalFail',
+            'addToFormalBatchSuccess',
+            'addToFormalBatchFail',
+            'onUpdateSearchBrand',
+            'onUpdateSearchAsin',
+            'onUpdateSearchCategory',
+            'onUpdateSearchRangeTime',
+            'searchSuccess',
+            'searchFail',
+            'onUpdateIds',
+            'onModifyPageSize',
+            'onModifyPageNumber',
+            'onCheckAll'
+
         );
         this.tmpProductsInstance = new TmpProductsTransport();
     }
 
-    getAllTmpProducts() {
-        this.tmpProductsInstance.getAllTmpProducts().then((response) => {
-            _.assign(response, history)
+    getAllTmpProducts(productRequest,offet,fetchSize) {
+        this.tmpProductsInstance.getAllTmpProducts(productRequest,offet,fetchSize).then((response) => {
             this.getAllTmpProductsSuccess(response);
         }, (response) => {
             this.getAllTmpProductsFail(response);
         });
     }
+
+    getTmpProductsAmount(productRequest){
+        this.tmpProductsInstance.getTmpProductsAmount(productRequest).then((response)=> {
+            this.getTmpProductsAmountSuccess(response);
+        },(response)=>{
+            this.getTmpProductsAmountFail(response);
+        });
+    }
+
+    deleteTmpProduct(index,tmpProductId){
+        this.tmpProductsInstance.deleteTmpProduct(tmpProductId).then((response)=> {
+            response = { index: index };
+            this.deleteTmpProductSuccess(response);
+        },(response)=>{
+            this.deleteTmpProductFail(response);
+        });
+    }
+
+    addToFormal(index,tmpProductId){
+        this.tmpProductsInstance.addToFormal(1,tmpProductId).then((response)=> {
+            response = { index: index };
+            this.addToFormalSuccess(response);
+        },(response)=>{
+            this.addToFormalFail(response);
+        });
+    }
+
+    addToFormalBatch(productIds,productTypeId){
+        let productsIdRequest = {"productIds":productIds};
+        this.tmpProductsInstance.addToFormalBatch(productsIdRequest,productTypeId).then((response)=> {
+            this.addToFormalBatchSuccess(response);
+        },(response)=>{
+            this.addToFormalBatchFail(response);
+        });
+    }
+
+    showSizeChange(productRequest,page,pageSize){
+        this.onModifyPageSize(page,pageSize);
+        this.getAllTmpProducts(productRequest,page,pageSize);
+    }
+
 }
 
 export default alt.createActions(TmpProductsActions);

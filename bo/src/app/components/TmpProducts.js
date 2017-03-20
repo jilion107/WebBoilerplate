@@ -5,79 +5,27 @@ import React from 'react';
 import TmpProductsStore from '../stores/TmpProductsStore';
 import TmpProductsActions from '../actions/TmpProductsActions';
 import moment from 'moment';
-import { Form, Upload, Input, Button, Checkbox, DatePicker, Card, Icon, message } from 'antd';
+import { Form, Select, Input, Button, Checkbox, DatePicker, Card, Modal, Upload, Icon  } from 'antd';
+import { message } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY-MM-DD';
 
 const all = 20;
 
 class TmpProductsPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selected: 0,
-            amount: 100,
-            tmpProducts: [{
-                img: 'bg.png',
-                name: "Men's Online ",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "WOW Warrior Sigil T ack",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "es WOW Warrior Sigil ",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "MeOW Warrior Sigil T Shirck",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "MeWarrior Sigil T t Black",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men's t Black",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "M Warrior Sigil T Shirt Blak",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men'sior Sigil T Shirtck",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "M Sigil T Shirt Blackdddddddddddddddddddddddddddddd",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men's Onlick",
-                price: '50$',
-                productId: 'FADAFADS13'
-            }
-            ]
-        }
+        this.state = TmpProductsStore.getState();
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         TmpProductsStore.listen(this.onChange);
-        //TmpProductsActions.getAllTmpProducts();
+        TmpProductsActions.getAllTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
+        TmpProductsActions.getTmpProductsAmount(this.state.productRequest);
     }
 
     componentWillUnmount() {
@@ -88,16 +36,33 @@ class TmpProductsPage extends React.Component {
         this.setState(state);
     }
 
+
+
     handleSearch() {
-
+        TmpProductsActions.getAllTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
+        TmpProductsActions.getTmpProductsAmount(this.state.productRequest);
     }
 
-    handleDelete(e) {
-        let a = this.state;
+    handleDelete(index){
+        let tmpProductId = this.state.tmpProducts[index]["id"];
+        TmpProductsActions.deleteTmpProduct(index,tmpProductId);
+    }
+    handleAddToFormal(index){
+        let tmpProductId = this.state.tmpProducts[index]["id"];
+        TmpProductsActions.addToFormal(index,tmpProductId);
+    }
+    handleAddToFormalBatch(){
+        let productTypeId = 1;
+        TmpProductsActions.addToFormalBatch(this.state.tmpProductIds,productTypeId);
     }
 
-    showSizeChange(){
-        let test = 'aaa';
+    onUpdateIds(id,event){
+        TmpProductsActions.onUpdateIds(event,id);
+    }
+
+    showSizeChange(current,pageSize) {
+        let page = (current-1)*pageSize;
+        TmpProductsActions.showSizeChange(this.state.productRequest,page,pageSize);
     }
 
     uploadFile() {
@@ -131,23 +96,23 @@ class TmpProductsPage extends React.Component {
                 <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
                         {getFieldDecorator('brand', {
-                            rules: [{}]
+                            rules: []
                         })(
-                            <Input size="large"  />
+                            <Input size="large"   onChange={TmpProductsActions.onUpdateSearchBrand}/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="ASIN：">
                         {getFieldDecorator('asin', {
                             rules: [{}]
                         })(
-                            <Input size="large"  />
+                            <Input size="large"  onChange={TmpProductsActions.onUpdateSearchAsin}/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="分类：">
                         {getFieldDecorator('category', {
                             rules: [{}]
                         })(
-                            <Input size="large" />
+                            <Input size="large" onChange={TmpProductsActions.onUpdateSearchCategory}/>
                         )}
                     </FormItem>
                     <FormItem
@@ -157,64 +122,69 @@ class TmpProductsPage extends React.Component {
                         {getFieldDecorator('range-picker', rangeConfig)(
                             <RangePicker
                                 defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                                format={dateFormat}
+                                format={dateFormat} onChange={TmpProductsActions.onUpdateSearchRangeTime}
                             />
                         )}
                     </FormItem>
                     <FormItem wrapperCol={{ span: 3, offset: 17 }}>
-                        <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
+                        <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)} >搜索</Button>
                     </FormItem>
                 </Form>
                 <div>
                     <Form layout="inline" className="action-form">
                         <FormItem  className="checkbox">
                             {getFieldDecorator('selectAll')(
-                                <Checkbox>全选</Checkbox>
+                                 <Checkbox onChange={TmpProductsActions.onCheckAll} checked={this.state.checkAll}>全选</Checkbox>
                             )}
                         </FormItem>
                         <FormItem>
-                            已选择 {this.state.selected } 个
+                            已选择 {this.state.selectedTotal } 个
                         </FormItem>
                         <FormItem>
                             共 {this.state.amount } 个
                         </FormItem>
                         <FormItem className="buttons">
-                            <Upload name="testFile" action="/api/upload" onChange={this.onFileUpload.bind(this)}>
+                            <Upload name="testFile" action="/api/upload?scenarioWhat=0" onChange={this.onFileUpload.bind(this)}>
                                 <Button>
                                     <Icon type="upload" />导入文件
                                 </Button>
                             </Upload>
-                            <Button type="primary">导入出单文件</Button>
-                            <Button type="primary">批量添加正式库</Button>
+                            <Upload name="testFile" action="/api/upload?scenarioWhat=1" onChange={this.onFileUpload.bind(this)}>
+                                <Button>
+                                    <Icon type="upload" />导入出单文件
+                                </Button>
+                            </Upload>
+                            <Button type="primary" onClick={this.handleAddToFormalBatch.bind(this)}>批量添加正式库</Button>
                         </FormItem>
                     </Form>
                 </div>
                 <div>
-                    <InnerPagination total={this.state.amount} onShowSizeChange={this.showSizeChange.bind(this)}/>
+                    <InnerPagination total={this.state.amount}  onShowSizeChange={this.showSizeChange.bind(this)} onChange={this.showSizeChange.bind(this)}/>
                 </div>
                 <div className="zhijian-clear"></div>
                 <div>
                     <ul>
                         {this.state.tmpProducts.map((item,index) => {
-                            item.tmp = this.state.tmpProducts;
-                            return <li className="ant-col-6" key={item.name}>
+                            return <li className="ant-col-6" key={index}>
                                 <Card>
                                     <div>
-                                        <img alt="example" width="100%" src="http://ecx.images-amazon.com/images/I/41qvM7u3E8L._SL233_.jpg" />
-                                    </div>
-                                    <div className="zhijan-productName">
-                                        {item.name}
-                                    </div>
-                                    <div className="zhijian-price">
-                                        <span>价格：{item.price}</span>
-                                    </div>
-                                    <div className="zhijian-productId">
-                                        <span>{item.productId}</span>
+                                        <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
                                     </div>
                                     <div>
-                                        <Button type="primary"  className="zhijian-button-margin" onClick={this.handleDelete.bind(this, index)}>删除</Button>
-                                        <Button type="primary"  className="zhijian-button-margin">出单</Button>
-                                        <Button type="primary"  className="zhijian-button-margin">修改</Button>
+                                        <img alt="example" width="100%" src={item.productThumbnail} />
+                                    </div>
+                                    <div className="zhijan-productName">
+                                        {item.productName}
+                                    </div>
+                                    <div className="zhijian-price">
+                                        <span>评论数：{item.commentNumber}</span>
+                                    </div>
+                                    <div className="zhijian-productId">
+                                        <span>{item.asin}</span>
+                                    </div>
+                                    <div>
+                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleDelete.bind(this,index)}>删除</Button>
+                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleAddToFormal.bind(this,index)}>添加正式库</Button>
                                     </div>
                                 </Card>
                             </li>
