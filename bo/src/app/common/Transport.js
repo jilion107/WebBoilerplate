@@ -23,7 +23,7 @@ class Transport {
             })
             .fail((error) => {
                 Util.changLocation("/login")
-                //reject(error);
+                reject(error);
             });
         });
     }

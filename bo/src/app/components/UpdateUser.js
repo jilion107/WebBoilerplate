@@ -5,8 +5,6 @@ import React from 'react';
 import { Form, Select, Input, Button, Checkbox, Modal} from 'antd';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
-import CompanyActions from '../actions/CompanyActions';
-import CompanyStore from '../stores/CompanyStore';
 import Util from '../common/Util';
 
 const FormItem = Form.Item;
@@ -16,16 +14,13 @@ class AddUserPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = UsersStore.getState();
-        this.state = CompanyStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         let userId = this.props.params.id;
         UsersStore.listen(this.onChange);
-        CompanyStore.listen(this.onChange);
         userId && UsersActions.getUserById(userId);
-        CompanyActions.getAllCompany();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,7 +32,6 @@ class AddUserPage extends React.Component {
 
     componentWillUnmount() {
         UsersStore.unlisten(this.onChange);
-        CompanyStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -66,7 +60,7 @@ class AddUserPage extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const companyOptions = this.state.dataSource.map(company => <Option key={company.id.value} value={company.id.value}>{company.companyName.value}</Option>);
+        const companyOptions = this.state.companies.map(company => <Option key={company.id} value={company.id}>{company.companyName}</Option>);
         let { userInfo } = this.state;
         return (
             <div className="zhijian-addUser">

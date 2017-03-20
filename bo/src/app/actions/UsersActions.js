@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import UsersTransport from '../transport/UsersTransport';
 import _ from 'underscore';
+import CompanyTransport from '../transport/CompanyTransport';
 
 class UsersActions {
     constructor() {
@@ -22,6 +23,7 @@ class UsersActions {
             'deleteUserFail'
         );
         this.userInstance = new UsersTransport();
+        this.companyInstance = new CompanyTransport();
     }
 
     getAllUsers() {
@@ -65,12 +67,10 @@ class UsersActions {
     }
 
     getUserById(id) {
-        this.userInstance.getUser(id).then((response) => {
-            if(response.result === "fail") {
-                this.getUserFail(response.message);
-            } else {
-                this.getUserSuccess(response.user);
-            }
+        let getCompanies = this.companyInstance.getAllCompany();
+        let getUser = this.userInstance.getUser(id);
+        Promise.all([getUser, getCompanies]).then((response) => {
+            this.getUserSuccess(response);
         }, (response) => {
             this.getUserFail(response);
         });

@@ -5,7 +5,7 @@ import React from 'react';
 import TmpProductsStore from '../stores/TmpProductsStore';
 import TmpProductsActions from '../actions/TmpProductsActions';
 import moment from 'moment';
-import { Form, Select, Input, Button, Checkbox, DatePicker, Card } from 'antd';
+import { Form, Upload, Input, Button, Checkbox, DatePicker, Card, Icon, message } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 
 const { RangePicker } = DatePicker;
@@ -77,7 +77,7 @@ class TmpProductsPage extends React.Component {
 
     componentDidMount() {
         TmpProductsStore.listen(this.onChange);
-        TmpProductsActions.getAllTmpProducts();
+        //TmpProductsActions.getAllTmpProducts();
     }
 
     componentWillUnmount() {
@@ -94,6 +94,25 @@ class TmpProductsPage extends React.Component {
 
     handleDelete(e) {
         let a = this.state;
+    }
+
+    showSizeChange(){
+        let test = 'aaa';
+    }
+
+    uploadFile() {
+
+    }
+
+    onFileUpload(info) {
+        if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
     }
 
 
@@ -160,14 +179,18 @@ class TmpProductsPage extends React.Component {
                             共 {this.state.amount } 个
                         </FormItem>
                         <FormItem className="buttons">
-                            <Button type="primary">导入文件</Button>
+                            <Upload name="testFile" action="/api/upload" onChange={this.onFileUpload.bind(this)}>
+                                <Button>
+                                    <Icon type="upload" />导入文件
+                                </Button>
+                            </Upload>
                             <Button type="primary">导入出单文件</Button>
                             <Button type="primary">批量添加正式库</Button>
                         </FormItem>
                     </Form>
                 </div>
                 <div>
-                    <InnerPagination total={this.state.amount} />
+                    <InnerPagination total={this.state.amount} onShowSizeChange={this.showSizeChange.bind(this)}/>
                 </div>
                 <div className="zhijian-clear"></div>
                 <div>

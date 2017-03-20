@@ -21,7 +21,8 @@ class UsersStore {
                 role: '',
                 isAdmin: false
             },
-            isAddSuccess: false
+            isAddSuccess: false,
+            companies: []
         }
     }
 
@@ -97,7 +98,10 @@ class UsersStore {
     }
 
     onGetUserSuccess(data) {
-        this.setState({ userInfo: data });
+        this.setState({
+            userInfo: data[0].user,
+            companies: data[1]
+        });
     }
 
     onGetUserFail(data) {

@@ -7,7 +7,6 @@ import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
 import Search from '../common/Search';
-import FilterModal from './FilterModal';
 
 
 const FormItem = Form.Item;

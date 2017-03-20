@@ -18,8 +18,10 @@ class LoginStore {
     onLoginSuccess(data) {
         message.info('登录成功, 账号: ' + data.user.userName);
         localStorage.setItem('accessToken', data.accessToken.accessToken);
+        localStorage.setItem('loginUserId', data.user.id);
+        localStorage.setItem('loginName', data.user.loginName);
         Util.writeCookie("loginUserId", data.user.id);
-        Util.changLocation('/home/tmpProducts');
+        Util.changLocation('/home/users');
     }
 
     onLoginFail(data) {

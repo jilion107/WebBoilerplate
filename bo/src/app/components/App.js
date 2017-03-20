@@ -14,14 +14,15 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginUserId: util.readCookie("loginUserId")
+            loginUserId: localStorage.getItem("loginUserId"),
+            loginName: localStorage.getItem("loginName")
         }
     }
 
     render() {
         return (
             <div className="zhijian-main">
-                <HeaderPage username="Jilion"/>
+                <HeaderPage loginName={this.state.loginName} loginUserId={this.state.loginUserId}/>
                 <Content>
                     <Layout>
                         <SiderPage loginUserId={this.state.loginUserId}/>
