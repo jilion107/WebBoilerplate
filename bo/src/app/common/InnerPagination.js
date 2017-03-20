@@ -13,8 +13,12 @@ class InnerPagination extends React.Component {
         return `共 ${total} 个`;
     }
 
-    onShowSizeChange() {
+    onShowSizeChange(current,pageSize) {
+        this.props.onShowSizeChange(current,pageSize);
+    }
 
+    onPageNumberChange(page, pageSize){
+        this.props.onShowSizeChange(page,pageSize);
     }
 
     render() {
@@ -25,6 +29,7 @@ class InnerPagination extends React.Component {
                     showQuickJumper
                     defaultCurrent={1}
                     total={this.props.total}
+                    onChange={this.onPageNumberChange.bind(this)}
                 />
     }
 }
