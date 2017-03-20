@@ -11,86 +11,21 @@ import InnerPagination from '../common/InnerPagination';
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
-const dateFormat = 'YYYY/MM/DD';
-const sizeOptions = [
-    { label: 'S', value: 's' },
-    { label: 'M', value: 'm' },
-    { label: 'L', value: 'l' },
-    { label: 'XL', value: 'xl' },
-    { label: 'XXL', value: 'xxl' },
-];
-const colourOptions = [
-    { label: '白色', value: 'white' },
-    { label: '黑色', value: 'black' },
-    { label: '黄色', value: 'yellow' },
-    { label: '绿色', value: 'green' },
-    { label: '蓝色', value: 'blue' },
-];
+const dateFormat = 'YYYY-MM-DD';
 
 class FormalProductsPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selected: 0,
-            amount: 100,
-            formalProducts: [{
-                img: 'bg.png',
-                name: "Men's Online ",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "WOW Warrior Sigil T ack",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "es WOW Warrior Sigil ",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "MeOW Warrior Sigil T Shirck",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "MeWarrior Sigil T t Black",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men's t Black",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "M Warrior Sigil T Shirt Blak",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men'sior Sigil T Shirtck",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "M Sigil T Shirt Blackdddddddddddddddddddddddddddddd",
-                price: '50$',
-                productId: 'FADAFADS13'
-            },{
-                img: 'bg.png',
-                name: "Men's Onlick",
-                price: '50$',
-                productId: 'FADAFADS13'
-            }
-            ]
-        }
+        this.state = FormalProductsStore.getState();
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         FormalProductsStore.listen(this.onChange);
-        FormalProductsActions.getAllFormalProducts();
+        FormalProductsActions.getAllFormalProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
+        FormalProductsActions.getFormalProductsAmount(this.state.productRequest);
+        FormalProductsActions.getAllSizes();
+        FormalProductsActions.getAllColours();
     }
 
     componentWillUnmount() {
@@ -101,16 +36,31 @@ class FormalProductsPage extends React.Component {
         this.setState(state);
     }
 
+    showSizeChange(current,pageSize) {
+        let page = (current-1)*pageSize;
+        FormalProductsActions.showSizeChange(this.state.productRequest,page,pageSize);
+    }
+
     handleSearch() {
-
+        FormalProductsActions.getAllFormalProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
+        FormalProductsActions.getFormalProductsAmount(this.state.productRequest);
     }
 
-    onColorChange(checkedValues) {
-        console.log('checked = ', checkedValues);
+    handleDelete(index){
+        let id = this.state.formalProducts[index]["id"];
+        FormalProductsActions.deleteFormalProduct(index,id);
     }
 
-    onSizeChange(checkedValues) {
-        console.log('checked = ', checkedValues);
+    onSelectColours(colourName,event) {
+        FormalProductsActions.onSelectColours(event,colourName);
+    }
+
+    onSelectSizes(event,sizeName) {
+        FormalProductsActions.onSelectSizes(event,sizeName);
+    }
+
+    onUpdateIds(id,event){
+        FormalProductsActions.onUpdateIds(event,id);
     }
 
     render() {
@@ -126,36 +76,41 @@ class FormalProductsPage extends React.Component {
             wrapperCol: { span: 15, offset: 6 },
         };
         return (
-            <div className="zhijian-tmpProducts">
-                <Form layout="horizontal" onSubmit={this.handleSearch.bind(this)}>
+            <div className="zhijian-formalProducts">
+                <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
                         {getFieldDecorator('brand', {
-                            rules: [{}]
+                            rules: []
                         })(
-                            <Input size="large"  />
+                            <Input size="large"  onChange={FormalProductsActions.onUpdateSearchBrand}/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="ASIN：">
                         {getFieldDecorator('asin', {
-                            rules: [{}]
+                            rules: []
                         })(
-                            <Input size="large"  />
+                            <Input size="large"  onChange={FormalProductsActions.onUpdateSearchAsin}/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="分类：">
                         {getFieldDecorator('category', {
-                            rules: [{}]
+                            rules: []
                         })(
-                            <Input size="large" />
+                            <Input size="large" onChange={FormalProductsActions.onUpdateSearchCategory}/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="颜色：">
-                        <Checkbox className="zhijian-selectAll"> 全选 </Checkbox>
-                        <CheckboxGroup options={colourOptions} defaultValue={['white']} onChange={this.onColorChange.bind(this)} />
+                        <Checkbox className="zhijian-selectAll" onChange={FormalProductsActions.onCheckAllColour} > 全选 </Checkbox>
+                        {this.state.colourOptions.map((item) => {
+                            return  <Checkbox onChange={this.onSelectColours.bind(this,item.colourName)} checked={item.checked}> {item.colourName}</Checkbox>
+                        })}
                     </FormItem>
                     <FormItem {...formItemLayout} label="尺寸：">
-                        <Checkbox className="zhijian-selectAll"> 全选 </Checkbox>
-                        <CheckboxGroup options={sizeOptions} defaultValue={['s']} onChange={this.onSizeChange.bind(this)} />
+                        <Checkbox className="zhijian-selectAll" onChange={FormalProductsActions.onCheckAllSize} > 全选 </Checkbox>
+                            {this.state.sizeOptions.map((item) => {
+                                return <Checkbox onChange={this.onSelectSizes.bind(this,item.sizeName)} checked={item.checked}>{item.sizeName}</Checkbox>
+                            })}
+
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
@@ -164,24 +119,24 @@ class FormalProductsPage extends React.Component {
                         {getFieldDecorator('range-picker', rangeConfig)(
                             <RangePicker
                                 defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                                format={dateFormat}
+                                format={dateFormat}  onChange={FormalProductsActions.onUpdateSearchRangeTime}
                             />
                         )}
                     </FormItem>
                     <FormItem {...buttonFormItemLayout}>
-                        <Checkbox>出单</Checkbox>
-                        <Button type="primary" htmlType="submit" className="zhijian-search">搜索</Button>
+                        <Checkbox onChange={FormalProductsActions.onCheckScenarioWhat}>出单</Checkbox>
+                        <Button type="primary" htmlType="submit" className="zhijian-search" onClick={this.handleSearch.bind(this)}>搜索</Button>
                     </FormItem>
                 </Form>
                 <div>
                     <Form layout="inline" className="action-form">
                         <FormItem  className="checkbox">
                             {getFieldDecorator('selectAll')(
-                                <Checkbox>全选</Checkbox>
+                                <Checkbox onChange={FormalProductsActions.onCheckAllProduct} >全选</Checkbox>
                             )}
                         </FormItem>
                         <FormItem>
-                            已选择 {this.state.selected } 个
+                            已选择 {this.state.selectedTotal } 个
                         </FormItem>
                         <FormItem>
                             共 {this.state.amount } 个
@@ -192,24 +147,27 @@ class FormalProductsPage extends React.Component {
                     </Form>
                 </div>
                 <div>
-                    <InnerPagination total={this.state.amount} />
+                    <InnerPagination total={this.state.amount} onShowSizeChange={this.showSizeChange.bind(this)} onChange={this.showSizeChange.bind(this)}/>
                 </div>
                 <div>
                     <ul>
-                        {this.state.formalProducts.map((item) => {
-                            return <li className="ant-col-6" key={item.name}>
+                        {this.state.formalProducts.map((item,index) => {
+                            return <li className="ant-col-6" key={index}>
                                 <Card>
                                     <div>
-                                        <img alt="example" width="100%" src="http://ecx.images-amazon.com/images/I/41qvM7u3E8L._SL233_.jpg" />
+                                        <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
+                                    </div>
+                                    <div>
+                                        <img alt="example" width="100%" src={item.productThumbnail} />
                                     </div>
                                     <div className="zhijan-productName">
-                                        {item.name}
+                                        {item.productName}
                                     </div>
                                     <div className="zhijian-price">
-                                        <span>价格：{item.price}</span>
+                                        <span>评论数：{item.commentNumber}</span>
                                     </div>
                                     <div className="zhijian-productId">
-                                        <span>{item.productId}</span>
+                                        <span>{item.asin}</span>
                                     </div>
                                     <div>
                                         <Button type="primary" htmlType="submit" className="zhijian-button-margin">删除</Button>
