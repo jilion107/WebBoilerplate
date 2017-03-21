@@ -23,6 +23,9 @@ class FormalProductsStore {
                 brand:'',
                 asin:'',
                 productTypeName:'',
+                scenarioWhat:null,
+                productSizes:[],
+                productColours:[],
                 startCreateTime:null,
                 endCreateTime:null
             },
@@ -147,6 +150,7 @@ class FormalProductsStore {
                 this.state.selectColours.push( this.state.colourOptions[i]["colourName"]);
             }
         }
+        this.state.productRequest.productColours = this.state.selectColours;
         console.log("AllColours: "+JSON.stringify(this.state.selectColours))
     }
 
@@ -158,6 +162,7 @@ class FormalProductsStore {
                 this.state.selectSizes.push( this.state.sizeOptions[i]["sizeName"]);
             }
         }
+        this.state.productRequest.productSizes = this.state.selectSizes;
         console.log("AllSize: "+JSON.stringify(this.state.selectSizes))
     }
 
@@ -178,12 +183,12 @@ class FormalProductsStore {
                 }
             }
         }
-
+        this.state.productRequest.productColours = this.state.selectColours;
         console.log("SelectCoulour: "+JSON.stringify(this.state.selectColours))
 
     }
 
-    onSelectSizes(event) {
+    onSelectSizes(event,sizeName) {
         for(let i=0;i<this.state.sizeOptions.length;i++){
             if(this.state.sizeOptions[i]["sizeName"]==event[1]){
                 this.state.sizeOptions[i].checked=event[0].target.checked;
@@ -200,7 +205,18 @@ class FormalProductsStore {
                 }
             }
         }
+
+        this.state.productRequest.productSizes = this.state.selectSizes;
         console.log("SelectSize: "+JSON.stringify(this.state.selectSizes))
+    }
+
+    onUpdateSearchScenarioWhat(event){
+        if(event.target.checked){
+            this.state.productRequest.scenarioWhat=1;
+        }else{
+            this.state.productRequest.scenarioWhat=0;
+        }
+
     }
 
 }

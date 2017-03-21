@@ -55,7 +55,7 @@ class FormalProductsPage extends React.Component {
         FormalProductsActions.onSelectColours(event,colourName);
     }
 
-    onSelectSizes(event,sizeName) {
+    onSelectSizes(sizeName,event) {
         FormalProductsActions.onSelectSizes(event,sizeName);
     }
 
@@ -65,8 +65,11 @@ class FormalProductsPage extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const rangeConfig = {
+       /* const rangeConfig = {
             rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+        };*/
+        const rangeConfig = {
+            rules: [],
         };
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -124,7 +127,7 @@ class FormalProductsPage extends React.Component {
                         )}
                     </FormItem>
                     <FormItem {...buttonFormItemLayout}>
-                        <Checkbox onChange={FormalProductsActions.onCheckScenarioWhat}>出单</Checkbox>
+                        <Checkbox onChange={FormalProductsActions.onUpdateSearchScenarioWhat}>出单</Checkbox>
                         <Button type="primary" htmlType="submit" className="zhijian-search" onClick={this.handleSearch.bind(this)}>搜索</Button>
                     </FormItem>
                 </Form>

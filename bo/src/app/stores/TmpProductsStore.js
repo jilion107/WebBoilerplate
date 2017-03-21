@@ -10,6 +10,7 @@ class TmpProductsStore {
         this.bindActions(TmpProductsActions);
         this.state = {
             tmpProducts: [],
+            categories: [],
             amount:0,
             offset:0,
             fetchSize:10,
@@ -20,10 +21,12 @@ class TmpProductsStore {
                 startCreateTime:null,
                 endCreateTime:null
             },
+            productIndex:null,
             tmpProductIds:[],
             selectedTotal:0,
             checkAll:false,
             visible: false,
+            modalType:null,
             isLoad: false
         }
     }
@@ -131,6 +134,14 @@ class TmpProductsStore {
         }
 
         this.setState({selectedTotal:this.state.tmpProductIds.length,checkAll:event.target.checked});
+    }
+
+    getAllCategoriesSuccess(data){
+        this.setState({categories:data});
+    }
+
+    getAllCategoriesFail(data){
+
     }
 
 

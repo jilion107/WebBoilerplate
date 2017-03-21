@@ -32,7 +32,8 @@ class FormalProductsActions {
             'onSelectSizes',
             'onCheckAllSize',
             'onCheckAllColour',
-            'onCheckAllProduct'
+            'onCheckAllProduct',
+            'onUpdateSearchScenarioWhat'
         );
         this.formalProductsInstance = new FormalProductsTransport();
     }

@@ -27,7 +27,9 @@ class TmpProductsActions {
             'onUpdateIds',
             'onModifyPageSize',
             'onModifyPageNumber',
-            'onCheckAll'
+            'onCheckAll',
+            'getAllCategoriesSuccess',
+            'getAllCategoriesFail'
 
         );
         this.tmpProductsInstance = new TmpProductsTransport();
@@ -58,9 +60,8 @@ class TmpProductsActions {
         });
     }
 
-    addToFormal(index,tmpProductId){
-        this.tmpProductsInstance.addToFormal(1,tmpProductId).then((response)=> {
-            response = { index: index };
+    addToFormal(tmpProductId,productTypeId){
+        this.tmpProductsInstance.addToFormal(productTypeId,tmpProductId).then((response)=> {
             this.addToFormalSuccess(response);
         },(response)=>{
             this.addToFormalFail(response);
@@ -79,6 +80,14 @@ class TmpProductsActions {
     showSizeChange(productRequest,page,pageSize){
         this.onModifyPageSize(page,pageSize);
         this.getAllTmpProducts(productRequest,page,pageSize);
+    }
+
+    getAllCategories(){
+        this.tmpProductsInstance.getAllCategories().then((response) => {
+            this.getAllCategoriesSuccess(response);
+        }, (response) => {
+            this.getAllCategoriesFail(response);
+        });
     }
 
 }

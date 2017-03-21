@@ -59,6 +59,13 @@ class TmpProductsTransport extends Transport {
         });
     }
 
+    getAllCategories(){
+        return this.ajaxRequest({
+            method:'get',
+            url:'http://localhost:8080/api/categories'
+        });
+    }
+
 }
 
 export default TmpProductsTransport;

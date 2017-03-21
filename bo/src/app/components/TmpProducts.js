@@ -41,6 +41,7 @@ class TmpProductsPage extends React.Component {
         TmpProductsStore.listen(this.onChange);
         TmpProductsActions.getAllTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
         TmpProductsActions.getTmpProductsAmount(this.state.productRequest);
+        TmpProductsActions.getAllCategories();
     }
 
     componentWillUnmount() {
@@ -61,13 +62,27 @@ class TmpProductsPage extends React.Component {
         let tmpProductId = this.state.tmpProducts[index]["id"];
         TmpProductsActions.deleteTmpProduct(index,tmpProductId);
     }
-    handleAddToFormal(index){
-        let tmpProductId = this.state.tmpProducts[index]["id"];
-        TmpProductsActions.addToFormal(index,tmpProductId);
+    handleAddToFormal(){
+        this.props.form.validateFields((err, values) => {
+            if(err) {
+                return;
+            } else {
+                let tmpProductId = this.state.tmpProducts[this.state.productIndex]["id"];
+                TmpProductsActions.addToFormal(tmpProductId,values.categoryId);
+            }
+        });
+
     }
     handleAddToFormalBatch(){
-        let productTypeId = 1;
-        TmpProductsActions.addToFormalBatch(this.state.tmpProductIds,productTypeId);
+        this.props.form.validateFields((err, values) => {
+            if(err) {
+                return;
+            } else {
+                TmpProductsActions.addToFormalBatch(this.state.tmpProductIds, values.categoryId);
+            }
+        });
+
+
     }
 
     onUpdateIds(id,event){
@@ -83,6 +98,28 @@ class TmpProductsPage extends React.Component {
 
     }
 
+    onClose(e) {
+        this.setState({
+            modalVisible: false
+        });
+        e.preventDefault();
+    }
+
+    onShowModel(index) {
+        this.setState({
+            modalVisible: true,
+            productIndex:index,
+            modalType:'single'
+        });
+    }
+
+    onShowModelBatch() {
+        this.setState({
+            modalVisible: true,
+            modalType:'Batch'
+        });
+    }
+
     onFileUpload(info) {
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 文件上传成功`);
@@ -94,17 +131,25 @@ class TmpProductsPage extends React.Component {
         }
     }
 
-
     render() {
+        const categoryOptions = this.state.categories && this.state.categories.map(category => <Option key={category.id} value={category.id}>{category.categoryName}</Option>);
         const { getFieldDecorator } = this.props.form;
         const rangeConfig = {
-            rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+            rules: [],
         };
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 15 },
         };
+        const modalOpts = {
+            title: '添加正式库',
+            visible: this.state.modalVisible,
+            onOk: this.state.modalType == "Batch" ? this.handleAddToFormalBatch.bind(this):this.handleAddToFormal.bind(this),
+            onCancel: this.onClose.bind(this),
+            maskClosable: true
+        }
         let deleter = this.handleDelete.bind(this);
+        let { filterInfo } = this.state;
         return (
             <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
@@ -158,7 +203,7 @@ class TmpProductsPage extends React.Component {
                             共 {this.state.amount } 个
                         </FormItem>
                         <FormItem className="buttons">
-                            <Button type="primary" onClick={this.handleAddToFormalBatch.bind(this)}>批量添加正式库</Button>
+                            <Button type="primary" onClick={this.onShowModelBatch.bind(this)} >批量添加正式库</Button>
                             <Upload name="file" onChange={this.onFileUpload.bind(this)} {...uploadProps1}>
                                 <Button>
                                     <Icon type="upload" />导入出单文件
@@ -198,7 +243,7 @@ class TmpProductsPage extends React.Component {
                                     </div>
                                     <div>
                                         <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleDelete.bind(this,index)}>删除</Button>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleAddToFormal.bind(this,index)}>添加正式库</Button>
+                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.onShowModel.bind(this,index)}>添加正式库</Button>
                                     </div>
                                 </Card>
                             </li>
@@ -206,6 +251,22 @@ class TmpProductsPage extends React.Component {
                     </ul>
                 </div>
                 <div className="zhijian-clear"></div>
+
+            <Modal {...modalOpts}>
+                <Form layout="horizontal">
+                        <FormItem {...formItemLayout} label="类别：">
+                            {getFieldDecorator('categoryId', {
+                                rules: [{ required: true, message: '请选择类别！'}]
+                                })(
+                                    <Select placeholder="选择类别">
+                                        {categoryOptions}
+                                    </Select>
+                                   )
+                            }
+                        </FormItem>
+                </Form>
+            </Modal>
+
             </div>
         );
     }
