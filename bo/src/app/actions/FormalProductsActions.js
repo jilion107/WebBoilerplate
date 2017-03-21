@@ -33,7 +33,9 @@ class FormalProductsActions {
             'onCheckAllSize',
             'onCheckAllColour',
             'onCheckAllProduct',
-            'onUpdateSearchScenarioWhat'
+            'onUpdateSearchScenarioWhat',
+            'updateScenarioWhatSuccess',
+            'updateScenarioWhatFail'
         );
         this.formalProductsInstance = new FormalProductsTransport();
     }
@@ -81,6 +83,15 @@ class FormalProductsActions {
             this.getAllColoursSuccess(response);
         },(response)=>{
             this.getAllColoursFail(response);
+        });
+    }
+
+    updateScenarioWhat(index,id){
+        this.formalProductsInstance.updateScenarioWhat(id).then((response)=> {
+
+            this.updateScenarioWhatSuccess(index);
+        },(response)=>{
+            this.updateScenarioWhatFail(index);
         });
     }
 

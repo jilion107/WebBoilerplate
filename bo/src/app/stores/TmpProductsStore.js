@@ -61,6 +61,7 @@ class TmpProductsStore {
     addToFormalSuccess(data){
         //message.info('添加成功. ');
         this.state.tmpProducts.splice(data.index, 1);
+        this.setState({modalVisible: false});
     }
     addToFormalFail(data){
         //message.info('添加失败. ');
@@ -77,7 +78,8 @@ class TmpProductsStore {
             }
         }
 
-        this.setState({tmpProductIds:[]});
+        this.setState({tmpProductIds:[], modalVisible: false});
+
     }
 
     addToFormalBatchFail(){

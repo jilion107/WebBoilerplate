@@ -5,7 +5,7 @@ import React from 'react';
 import FormalProductsStore from '../stores/FormalProductsStore';
 import FormalProductsActions from '../actions/FormalProductsActions';
 import moment from 'moment';
-import { Form, Select, Input, Button, Checkbox, DatePicker, Card } from 'antd';
+import { Form, Select, Input, Button, Checkbox, DatePicker, Card, Modal, InputNumber } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 
 const { RangePicker } = DatePicker;
@@ -63,11 +63,20 @@ class FormalProductsPage extends React.Component {
         FormalProductsActions.onUpdateIds(event,id);
     }
 
+    updateScenarioWhat(index){
+        let id = this.state.formalProducts[index]["id"];
+        FormalProductsActions.updateScenarioWhat(index,id);
+    }
+    exportDate(){
+
+    }
+
+    onClose(){
+
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
-       /* const rangeConfig = {
-            rules: [{ type: 'array', required: true, message: 'Please select time!' }],
-        };*/
         const rangeConfig = {
             rules: [],
         };
@@ -78,6 +87,13 @@ class FormalProductsPage extends React.Component {
         const buttonFormItemLayout = {
             wrapperCol: { span: 15, offset: 6 },
         };
+        const modalOpts = {
+            title: '汇出',
+            visible: this.state.modalVisible,
+            onOk: this.exportDate.bind(this),
+            onCancel: this.onClose.bind(this),
+            maskClosable: true
+        }
         return (
             <div className="zhijian-formalProducts">
                 <Form layout="horizontal" >
@@ -155,6 +171,7 @@ class FormalProductsPage extends React.Component {
                 <div>
                     <ul>
                         {this.state.formalProducts.map((item,index) => {
+                            const scenarioWhat = item.scenarioWhat == 1?"disabled":"";
                             return <li className="ant-col-6" key={index}>
                                 <Card>
                                     <div>
@@ -173,9 +190,9 @@ class FormalProductsPage extends React.Component {
                                         <span>{item.asin}</span>
                                     </div>
                                     <div>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">删除</Button>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">出单</Button>
-                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin">修改</Button>
+                                        <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleDelete.bind(this,index)}>删除</Button>
+                                        <Button type="primary" disabled={scenarioWhat} htmlType="submit" className="zhijian-button-margin" onClick={this.updateScenarioWhat.bind(this,index)}>出单</Button>
+
                                     </div>
                                 </Card>
                             </li>
@@ -183,6 +200,20 @@ class FormalProductsPage extends React.Component {
                     </ul>
                 </div>
                 <div className="zhijian-clear"></div>
+
+            <Modal {...modalOpts}>
+                <Form layout="horizontal">
+                    <FormItem {...formItemLayout} label="类别：">
+                        {getFieldDecorator('categoryId', {
+                            rules: [{ required: true, message: '汇出条数必填！'}]
+                        })(
+                            <InputNumber min={1}/>
+                        )}
+                  </FormItem>
+
+                </Form>
+            </Modal>
+
             </div>
         );
     }

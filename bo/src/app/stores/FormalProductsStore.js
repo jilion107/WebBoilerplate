@@ -37,6 +37,7 @@ class FormalProductsStore {
             selectedTotal:0,
             checkAll:false,
             visible: false,
+            modalVisible:false,
             isLoad: false
         }
     }
@@ -216,6 +217,12 @@ class FormalProductsStore {
         }else{
             this.state.productRequest.scenarioWhat=0;
         }
+    }
+
+    updateScenarioWhatSuccess(index){
+        this.state.formalProducts[index].scenarioWhat=1;
+    }
+    updateScenarioWhatFail(index){
 
     }
 
