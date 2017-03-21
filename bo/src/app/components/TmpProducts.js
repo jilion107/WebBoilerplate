@@ -8,12 +8,27 @@ import moment from 'moment';
 import { Form, Select, Input, Button, Checkbox, DatePicker, Card, Modal, Upload, Icon  } from 'antd';
 import { message } from 'antd';
 import InnerPagination from '../common/InnerPagination';
+import { RESTAPI_HOST } from '../common/Config'
+import Util from '../common/Util';
 
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const dateFormat = 'YYYY-MM-DD';
 
-const all = 20;
+const uploadProps0 = {
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=0",
+    headers: {
+        Authorization : localStorage.getItem("accessToken")
+    },
+    showUploadList: false
+}
+
+const uploadProps1 = {
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=1",
+    headers: {
+        Authorization : localStorage.getItem("accessToken")
+    }
+}
 
 class TmpProductsPage extends React.Component {
     constructor(props) {
@@ -35,7 +50,6 @@ class TmpProductsPage extends React.Component {
     onChange(state) {
         this.setState(state);
     }
-
 
 
     handleSearch() {
@@ -70,13 +84,13 @@ class TmpProductsPage extends React.Component {
     }
 
     onFileUpload(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
         if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
+            message.success(`${info.file.name} 文件上传成功`);
+            setTimeout(function() {
+                Util.changLocation("/home/tmpProducts")
+            }, 500);
         } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            message.error(`${info.file.name} 文件上传失败`);
         }
     }
 
@@ -144,17 +158,17 @@ class TmpProductsPage extends React.Component {
                             共 {this.state.amount } 个
                         </FormItem>
                         <FormItem className="buttons">
-                            <Upload name="testFile" action="/api/upload?scenarioWhat=0" onChange={this.onFileUpload.bind(this)}>
-                                <Button>
-                                    <Icon type="upload" />导入文件
-                                </Button>
-                            </Upload>
-                            <Upload name="testFile" action="/api/upload?scenarioWhat=1" onChange={this.onFileUpload.bind(this)}>
+                            <Button type="primary" onClick={this.handleAddToFormalBatch.bind(this)}>批量添加正式库</Button>
+                            <Upload name="file" onChange={this.onFileUpload.bind(this)} {...uploadProps1}>
                                 <Button>
                                     <Icon type="upload" />导入出单文件
                                 </Button>
                             </Upload>
-                            <Button type="primary" onClick={this.handleAddToFormalBatch.bind(this)}>批量添加正式库</Button>
+                            <Upload name="file" onChange={this.onFileUpload.bind(this)} {...uploadProps0}>
+                                <Button>
+                                    <Icon type="upload" />导入文件
+                                </Button>
+                            </Upload>
                         </FormItem>
                     </Form>
                 </div>

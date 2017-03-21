@@ -50,7 +50,7 @@ class TmpProductsTransport extends Transport {
     addToFormalBatch(productsIdRequest,productTypeId){
         return this.ajaxRequest({
             method:'post',
-            url:'http://localhost:8080//api/formal-products/batch/'+productTypeId,
+            url:'http://localhost:8080/api/formal-products/batch/'+productTypeId,
             requestBody:JSON.stringify(productsIdRequest),
             headers: {
                 'Accept': 'application/json',
