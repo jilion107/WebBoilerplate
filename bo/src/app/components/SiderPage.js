@@ -41,18 +41,15 @@ const menuUrls = [
         url: "/home/filters"
     }, {
         key: "11",
-        url: "/home/updateFilter"
-    }, {
-        key: "12",
         url: "/home/users"
     }, {
-        key: "13",
+        key: "12",
         url: "/home/addUser"
     }, {
-        key: "14",
+        key: "13",
         url: "/home/updateUser"
     }, {
-        key: "15",
+        key: "14",
         url: "/home/companies"
     },
 ];
@@ -66,9 +63,6 @@ const subMenus = [
         value: ["4", "5"]
     },{
         key: "sub3",
-        value: ["10", "11"]
-    },{
-        key: "sub4",
         value: ["12", "13", "14", "15"]
     }
 ];
@@ -140,30 +134,24 @@ class SiderPage extends React.Component {
                             <Icon type="chrome" />
                             <span className="nav-text"><Link to="/home/colours">颜色管理</Link></span>
                         </MenuItem>
-                        <SubMenu key="sub3" title={<span><Icon type="filter" /><span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色管理</Link></span></span>}>
-                            <MenuItem key="10">
-                                <Icon type="filter" />
-                                <span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色列表</Link></span>
-                            </MenuItem>
+                        <MenuItem key="10">
+                            <Icon type="filter" />
+                            <span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色列表</Link></span>
+                        </MenuItem>
+                        <SubMenu key="sub3" title={<span><Icon type="share-alt" /><span className="nav-text"><Link to="/home/users">账号与权限管理</Link></span></span>}>
                             <MenuItem key="11">
-                                <Icon type="bars" />
-                                <span className="nav-text">过滤尺寸和颜色详情</span>
-                            </MenuItem>
-                        </SubMenu>
-                        <SubMenu key="sub4" title={<span><Icon type="share-alt" /><span className="nav-text"><Link to="/home/users">账号与权限管理</Link></span></span>}>
-                            <MenuItem key="12">
                                 <Icon type="user" />
                                 <span className="nav-text"><Link to="/home/users">账号管理</Link></span>
                             </MenuItem>
-                            <MenuItem key="13">
+                            <MenuItem key="12">
                                 <Icon type="user-add" />
                                 <span className="nav-text"><Link to="/home/addUser">新建账号</Link></span>
                             </MenuItem>
-                            <MenuItem key="14">
+                            <MenuItem key="13">
                                 <Icon type="setting" />
                                 <span className="nav-text"><Link to={updateUserPath}>修改账号</Link></span>
                             </MenuItem>
-                            <MenuItem key="15">
+                            <MenuItem key="14">
                                 <Icon type="team" />
                                 <span className="nav-text"><Link to="/home/companies">公司管理</Link></span>
                             </MenuItem>

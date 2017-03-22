@@ -101,17 +101,17 @@ class FilterStore {
             },
             categoryName: {
                 editable: false,
-                value: data.productCategoryName,
+                value: data.productCategoryName || "",
                 changeable: false
             },
             colourName: {
                 editable: false,
-                value: data.productColourName,
+                value: data.productColourName || "",
                 changeable: false
             },
             sizeName: {
                 editable: false,
-                value: data.productSizeName,
+                value: data.productSizeName || "",
                 changeable: false
             },
             createTime: {

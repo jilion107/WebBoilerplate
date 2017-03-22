@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/10.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST, HEARDS }from '../common/Config';
 
 class SizeTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class SizeTransport extends Transport {
     getAllSizes() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/sizes',
+            url: RESTAPI_HOST + '/api/sizes',
             requestBody: {}
         });
     }
@@ -19,36 +20,27 @@ class SizeTransport extends Transport {
     updateSize(size) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/sizes/' + size.id,
+            url: RESTAPI_HOST + '/api/sizes/' + size.id,
             requestBody: JSON.stringify(size),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     addSize(size) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/size',
+            url: RESTAPI_HOST + '/api/size',
             requestBody: JSON.stringify(size),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     deleteSize(sizeId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/sizes/' + sizeId,
+            url: RESTAPI_HOST + '/api/sizes/' + sizeId,
             requestBody: {},
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 }

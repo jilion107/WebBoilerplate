@@ -2,7 +2,7 @@
  * Created by Jilion on 2017/3/11.
  */
 import React from 'react';
-import { Form, Select, Input, Button, Modal} from 'antd';
+import { Form, Select, Input, Button, Modal, message} from 'antd';
 import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
@@ -36,13 +36,17 @@ class FilterPage extends React.Component {
             if(err) {
                 return;
             } else {
-                let filterInfo = {
-                    productCategoryId: values.categoryId,
-                    productColourId: values.colourId,
-                    productSizeId: values.sizeId
-                };
-                this.setState({ filterInfo: filterInfo });
-                FilterActions.addFilter(filterInfo);
+                if(values.categoryId === "" && values.colourId === "" && values.sizeId === "") {
+                    message.error('分类，尺寸，颜色不能同时为空！');
+                } else {
+                    let filterInfo = {
+                        productCategoryId: values.categoryId,
+                        productColourId: values.colourId,
+                        productSizeId: values.sizeId
+                    };
+                    this.setState({ filterInfo: filterInfo });
+                    FilterActions.addFilter(filterInfo);
+                }
             }
         });
     }
@@ -98,9 +102,9 @@ class FilterPage extends React.Component {
         let rawFilter = data[index];
         let filterInfo = {
             id: data[index]["id"].value,
-            productCategoryId: this.findIdByOptionName(this.state.categories, 'categoryName' ,rawFilter.categoryName.value)[0].id,
-            productColourId: this.findIdByOptionName(this.state.colours, 'colourName' ,rawFilter.colourName.value)[0].id,
-            productSizeId: this.findIdByOptionName(this.state.sizes, 'sizeName' ,rawFilter.sizeName.value)[0].id,
+            productCategoryId: rawFilter.categoryName.value && this.findIdByOptionName(this.state.categories, 'categoryName', rawFilter.categoryName.value)[0].id,
+            productColourId: rawFilter.colourName.value && this.findIdByOptionName(this.state.colours, 'colourName', rawFilter.colourName.value)[0].id,
+            productSizeId: rawFilter.sizeName.value && this.findIdByOptionName(this.state.sizes, 'sizeName', rawFilter.sizeName.value)[0].id,
         };
         this.setState({
             modalType: 'update',
@@ -183,7 +187,6 @@ class FilterPage extends React.Component {
                         <Form layout="horizontal">
                             <FormItem {...formItemLayout} label="类别：">
                                 {getFieldDecorator('categoryId', {
-                                    rules: [{ required: true, message: '请选择类别！'}],
                                     initialValue: filterInfo ? filterInfo.productCategoryId : ''
                                 })(
                                     <Select placeholder="选择类别">
@@ -193,7 +196,6 @@ class FilterPage extends React.Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="尺寸：">
                                 {getFieldDecorator('sizeId', {
-                                    rules: [{ required: true, message: '请选择尺寸！'}],
                                     initialValue: filterInfo ? filterInfo.productSizeId : ''
                                 })(
                                     <Select placeholder="选择尺寸">
@@ -203,7 +205,6 @@ class FilterPage extends React.Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="颜色：">
                                 {getFieldDecorator('colourId', {
-                                    rules: [{ required: true, message: '请选择颜色！'}],
                                     initialValue: filterInfo ? filterInfo.productColourId : ''
                                 })(
                                     <Select placeholder="选择颜色">

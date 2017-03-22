@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/10.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST, HEARDS }from '../common/Config';
 
 class TortWordsTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class TortWordsTransport extends Transport {
     getAllTortWords() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/tortWords',
+            url: RESTAPI_HOST + '/api/tortWords',
             requestBody: {}
         });
     }
@@ -19,36 +20,27 @@ class TortWordsTransport extends Transport {
     updateTortWord(tortWord) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/tortWords/' + tortWord.id,
+            url: RESTAPI_HOST + '/api/tortWords/' + tortWord.id,
             requestBody: JSON.stringify(tortWord),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     addTortWord(tortWord) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/tortWord',
+            url: RESTAPI_HOST + '/api/tortWord',
             requestBody: JSON.stringify(tortWord),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     deleteTortWord(tortWordId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/tortWords/' + tortWordId,
+            url: RESTAPI_HOST + '/api/tortWords/' + tortWordId,
             requestBody: {},
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 }
