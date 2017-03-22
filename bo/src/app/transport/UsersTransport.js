@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/9.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST, HEARDS }from '../common/Config';
 
 class UsersTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class UsersTransport extends Transport {
     getAllUsers() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/users',
+            url: RESTAPI_HOST + '/api/users',
             requestBody: {}
         });
     }
@@ -19,43 +20,34 @@ class UsersTransport extends Transport {
     updateUser(user) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/users/' + user.id,
+            url: RESTAPI_HOST + '/api/users/' + user.id,
             requestBody: JSON.stringify(user),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     addUser(user) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/user',
+            url: RESTAPI_HOST + '/api/user',
             requestBody: JSON.stringify(user),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     getUser(id) {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/users/' + id
+            url: RESTAPI_HOST + '/api/users/' + id
         });
     }
 
     deleteUser(userId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/users/' + userId,
+            url: RESTAPI_HOST + '/api/users/' + userId,
             requestBody: {},
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 

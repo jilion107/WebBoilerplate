@@ -19,7 +19,8 @@ class FilterActions {
             'addFilterSuccess',
             'addFilterFail',
             'deleteFilterSuccess',
-            'deleteFilterFail'
+            'deleteFilterFail',
+            'addFail'
         );
         this.filterInstance = new FilterTransport();
         this.sizeInstance = new SizeTransport();

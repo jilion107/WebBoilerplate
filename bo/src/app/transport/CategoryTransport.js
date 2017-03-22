@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/10.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST, HEARDS }from '../common/Config';
 
 class CategoryTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class CategoryTransport extends Transport {
     getAllCategories() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/categories',
+            url: RESTAPI_HOST + '/api/categories',
             requestBody: {}
         });
     }
@@ -19,36 +20,27 @@ class CategoryTransport extends Transport {
     updateCategory(category) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/categories/' + category.id,
+            url: RESTAPI_HOST + '/api/categories/' + category.id,
             requestBody: JSON.stringify(category),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     addCategory(category) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/category',
+            url: RESTAPI_HOST + '/api/category',
             requestBody: JSON.stringify(category),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     deleteCategory(categoryId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/categories/' + categoryId,
+            url: RESTAPI_HOST + '/api/categories/' + categoryId,
             requestBody: {},
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 }

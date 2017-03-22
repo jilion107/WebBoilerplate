@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/11.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST }from '../common/Config';
 
 class FilterTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class FilterTransport extends Transport {
     getAllFilters() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/filters',
+            url: RESTAPI_HOST + '/api/filters',
             requestBody: {}
         });
     }
@@ -19,7 +20,7 @@ class FilterTransport extends Transport {
     updateFilter(filter) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/filters/' + filter.id,
+            url: RESTAPI_HOST + '/api/filters/' + filter.id,
             requestBody: JSON.stringify(filter),
             headers: {
                 'Accept': 'application/json',
@@ -31,7 +32,7 @@ class FilterTransport extends Transport {
     addFilter(filter) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/filter',
+            url: RESTAPI_HOST + '/api/filter',
             requestBody: JSON.stringify(filter),
             headers: {
                 'Accept': 'application/json',
@@ -43,7 +44,7 @@ class FilterTransport extends Transport {
     deleteFilter(filterId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/filters/' + filterId,
+            url: RESTAPI_HOST + '/api/filters/' + filterId,
             requestBody: {},
             headers: {
                 'Accept': 'application/json',

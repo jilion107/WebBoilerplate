@@ -13,7 +13,6 @@ import Colour from './components/Colour';
 import Size from './components/Size';
 import Category from './components/Category';
 import Filter from './components/Filter';
-import AddFilter from './components/AddFilter';
 import TortWords from './components/TortWord';
 import TmpProducts from './components/TmpProducts';
 import FormalProducts from './components/FormalProducts';
@@ -34,7 +33,6 @@ let routes =
             <Route path='categories' component={ Category } />
             <Route path='tortWords' component={ TortWords } />
             <Route path='filters' component={ Filter } />
-            <Route path='addFilter' component={ AddFilter } />
             <Route path='tmpProducts' component={ TmpProducts } />
             <Route path='formalProducts' component={ FormalProducts } />
             <Route path='tortProducts' component={ TortProducts } />

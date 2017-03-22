@@ -2,6 +2,7 @@
  * Created by Jilion on 2017/3/10.
  */
 import Transport from '../common/Transport';
+import { RESTAPI_HOST, HEARDS }from '../common/Config';
 
 class ColourTransport extends Transport {
     constructor(props) {
@@ -11,7 +12,7 @@ class ColourTransport extends Transport {
     getAllColours() {
         return this.ajaxRequest({
             method: 'get',
-            url: 'http://localhost:8080/api/colours',
+            url: RESTAPI_HOST + '/api/colours',
             requestBody: {}
         });
     }
@@ -19,36 +20,27 @@ class ColourTransport extends Transport {
     updateColour(colour) {
         return this.ajaxRequest({
             method: 'put',
-            url: 'http://localhost:8080/api/colours/' + colour.id,
+            url: RESTAPI_HOST + '/api/colours/' + colour.id,
             requestBody: JSON.stringify(colour),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     addColour(colour) {
         return this.ajaxRequest({
             method: 'post',
-            url: 'http://localhost:8080/api/colour',
+            url: RESTAPI_HOST + '/api/colour',
             requestBody: JSON.stringify(colour),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 
     deleteColour(colourId) {
         return this.ajaxRequest({
             method: 'delete',
-            url: 'http://localhost:8080/api/colours/' + colourId,
+            url: RESTAPI_HOST + '/api/colours/' + colourId,
             requestBody: {},
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: HEARDS
         });
     }
 }
