@@ -63,6 +63,20 @@ class FormalProductsTransport extends Transport {
         });
     }
 
+    exportData(exportRequest){
+        console.info(JSON.stringify(exportRequest));
+        return this.ajaxRequest({
+            method: 'post',
+            dataType: 'json',
+            url: 'http://localhost:8080/api/formal-products/export',
+            requestBody:JSON.stringify(exportRequest),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
 
 }
 

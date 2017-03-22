@@ -29,6 +29,16 @@ class FormalProductsStore {
                 startCreateTime:null,
                 endCreateTime:null
             },
+            exportDataRequest:{
+                total:0,
+                minQuantity:0,
+                maxQuantity:0,
+                beforeDays:0,
+                prices:0,
+                deliveryDays:0,
+                productIds:[],
+                productRequest:{}
+            },
             formalProductIds:[],
             keyValue:{
                 label:'',
@@ -38,6 +48,8 @@ class FormalProductsStore {
             checkAll:false,
             visible: false,
             modalVisible:false,
+            defaultExportNumber:0,
+            exportNumberDisabled:false,
             isLoad: false
         }
     }
@@ -224,6 +236,25 @@ class FormalProductsStore {
     }
     updateScenarioWhatFail(index){
 
+    }
+
+    onExportDataSuccess(response){
+        var winname = window.open('', '_blank', 'top=10000');
+        winname.document.open('text/html', 'replace');
+        winname.document.writeln(response);
+        winname.document.execCommand('Saveas','','export.txt');
+        winname.close();
+    }
+
+    onSetExportDate(values){
+        this.state.exportDataRequest.total = values.exportNumber;
+        this.state.exportDataRequest.minQuantity = values.minQuantity;
+        this.state.exportDataRequest.maxQuantity = values.maxQuantity;
+        this.state.exportDataRequest.beforeDays = values.beforeDays;
+        this.state.exportDataRequest.deliveryDays = values.deliveryDays;
+        this.state.exportDataRequest.prices = values.prices;
+        this.state.exportDataRequest.productIds = this.state.formalProductIds;
+        this.state.exportDataRequest.productRequest = this.state.productRequest;
     }
 
 }

@@ -35,7 +35,10 @@ class FormalProductsActions {
             'onCheckAllProduct',
             'onUpdateSearchScenarioWhat',
             'updateScenarioWhatSuccess',
-            'updateScenarioWhatFail'
+            'updateScenarioWhatFail',
+            'onSetExportRequest',
+            'onSetExportDate',
+            'onExportDataSuccess'
         );
         this.formalProductsInstance = new FormalProductsTransport();
     }
@@ -88,11 +91,20 @@ class FormalProductsActions {
 
     updateScenarioWhat(index,id){
         this.formalProductsInstance.updateScenarioWhat(id).then((response)=> {
-
             this.updateScenarioWhatSuccess(index);
         },(response)=>{
             this.updateScenarioWhatFail(index);
         });
+    }
+
+    exportDate(exportDataRequest){
+        debugger;
+        this.formalProductsInstance.exportData(exportDataRequest).then((response)=> {
+            this.onExportDataSuccess(response);
+        },(response)=>{
+            this.updateScenarioWhatFail(response);
+        });
+
     }
 
 }

@@ -68,11 +68,29 @@ class FormalProductsPage extends React.Component {
         FormalProductsActions.updateScenarioWhat(index,id);
     }
     exportDate(){
-
+        this.props.form.validateFields((err, values) => {
+            if(err) {
+                return;
+            } else {
+                FormalProductsActions.onSetExportDate(values);
+                FormalProductsActions.exportDate(this.state.exportDataRequest);
+            }
+        });
     }
 
-    onClose(){
+    onClose(e){
+        this.setState({
+            modalVisible: false
+        });
+        e.preventDefault();
+    }
 
+    onShowModel() {
+        this.setState({
+            modalVisible: true
+             });
+        this.state.defaultExportNumber =  this.state.formalProductIds.length>0? 0:this.state.amount;
+        this.state.exportNumberDisabled = this.state.formalProductIds.length>0? false:true;
     }
 
     render() {
@@ -94,6 +112,7 @@ class FormalProductsPage extends React.Component {
             onCancel: this.onClose.bind(this),
             maskClosable: true
         }
+
         return (
             <div className="zhijian-formalProducts">
                 <Form layout="horizontal" >
@@ -161,7 +180,7 @@ class FormalProductsPage extends React.Component {
                             共 {this.state.amount } 个
                         </FormItem>
                         <FormItem className="buttons">
-                            <Button type="primary">汇出</Button>
+                            <Button type="primary" onClick={this.onShowModel.bind(this)}>汇出</Button>
                         </FormItem>
                     </Form>
                 </div>
@@ -203,13 +222,48 @@ class FormalProductsPage extends React.Component {
 
             <Modal {...modalOpts}>
                 <Form layout="horizontal">
-                    <FormItem {...formItemLayout} label="类别：">
-                        {getFieldDecorator('categoryId', {
+                    <FormItem {...formItemLayout} label="汇出条数：">
+                        {getFieldDecorator('exportNumber', {
                             rules: [{ required: true, message: '汇出条数必填！'}]
                         })(
+                            <InputNumber min={1} defaultValue={this.state.defaultExportNumber} disabled={this.state.exportNumberDisabled}/>
+                        )}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="库存：">
+                        {getFieldDecorator('minQuantity', {
+                                rules: [{ required: true, message: '库存最小值必填！'}]
+                            })(
                             <InputNumber min={1}/>
                         )}
-                  </FormItem>
+                         --
+                         {getFieldDecorator('maxQuantity', {
+                                rules: [{ required: true, message: '库存最大值必填！'}]
+                            })(
+                            <InputNumber min={1}/>
+                        )}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="不可重复汇出天数：">
+                        {getFieldDecorator('beforeDays', {
+                        rules: [{ required: true, message: '不可重复汇出天数必填！'}]
+                        })(
+                            <InputNumber min={1}/>
+                         )}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="价格：">
+                        {getFieldDecorator('prices', {
+                        rules: [{regexp:"/^(0|([1-9]\d{0,9}(\.\d{1,2})?))$/", required: true, message: '价格必填！' }]
+                        })(
+                             <Input />
+                         )}
+                    </FormItem>
+
+                    <FormItem {...formItemLayout} label="发货天数：">
+                        {getFieldDecorator('deliveryDays', {
+                        rules: [{ required: true, message: '发货天数必填！'}]
+                            })(
+                            <InputNumber min={1}/>
+                        )}
+                    </FormItem>
 
                 </Form>
             </Modal>
