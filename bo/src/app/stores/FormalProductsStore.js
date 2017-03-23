@@ -14,8 +14,6 @@ class FormalProductsStore {
             colourOptions:[],
             selectSizes:[],
             selectColours:[],
-            indeterminateColour:false,
-            indeterminateSize:false,
             amount:0,
             offset:0,
             fetchSize:10,
@@ -40,10 +38,6 @@ class FormalProductsStore {
                 productRequest:{}
             },
             formalProductIds:[],
-            keyValue:{
-                label:'',
-                value:''
-            },
             selectedTotal:0,
             checkAll:false,
             visible: false,
