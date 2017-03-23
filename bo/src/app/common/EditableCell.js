@@ -3,7 +3,8 @@
  */
 
 import React from 'react';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
+const Option = Select.Option;
 
 class EditableCell extends React.Component {
     constructor(props) {
@@ -11,7 +12,9 @@ class EditableCell extends React.Component {
         this.state = {
             value: this.props.value,
             editable: this.props.editable || false,
-            changeable: this.props.changeable || false
+            changeable: this.props.changeable || false,
+            groups: this.props.groups,
+            selectedOption: this.props.selectedOption
         }
     }
 
@@ -43,17 +46,26 @@ class EditableCell extends React.Component {
     }
 
     render() {
-        const { value, editable, changeable } = this.state;
+        const { value, editable, changeable, groups, selectedOption } = this.state;
+        let options = groups && groups.map(group => <Option key={group.key} value={group.key}>{group.value}</Option>);
         return (
             <div>
                 {
                     (editable && changeable ) ?
-                        <div>
-                            <Input
-                                value={value}
-                                onChange={e => this.handleChange(e)}
-                            />
-                        </div>
+                        (groups ?
+                                <div>
+                                    <Select placeholder="选择权限" defaultValue={selectedOption} onChange={e => this.handleChange(e)}>
+                                        {options}
+                                    </Select>
+                                </div>
+                                :
+                                <div>
+                                    <Input
+                                        value={value}
+                                        onChange={e => this.handleChange(e)}
+                                    />
+                                </div>
+                        )
                     :
                         <div className="editable-row-text">
                             {value && value.toString() || ' '}

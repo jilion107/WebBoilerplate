@@ -52,9 +52,16 @@ class EditableTable extends React.Component {
     }
 
     renderColumns(data, index, key, text) {
-        const { editable, status, changeable } = data[index][key];
+        const { editable, status, changeable, groups } = data[index][key];
+        let selectedOption = text;
         if (typeof editable === 'undefined') {
             return text;
+        }
+        if(groups) {
+            let selected = groups.filter((item) => {
+                return item.key == text;
+            });
+            text = selected[0].value;
         }
         return (<EditableCell
             editable={editable}
@@ -62,6 +69,8 @@ class EditableTable extends React.Component {
             value={text}
             onChange={value => this.handleChange(key, index, value)}
             status={status}
+            groups={groups}
+            selectedOption={selectedOption}
         />);
     }
 
