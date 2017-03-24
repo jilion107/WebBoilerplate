@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import FormalProductsActions from '../actions/FormalProductsActions';
 import { message } from 'antd';
+import $ from 'jquery';
 
 class FormalProductsStore {
     constructor() {
@@ -232,12 +233,15 @@ class FormalProductsStore {
 
     }
 
+    downloadFile(filePath, fileName){
+        var aLink = document.createElement('a');
+        aLink.download = fileName;
+        aLink.href = filePath;
+        aLink.click();
+    }
+
     onExportDataSuccess(response){
-        var winname = window.open('', '_blank', 'top=10000');
-        winname.document.open('text/html', 'replace');
-        winname.document.writeln(response);
-        winname.document.execCommand('Saveas','','export.txt');
-        winname.close();
+        this.downloadFile("/bg.png", "test");
     }
 
     onSetExportDate(values){

@@ -82,7 +82,7 @@ class TortProductsPage extends React.Component {
             wrapperCol: { span: 15, offset: 6 },
         };
         return (
-            <div className="zhijian-tortProducts">
+            <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
                         {getFieldDecorator('brand', {

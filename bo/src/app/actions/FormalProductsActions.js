@@ -98,7 +98,6 @@ class FormalProductsActions {
     }
 
     exportDate(exportDataRequest){
-        debugger;
         this.formalProductsInstance.exportData(exportDataRequest).then((response)=> {
             this.onExportDataSuccess(response);
         },(response)=>{

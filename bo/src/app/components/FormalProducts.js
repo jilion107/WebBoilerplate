@@ -114,7 +114,7 @@ class FormalProductsPage extends React.Component {
         }
 
         return (
-            <div className="zhijian-formalProducts">
+            <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
                         {getFieldDecorator('brand', {
