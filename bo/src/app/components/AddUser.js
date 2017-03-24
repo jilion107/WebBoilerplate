@@ -8,6 +8,7 @@ import UsersActions from '../actions/UsersActions';
 import CompanyActions from '../actions/CompanyActions';
 import CompanyStore from '../stores/CompanyStore';
 import Util from '../common/Util';
+import { ROLEEBUM }from '../common/Config';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -57,6 +58,7 @@ class AddUserPage extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         const companyOptions = this.state.companies.map(company => <Option key={company.id} value={company.id}>{company.companyName}</Option>);
+        const roleOptions = ROLEEBUM && ROLEEBUM.map(role => <Option key={role.key} value={role.key}>{role.value}</Option>);
         return (
             <div className="zhijian-addUser">
                 <Form layout="horizontal">
@@ -95,9 +97,7 @@ class AddUserPage extends React.Component {
                             rules: [{ required: true, message: '请选择权限！'}]
                         })(
                             <Select placeholder="选择权限">
-                                <Option value="1">超级管理员</Option>
-                                <Option value="2">管理员</Option>
-                                <Option value="3">普通用户</Option>
+                                {roleOptions}
                             </Select>
                         )}
                     </FormItem>

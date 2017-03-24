@@ -46,7 +46,11 @@ class UsersActions {
                 if(response.result === "fail") {
                     this.updateUserFail(response.message);
                 } else {
-                    this.updateUserSuccess(response.user);
+                    response = _.assign(response, {
+                        dataSource: dataSource,
+                        isCancel: isCancel
+                    });
+                    this.updateUserSuccess(response);
                 }
             }, (response) => {
                 this.updateUserFail(response);

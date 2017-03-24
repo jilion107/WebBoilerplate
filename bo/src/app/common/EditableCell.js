@@ -41,13 +41,25 @@ class EditableCell extends React.Component {
     }
 
     handleChange(e) {
-        const value = e.target.value;
-        this.setState({ value });
+        let value;
+        if(this.state.groups) {
+            value = e;
+            this.setState({
+                value: value,
+                selectedOption: value
+            });
+        } else {
+            value = e.target.value;
+            this.setState({ value });
+        }
     }
 
     render() {
-        const { value, editable, changeable, groups, selectedOption } = this.state;
+        let { value, editable, changeable, groups, selectedOption } = this.state;
         let options = groups && groups.map(group => <Option key={group.key} value={group.key}>{group.value}</Option>);
+        if(groups) {
+            value = groups.filter(group => { return group.key == selectedOption})[0].value;
+        }
         return (
             <div>
                 {

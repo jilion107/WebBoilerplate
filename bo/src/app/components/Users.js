@@ -15,20 +15,13 @@ class UsersPage extends React.Component {
         super(props);
         this.state = UsersStore.getState();
         this.onChange = this.onChange.bind(this);
-        this.state.dataSource = [{
-            id: 1,
-            loginName: 'test',
-            userName : 'jilion',
-            phone: '22423424',
-            role: '2',
-            createTime: '3023403'
-        }];
+        this.state.dataSource = [];
         this.state.isLoad = true;
     }
 
     componentDidMount() {
         UsersStore.listen(this.onChange);
-        //UsersActions.getAllUsers();
+        UsersActions.getAllUsers();
     }
 
     componentWillUnmount() {
@@ -67,55 +60,9 @@ class UsersPage extends React.Component {
         UsersActions.deleteUser(index, userId);
     }
 
-    createDataSource(store) {
-        return store.map((item, index) => {
-            return {
-                key: index,
-                id: {
-                    editable: false,
-                    value: item.id,
-                    changeable: false
-                },
-                loginName: {
-                    editable: false,
-                    value: item.loginName,
-                    changeable: true
-                },
-                userName: {
-                    editable: false,
-                    value: item.userName,
-                    changeable: true
-                },
-                phone: {
-                    editable: false,
-                    value: item.phone,
-                    changeable: true
-                },
-                role: {
-                    editable: false,
-                    value: item.role,
-                    changeable: true,
-                    groups: [{
-                      key: '1',
-                      value: 'admin'
-                    },{
-                       key: '2',
-                       value: 'tessAdmin'
-                    }]
-                },
-                createTime: {
-                    editable: false,
-                    value: item.createTime,
-                    changeable: false
-                }
-            }
-        });
-    }
-
     render() {
         const { getFieldDecorator } = this.props.form;
-        //let dataSource = this.state.dataSource;
-        let dataSource = this.createDataSource(this.state.dataSource);
+        let dataSource = this.state.dataSource;
         let columns = [
             {
                 title: '序号',

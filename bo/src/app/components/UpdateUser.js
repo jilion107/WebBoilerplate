@@ -6,6 +6,7 @@ import { Form, Select, Input, Button, Checkbox, Modal} from 'antd';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
 import Util from '../common/Util';
+import { ROLEEBUM }from '../common/Config';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -61,6 +62,7 @@ class AddUserPage extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         const companyOptions = this.state.companies.map(company => <Option key={company.id} value={company.id}>{company.companyName}</Option>);
+        const roleOptions = ROLEEBUM && ROLEEBUM.map(role => <Option key={role.key} value={role.key}>{role.value}</Option>);
         let { userInfo } = this.state;
         return (
             <div className="zhijian-addUser">
@@ -105,9 +107,7 @@ class AddUserPage extends React.Component {
                             initialValue: userInfo ? userInfo.role : ''
                         })(
                             <Select placeholder="选择权限">
-                                <Option value="1">超级管理员</Option>
-                                <Option value="2">管理员</Option>
-                                <Option value="3">普通用户</Option>
+                                {roleOptions}
                             </Select>
                         )}
                     </FormItem>

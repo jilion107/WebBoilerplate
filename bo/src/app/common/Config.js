@@ -5,4 +5,20 @@ export const RESTAPI_HOST = "http://localhost:8080";
 export const HEARDS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
-}
+};
+
+export const ROLEEBUM = [
+    {
+        key: "1",
+        value: "集团admin"
+    },{
+        key: "2",
+        value: "公司admin"
+    },{
+        key: "3",
+        value: "公司经理"
+    },{
+        key: "4",
+        value: "公司操作员"
+    }
+];

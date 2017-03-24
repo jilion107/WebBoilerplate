@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import UsersActions from '../actions/UsersActions';
 import { message, } from 'antd';
+import { ROLEEBUM }from '../common/Config';
 
 class UsersStore {
     constructor() {
@@ -38,7 +39,7 @@ class UsersStore {
                 loginName: {
                     editable: false,
                     value: item.loginName,
-                    changeable: true
+                    changeable: false
                 },
                 userName: {
                     editable: false,
@@ -53,7 +54,8 @@ class UsersStore {
                 role: {
                     editable: false,
                     value: item.role,
-                    changeable: true
+                    changeable: true,
+                    groups: ROLEEBUM
                 },
                 createTime: {
                     editable: false,
