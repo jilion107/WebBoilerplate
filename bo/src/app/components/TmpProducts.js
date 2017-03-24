@@ -14,9 +14,10 @@ import Util from '../common/Util';
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const dateFormat = 'YYYY-MM-DD';
-
+const userId = localStorage.getItem("loginUserId");
+const companyId = localStorage.getItem("loginCompanyId");
 const uploadProps0 = {
-    action: RESTAPI_HOST + "/api/upload?scenarioWhat=0",
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=0&userId="+userId+"&companyId="+companyId,
     headers: {
         Authorization : localStorage.getItem("accessToken")
     },
@@ -24,7 +25,7 @@ const uploadProps0 = {
 }
 
 const uploadProps1 = {
-    action: RESTAPI_HOST + "/api/upload?scenarioWhat=1",
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=1&userId="+userId+"&companyId="+companyId,
     headers: {
         Authorization : localStorage.getItem("accessToken")
     }

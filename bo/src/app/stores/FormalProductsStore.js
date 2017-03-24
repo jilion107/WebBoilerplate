@@ -19,6 +19,8 @@ class FormalProductsStore {
             offset:0,
             fetchSize:10,
             productRequest:{
+                userId:localStorage.getItem("loginUserId"),
+                companyId:localStorage.getItem("loginCompanyId"),
                 brand:'',
                 asin:'',
                 productTypeName:'',

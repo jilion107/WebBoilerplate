@@ -20,6 +20,7 @@ class LoginStore {
         localStorage.setItem('accessToken', data.accessToken.accessToken);
         localStorage.setItem('loginUserId', data.user.id);
         localStorage.setItem('loginName', data.user.loginName);
+        localStorage.setItem('loginCompanyId',data.user.companyId);
         Util.writeCookie("loginUserId", data.user.id);
         Util.changLocation('/home/users');
     }
