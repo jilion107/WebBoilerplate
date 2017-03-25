@@ -63,7 +63,7 @@ class FormalProductsTransport extends Transport {
         return this.ajaxRequest({
             method: 'post',
             dataType: 'json',
-            url: 'http://localhost:8080/api/formal-products/export',
+            url: RESTAPI_HOST + '/api/formal-products/export',
             requestBody:JSON.stringify(exportRequest),
             headers: {
                 'Accept': 'application/json',
