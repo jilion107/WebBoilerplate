@@ -113,6 +113,8 @@ class FormalProductsPage extends React.Component {
             maskClosable: true
         }
 
+        const isValid = localStorage.getItem("loginRole")=='公司操作员';
+
         return (
             <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
@@ -179,7 +181,7 @@ class FormalProductsPage extends React.Component {
                         <FormItem>
                             共 {this.state.amount } 个
                         </FormItem>
-                        <FormItem className="buttons">
+                        <FormItem className="buttons" disabled = {isValid}>
                             <Button type="primary" onClick={this.onShowModel.bind(this)}>汇出</Button>
                         </FormItem>
                     </Form>

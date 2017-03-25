@@ -21,8 +21,9 @@ class LoginStore {
         localStorage.setItem('loginUserId', data.user.id);
         localStorage.setItem('loginName', data.user.loginName);
         localStorage.setItem('loginCompanyId',data.user.companyId);
+        localStorage.setItem('loginRole',data.user.role);
         Util.writeCookie("loginUserId", data.user.id);
-        Util.changLocation('/home/users');
+        Util.changLocation('/home/tmpProducts');
     }
 
     onLoginFail(data) {

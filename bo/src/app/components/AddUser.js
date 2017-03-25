@@ -59,6 +59,7 @@ class AddUserPage extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const companyOptions = this.state.companies.map(company => <Option key={company.id} value={company.id}>{company.companyName}</Option>);
         const roleOptions = ROLEEBUM && ROLEEBUM.map(role => <Option key={role.key} value={role.key}>{role.value}</Option>);
+        const isValid = localStorage.getItem("loginRole")=='集团admin';
         return (
             <div className="zhijian-addUser">
                 <Form layout="horizontal">
@@ -83,15 +84,6 @@ class AddUserPage extends React.Component {
                             <Input size="large" />
                         )}
                     </FormItem>
-                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="公  司：">
-                        {getFieldDecorator('companyId', {
-                            rules: [{ required: true, message: '请选择公司！'}]
-                        })(
-                            <Select placeholder="选择公司">
-                                {companyOptions}
-                            </Select>
-                        )}
-                    </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="权  限：">
                         {getFieldDecorator('role', {
                             rules: [{ required: true, message: '请选择权限！'}]
@@ -101,13 +93,16 @@ class AddUserPage extends React.Component {
                             </Select>
                         )}
                     </FormItem>
-                    <FormItem wrapperCol={{ span: 15, offset: 6 }} className="checkbox">
-                        {getFieldDecorator('isAdmin', {
-                            valuePropName: 'checked',
+                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="公  司：" disabled={isValid}>
+                        {getFieldDecorator('companyId', {
+                        rules: []
                         })(
-                            <Checkbox>公司管理员</Checkbox>
-                        )}
+                        <Select placeholder="选择公司">
+                            {companyOptions}
+                            </Select>
+                    )}
                     </FormItem>
+
                     <FormItem wrapperCol={{ span: 3, offset: 17 }}>
                         <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
                     </FormItem>
