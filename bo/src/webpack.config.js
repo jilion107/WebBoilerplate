@@ -10,7 +10,8 @@ module.exports = {
     },
     output: {
         path: __dirname + '/build',
-        filename: '[name].js'
+        filename: '[name].js',
+        publicPath: '/zhijian/'
     },
     module: {
         rules: [
@@ -38,7 +39,7 @@ module.exports = {
             },
             {
                 test: /\.(jpg|png|svg)$/,
-                loader: 'url-loader?limit=10000',
+                loader: 'url-loader?limit=10000&name=[hash:8].[name].[ext]',
             }
         ]
     },

@@ -54,7 +54,7 @@ class TortWordsStore {
     onUpdateTortWordFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/tortWords")
+            Util.changLocation("/zhijian/tortWords")
         }, 500);
     }
 

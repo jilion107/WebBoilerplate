@@ -123,7 +123,7 @@ class TmpProductsPage extends React.Component {
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 文件上传成功`);
             setTimeout(function() {
-                Util.changLocation("/home/tmpProducts")
+                Util.changLocation("/zhijian/tmpProducts")
             }, 500);
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} 文件上传失败`);

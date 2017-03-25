@@ -56,7 +56,7 @@ class CategoryStore {
     onUpdateCategoryFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/categories")
+            Util.changLocation("/zhijian/categories")
         }, 500);
     }
 

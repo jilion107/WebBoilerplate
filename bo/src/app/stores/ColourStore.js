@@ -56,7 +56,7 @@ class ColourStore {
     onUpdateColourFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/colours")
+            Util.changLocation("/zhijian/colours")
         }, 500);
     }
 

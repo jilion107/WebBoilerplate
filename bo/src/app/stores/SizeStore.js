@@ -56,7 +56,7 @@ class SizeStore {
     onUpdateSizeFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/sizes")
+            Util.changLocation("/zhijian/sizes")
         }, 500);
     }
 

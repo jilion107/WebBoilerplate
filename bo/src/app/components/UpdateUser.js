@@ -52,11 +52,11 @@ class AddUserPage extends React.Component {
     }
 
     addMore() {
-        Util.changLocation("/home/addUser")
+        Util.changLocation("/zhijian/addUser")
     }
 
     goToUsers() {
-        Util.changLocation("/home/users")
+        Util.changLocation("/zhijian/users")
     }
 
     render() {

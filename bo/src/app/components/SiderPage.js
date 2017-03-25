@@ -11,46 +11,46 @@ const MenuItem = Menu.Item;
 const menuUrls = [
     {
         key: "1",
-        url: "/home/tmpProducts"
+        url: "/zhijian/tmpProducts"
     }, {
         key: "2",
-        url: "/home/formalProducts"
+        url: "/zhijian/formalProducts"
     }, {
         key: "3",
-        url: "/home/formalRemit"
+        url: "/zhijian/formalRemit"
     }, {
         key: "4",
-        url: "/home/tortProducts"
+        url: "/zhijian/tortProducts"
     }, {
         key: "5",
-        url: "/home/tortRemit"
+        url: "/zhijian/tortRemit"
     }, {
         key: "6",
-        url: "/home/tortWords"
+        url: "/zhijian/tortWords"
     }, {
         key: "7",
-        url: "/home/categories"
+        url: "/zhijian/categories"
     }, {
         key: "8",
-        url: "/home/sizes"
+        url: "/zhijian/sizes"
     }, {
         key: "9",
-        url: "/home/colours"
+        url: "/zhijian/colours"
     }, {
         key: "10",
-        url: "/home/filters"
+        url: "/zhijian/filters"
     }, {
         key: "11",
-        url: "/home/users"
+        url: "/zhijian/users"
     }, {
         key: "12",
-        url: "/home/addUser"
+        url: "/zhijian/addUser"
     }, {
         key: "13",
-        url: "/home/updateUser"
+        url: "/zhijian/updateUser"
     }, {
         key: "14",
-        url: "/home/companies"
+        url: "/zhijian/companies"
     },
 ];
 
@@ -89,7 +89,7 @@ class SiderPage extends React.Component {
     }
 
     render() {
-        let updateUserPath = "/home/updateUser/" + this.props.loginUserId;
+        let updateUserPath = "/zhijian/updateUser/" + this.props.loginUserId;
         let selectedKey = this.getSelectedMenu();
         let openedSub = this.getOpenedSub(selectedKey);
         return (
@@ -97,46 +97,46 @@ class SiderPage extends React.Component {
                     <Menu mode="inline" defaultSelectedKeys={[selectedKey]} defaultOpenKeys={[openedSub]}>
                         <MenuItem key="1">
                             <Icon type="switcher" />
-                            <span className="nav-text"><Link to="/home/tmpProducts">数据采集及临时库管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/tmpProducts">数据采集及临时库管理</Link></span>
                         </MenuItem>
                         <MenuItem key="2">
                             <Icon type="bars" />
-                            <span className="nav-text"><Link to="/home/formalProducts">正式库管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/formalProducts">正式库管理</Link></span>
                         </MenuItem>
 
                         <MenuItem key="4">
                             <Icon type="bars" />
-                            <span className="nav-text"><Link to="/home/tortProducts">侵权库管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/tortProducts">侵权库管理</Link></span>
                         </MenuItem>
 
                         <MenuItem key="6">
                             <Icon type="bars" />
-                            <span className="nav-text"><Link to="/home/tortWords">侵权词管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/tortWords">侵权词管理</Link></span>
                         </MenuItem>
                         <MenuItem key="7">
                             <Icon type="tag-o" />
-                            <span className="nav-text"><Link to="/home/categories">分类管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/categories">分类管理</Link></span>
                         </MenuItem>
                         <MenuItem key="8">
                             <Icon type="scan" />
-                            <span className="nav-text"><Link to="/home/sizes">尺寸管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/sizes">尺寸管理</Link></span>
                         </MenuItem>
                         <MenuItem key="9">
                             <Icon type="chrome" />
-                            <span className="nav-text"><Link to="/home/colours">颜色管理</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/colours">颜色管理</Link></span>
                         </MenuItem>
                         <MenuItem key="10">
                             <Icon type="filter" />
-                            <span className="nav-text"><Link to="/home/filters">过滤尺寸和颜色列表</Link></span>
+                            <span className="nav-text"><Link to="/zhijian/filters">过滤尺寸和颜色列表</Link></span>
                         </MenuItem>
                         <SubMenu key="sub3" title={<span><Icon type="share-alt" /><span className="nav-text">账号与权限管理</span></span>} disabled={isValid}>
                             <MenuItem key="11">
                                 <Icon type="user" />
-                                <span className="nav-text"><Link to="/home/users">账号管理</Link></span>
+                                <span className="nav-text"><Link to="/zhijian/users">账号管理</Link></span>
                             </MenuItem>
                             <MenuItem key="12">
                                 <Icon type="user-add" />
-                                <span className="nav-text"><Link to="/home/addUser">新建账号</Link></span>
+                                <span className="nav-text"><Link to="/zhijian/addUser">新建账号</Link></span>
                             </MenuItem>
                             <MenuItem key="13">
                                 <Icon type="setting" />
@@ -144,7 +144,7 @@ class SiderPage extends React.Component {
                             </MenuItem>
                             <MenuItem key="14">
                                 <Icon type="team" />
-                                <span className="nav-text"><Link to="/home/companies">公司管理</Link></span>
+                                <span className="nav-text"><Link to="/zhijian/companies">公司管理</Link></span>
                             </MenuItem>
                         </SubMenu>
                     </Menu>

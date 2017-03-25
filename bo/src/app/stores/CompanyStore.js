@@ -51,7 +51,7 @@ class CompanyStore {
     onUpdateCompanyFail(data) {
         message.error('修改失败: ' + data);
         setTimeout(function() {
-            Util.changLocation("/home/companies")
+            Util.changLocation("/zhijian/companies")
         }, 500);
     }
 

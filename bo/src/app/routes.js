@@ -2,7 +2,7 @@
  * Created by jilion.chen on 2/27/2017.
  */
 import React from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, Redirect } from 'react-router';
 import Login from './components/Login';
 import App from './components/App';
 import Company from './components/Company';
@@ -22,8 +22,9 @@ import TortRemit from './components/TortRemit';
 
 let routes =
     <Router>
-        <Route path="/login" component={ Login } />
-        <Route path="home" components={ App }>
+        /*<Route path="/zhijian/index.html" component={ Login } />*/
+        <Route path="/zhijian/index" component={ Login } />
+        <Route path="/zhijian" components={ App }>
             <Route path='companies' component={ Company } />
             <Route path='users' component={ Users } />
             <Route path='addUser' component={ AddUser } />
@@ -39,6 +40,7 @@ let routes =
             <Route path='formalRemit' component={ FormalRemit } />
             <Route path='tortRemit' component={ TortRemit } />
         </Route>
+        <Redirect from="*" to="/zhijian/index" />
     </Router>
 
 export default routes;

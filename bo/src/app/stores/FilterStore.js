@@ -76,7 +76,7 @@ class FilterStore {
 
     onUpdateFilterSuccess(data) {
         message.info('修改成功. ');
-        Util.changLocation("/home/filters")
+        Util.changLocation("/zhijian/filters")
     }
 
     onUpdateFilterFail(data) {

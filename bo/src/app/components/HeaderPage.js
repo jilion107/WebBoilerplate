@@ -15,11 +15,12 @@ class HeaderPage extends React.Component {
 
     logOut() {
         localStorage.clear();
-        Util.changLocation('/login');
+        //Util.changLocation('/zhijian/index.html');
+        Util.changLocation('/zhijian/index');
     }
 
     myAccount() {
-        Util.changLocation('/home/updateUser/' + this.props.loginUserId);
+        Util.changLocation('/zhijian/updateUser/' + this.props.loginUserId);
     }
 
     render() {

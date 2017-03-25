@@ -23,7 +23,7 @@ class LoginStore {
         localStorage.setItem('loginCompanyId',data.user.companyId);
         localStorage.setItem('loginRole',data.user.role);
         Util.writeCookie("loginUserId", data.user.id);
-        Util.changLocation('/home/tmpProducts');
+        Util.changLocation('/zhijian/tmpProducts');
     }
 
     onLoginFail(data) {
