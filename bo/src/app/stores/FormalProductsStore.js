@@ -256,7 +256,7 @@ class FormalProductsStore {
     }
 
     onExportDataSuccess(response){
-        this.downloadFile("/bg.png", "test");
+        this.downloadFile("/zhijian/poem.txt", "汇出");
     }
 
     onSetExportDate(values){
