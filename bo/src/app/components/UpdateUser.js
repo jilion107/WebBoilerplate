@@ -91,9 +91,19 @@ class AddUserPage extends React.Component {
                             <Input size="large" />
                         )}
                     </FormItem>
+                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="权  限：">
+                        {getFieldDecorator('role', {
+                        rules: [{ required: true, message: '请选择权限！'}],
+                            initialValue: userInfo ? userInfo.role : ''
+                        })(
+                        <Select placeholder="选择权限">
+                            {roleOptions}
+                            </Select>
+                    )}
+                    </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="公  司：">
                         {getFieldDecorator('companyId', {
-                            rules: [{ required: true, message: '请选择公司！'}],
+                            rules: [{ }],
                             initialValue: userInfo ? userInfo.companyId : ''
                         })(
                             <Select placeholder="选择公司" >
@@ -101,23 +111,8 @@ class AddUserPage extends React.Component {
                             </Select>
                         )}
                     </FormItem>
-                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="权  限：">
-                        {getFieldDecorator('role', {
-                            rules: [{ required: true, message: '请选择权限！'}],
-                            initialValue: userInfo ? userInfo.role : ''
-                        })(
-                            <Select placeholder="选择权限">
-                                {roleOptions}
-                            </Select>
-                        )}
-                    </FormItem>
-                    <FormItem wrapperCol={{ span: 15, offset: 6 }} className="checkbox">
-                        {getFieldDecorator('isAdmin', {
-                            valuePropName: 'checked',
-                        })(
-                            <Checkbox>公司管理员</Checkbox>
-                        )}
-                    </FormItem>
+
+
                     <FormItem wrapperCol={{ span: 3, offset: 17 }}>
                         <Button type="primary" htmlType="submit" onClick={this.handleUpdate.bind(this)}>修改</Button>
                     </FormItem>
