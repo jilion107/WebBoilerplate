@@ -234,6 +234,18 @@ class TmpProductsPage extends React.Component {
                                     <div className="zhijan-productName">
                                         {item.productName}
                                     </div>
+                                    <div className="zhijian-category">
+                                        <span>分类：{item.productTypeName}</span>
+                                    </div>
+                                    <div className="zhijian-brand">
+                                        <span>品牌：{item.brand}</span>
+                                    </div>
+                                    <div className="zhijian-size">
+                                        <span>尺寸：{item.productSize}</span>
+                                    </div>
+                                    <div className="zhijian-colour">
+                                        <span>颜色：{item.productColour}</span>
+                                    </div>
                                     <div className="zhijian-price">
                                         <span>评论数：{item.commentNumber}</span>
                                     </div>
