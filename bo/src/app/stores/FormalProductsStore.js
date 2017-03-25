@@ -51,6 +51,19 @@ class FormalProductsStore {
         }
     }
 
+    onLoadFormalProductsSuccess(data){
+        this.setState({
+            formalProducts: data[0],
+            amount: data[1],
+            colourOptions: data[2],
+            sizeOptions: data[3],
+            isLoad: true
+        });
+    }
+
+    onLoadFormalProductsFail(data){
+    }
+
     onGetAllFormalProductsSuccess(data) {
         this.setState({
             formalProducts: data,

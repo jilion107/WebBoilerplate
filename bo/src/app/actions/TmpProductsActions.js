@@ -3,6 +3,7 @@
  */
 import alt from '../common/alt';
 import TmpProductsTransport from '../transport/TmpProductsTransport';
+import CategoryTransport from '../transport/CategoryTransport';
 import _ from 'underscore';
 
 class TmpProductsActions {
@@ -29,60 +30,73 @@ class TmpProductsActions {
             'onModifyPageNumber',
             'onCheckAll',
             'getAllCategoriesSuccess',
-            'getAllCategoriesFail'
-
+            'getAllCategoriesFail',
+            'loadTmpProductsSuccess',
+            'loadTmpProductsFail'
         );
         this.tmpProductsInstance = new TmpProductsTransport();
+        this.categoryInstance = new CategoryTransport();
     }
 
-    getAllTmpProducts(productRequest,offet,fetchSize) {
-        this.tmpProductsInstance.getAllTmpProducts(productRequest,offet,fetchSize).then((response) => {
+    loadTmpProducts(productRequest, offet, fetchSize) {
+        let getFormalProducts = this.tmpProductsInstance.getAllTmpProducts(productRequest, offet, fetchSize);
+        let getAmount = this.tmpProductsInstance.getTmpProductsAmount(productRequest);
+        let getCategories = this.categoryInstance.getAllCategories();
+        Promise.all([getFormalProducts, getAmount, getCategories]).then((response) => {
+            this.loadTmpProductsSuccess(response);
+        }, (response) => {
+            this.loadTmpProductsFail(response);
+        });
+    }
+
+    getAllTmpProducts(productRequest, offet, fetchSize) {
+        this.tmpProductsInstance.getAllTmpProducts(productRequest, offet, fetchSize).then((response) => {
             this.getAllTmpProductsSuccess(response);
         }, (response) => {
             this.getAllTmpProductsFail(response);
         });
     }
 
-    getTmpProductsAmount(productRequest){
-        this.tmpProductsInstance.getTmpProductsAmount(productRequest).then((response)=> {
+    getTmpProductsAmount(productRequest) {
+        this.tmpProductsInstance.getTmpProductsAmount(productRequest).then((response) => {
             this.getTmpProductsAmountSuccess(response);
-        },(response)=>{
+        }, (response) => {
             this.getTmpProductsAmountFail(response);
         });
     }
 
-    deleteTmpProduct(index,tmpProductId){
-        this.tmpProductsInstance.deleteTmpProduct(tmpProductId).then((response)=> {
-            response = { index: index };
+    deleteTmpProduct(index, tmpProductId) {
+        this.tmpProductsInstance.deleteTmpProduct(tmpProductId).then((response) => {
+            response = {index: index};
             this.deleteTmpProductSuccess(response);
-        },(response)=>{
+        }, (response) => {
             this.deleteTmpProductFail(response);
         });
     }
 
-    addToFormal(tmpProductId,productTypeId){
-        this.tmpProductsInstance.addToFormal(productTypeId,tmpProductId).then((response)=> {
+    addToFormal(tmpProductId, productTypeId) {
+        this.tmpProductsInstance.addToFormal(productTypeId, tmpProductId).then((response) => {
             this.addToFormalSuccess(response);
-        },(response)=>{
+        }, (response) => {
             this.addToFormalFail(response);
         });
     }
 
-    addToFormalBatch(productIds,productTypeId){
-        let productsIdRequest = {"productIds":productIds};
-        this.tmpProductsInstance.addToFormalBatch(productsIdRequest,productTypeId).then((response)=> {
+    addToFormalBatch(productIds, productTypeId) {
+        let productsIdRequest = {"productIds": productIds};
+        this.tmpProductsInstance.addToFormalBatch(productsIdRequest, productTypeId).then((response) => {
             this.addToFormalBatchSuccess(response);
-        },(response)=>{
+        }, (response) => {
             this.addToFormalBatchFail(response);
         });
     }
 
-    showSizeChange(productRequest,page,pageSize){
-        this.onModifyPageSize(page,pageSize);
-        this.getAllTmpProducts(productRequest,page,pageSize);
+    showSizeChange(productRequest, page, pageSize) {
+        this.onModifyPageSize(page, pageSize);
+        this.getAllTmpProducts(productRequest, page, pageSize);
     }
 
-    getAllCategories(){
+    getAllCategories() {
         this.tmpProductsInstance.getAllCategories().then((response) => {
             this.getAllCategoriesSuccess(response);
         }, (response) => {

@@ -33,6 +33,19 @@ class TmpProductsStore {
         }
     }
 
+    onLoadTmpProductsSuccess(data){
+        this.setState({
+            tmpProducts: data[0],
+            amount: data[1],
+            categories: data[2],
+            isLoad: true
+        });
+    }
+
+    onLoadTmpProductsFail(data){
+    }
+
+
     onGetAllTmpProductsSuccess(data) {
         this.setState({
             tmpProducts: data,

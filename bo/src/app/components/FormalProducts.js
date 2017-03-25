@@ -22,10 +22,7 @@ class FormalProductsPage extends React.Component {
 
     componentDidMount() {
         FormalProductsStore.listen(this.onChange);
-        FormalProductsActions.getAllFormalProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
-        FormalProductsActions.getFormalProductsAmount(this.state.productRequest);
-        FormalProductsActions.getAllSizes();
-        FormalProductsActions.getAllColours();
+        FormalProductsActions.loadFormalProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
     }
 
     componentWillUnmount() {

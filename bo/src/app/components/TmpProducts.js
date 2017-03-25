@@ -40,9 +40,7 @@ class TmpProductsPage extends React.Component {
 
     componentDidMount() {
         TmpProductsStore.listen(this.onChange);
-        TmpProductsActions.getAllTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
-        TmpProductsActions.getTmpProductsAmount(this.state.productRequest);
-        TmpProductsActions.getAllCategories();
+        TmpProductsActions.loadTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
     }
 
     componentWillUnmount() {

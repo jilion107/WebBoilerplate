@@ -99,18 +99,16 @@ class SiderPage extends React.Component {
                             <Icon type="switcher" />
                             <span className="nav-text"><Link to="/home/tmpProducts">数据采集及临时库管理</Link></span>
                         </MenuItem>
-                        <SubMenu key="sub1" title={<span><Icon type="database" /><span className="nav-text"><Link to="/home/formalProducts">正式库管理</Link></span></span>}>
-                            <MenuItem key="2">
-                                <Icon type="bars" />
-                                <span className="nav-text"><Link to="/home/formalProducts">正式库列表</Link></span>
-                            </MenuItem>
-                        </SubMenu>
-                        <SubMenu key="sub2" title={<span><Icon type="exception" /><span className="nav-text"><Link to="/home/tortProducts">备用侵权库</Link></span></span>}>
-                            <MenuItem key="4">
-                                <Icon type="bars" />
-                                <span className="nav-text"><Link to="/home/tortProducts">侵权库列表</Link></span>
-                            </MenuItem>
-                        </SubMenu>
+                        <MenuItem key="2">
+                            <Icon type="bars" />
+                            <span className="nav-text"><Link to="/home/formalProducts">正式库管理</Link></span>
+                        </MenuItem>
+
+                        <MenuItem key="4">
+                            <Icon type="bars" />
+                            <span className="nav-text"><Link to="/home/tortProducts">侵权库管理</Link></span>
+                        </MenuItem>
+
                         <MenuItem key="6">
                             <Icon type="bars" />
                             <span className="nav-text"><Link to="/home/tortWords">侵权词管理</Link></span>

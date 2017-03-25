@@ -3,6 +3,8 @@
  */
 import alt from '../common/alt';
 import FormalProductsTransport from '../transport/FormalProductsTransport';
+import SizeTransport from '../transport/SizeTransport';
+import ColourTransport from '../transport/ColourTransport';
 import _ from 'underscore';
 
 class FormalProductsActions {
@@ -38,9 +40,25 @@ class FormalProductsActions {
             'updateScenarioWhatFail',
             'onSetExportRequest',
             'onSetExportDate',
-            'onExportDataSuccess'
+            'onExportDataSuccess',
+            'loadFormalProductsSuccess',
+            'loadFormalProductsFail'
         );
         this.formalProductsInstance = new FormalProductsTransport();
+        this.sizeInstance = new SizeTransport();
+        this.colourInstance = new ColourTransport();
+    }
+
+    loadFormalProducts(productRequest,offet,fetchSize){
+        let getFormalProducts = this.formalProductsInstance.getAllFormalProducts(productRequest,offet,fetchSize);
+        let getAmount = this.formalProductsInstance.getFormalProductsAmount(productRequest);
+        let getColours = this.colourInstance.getAllColours();
+        let getSizes = this.sizeInstance.getAllSizes();
+        Promise.all([getFormalProducts, getAmount, getColours, getSizes]).then((response) => {
+            this.loadFormalProductsSuccess(response);
+        }, (response) => {
+            this.loadFormalProductsFail(response);
+        });
     }
 
     getAllFormalProducts(productRequest,offet,fetchSize) {

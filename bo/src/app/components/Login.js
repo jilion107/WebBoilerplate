@@ -19,6 +19,7 @@ class LoginPage extends React.Component {
 
     componentDidMount() {
         LoginStore.listen(this.onChange);
+        localStorage.clear();
     }
 
     componentWillUnmount() {
