@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import TortProductsActions from '../actions/TortProductsActions';
 import { message } from 'antd';
+import { DEFAULTPAGESIZE } from '../common/Config';
 
 class TortProductsStore {
     constructor() {
@@ -16,7 +17,7 @@ class TortProductsStore {
             selectColours:[],
             amount:0,
             offset:0,
-            fetchSize:10,
+            fetchSize:DEFAULTPAGESIZE,
             productRequest:{
                 userId:localStorage.getItem("loginUserId"),
                 companyId:localStorage.getItem("loginCompanyId"),

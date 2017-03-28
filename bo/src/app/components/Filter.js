@@ -70,12 +70,12 @@ class FilterPage extends React.Component {
     }
 
     handleSearch() {
-        const search = new Search();
+        //const search = new Search();
         // to do more filter
-        let data = search.onSearch(this.state.filters, this.state.searchName, 'categoryName');
-        this.setState({
-            dataSource: data
-        });
+        //let data = search.onSearch(this.state.categories, this.state.searchName, 'categoryName');
+        //this.setState({
+           // dataSource: data
+        //});
     }
 
     handleDelete(index){
@@ -167,7 +167,7 @@ class FilterPage extends React.Component {
 
         return ( this.state.isLoad ?
                 <div>
-                    <Form layout="inline" onSubmit={this.handleUpdate.bind(this)}>
+                    <Form layout="inline">
                         <FormItem label="搜索分类：">
                             {getFieldDecorator('searchName', {
                                 rules: []

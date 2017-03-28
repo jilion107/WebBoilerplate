@@ -22,3 +22,6 @@ export const ROLEEBUM = [
         value: "公司操作员"
     }
 ];
+
+export const PAGESIZEOPTIONS = ['200','500','800','1000','1500']
+export const DEFAULTPAGESIZE = '200';

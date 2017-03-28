@@ -124,7 +124,7 @@ class EditableTable extends React.Component {
 
 
     render() {
-        const { data } = this.state;
+        let data = this.state.data || [];
         const dataSource = data.map((item) => {
             const obj = {};
             Object.keys(item).forEach((key) => {

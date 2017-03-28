@@ -66,7 +66,7 @@ const subMenus = [
         value: ["12", "13", "14", "15"]
     }
 ];
-const isValid = localStorage.getItem("loginRole")!='集团admin';
+const isValid = localStorage.getItem("loginRole")!='1';
 
 class SiderPage extends React.Component {
     constructor(props) {

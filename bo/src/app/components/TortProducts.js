@@ -157,7 +157,7 @@ class TortProductsPage extends React.Component {
             <ul>
             {this.state.tortProducts.map((item,index) => {
                 const scenarioWhat = item.scenarioWhat == 1?"disabled":"";
-                return <li className="ant-col-6" key={index}>
+                return <li className="ant-col-6 zhijian-product" key={index}>
                     <Card>
                     <div>
                     <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
@@ -167,18 +167,6 @@ class TortProductsPage extends React.Component {
                 </div>
                 <div className="zhijan-productName">
                     {item.productName}
-                </div>
-                <div className="zhijian-category">
-                    <span>分类：{item.productTypeName}</span>
-                </div>
-                <div className="zhijian-brand">
-                    <span>品牌：{item.brand}</span>
-                </div>
-                <div className="zhijian-size">
-                    <span>尺寸：{item.productSize}</span>
-                </div>
-                <div className="zhijian-colour">
-                    <span>颜色：{item.productColour}</span>
                 </div>
                 <div className="zhijian-price">
                     <span>评论数：{item.commentNumber}</span>

@@ -4,6 +4,7 @@
 import alt from '../common/alt';
 import TmpProductsActions from '../actions/TmpProductsActions';
 import { message } from 'antd';
+import { DEFAULTPAGESIZE } from '../common/Config';
 
 class TmpProductsStore {
     constructor() {
@@ -13,7 +14,7 @@ class TmpProductsStore {
             categories: [],
             amount:0,
             offset:0,
-            fetchSize:10,
+            fetchSize:DEFAULTPAGESIZE,
             productRequest:{
                 userId:localStorage.getItem("loginUserId"),
                 companyId:localStorage.getItem("loginCompanyId"),
@@ -29,7 +30,8 @@ class TmpProductsStore {
             checkAll:false,
             visible: false,
             modalType:null,
-            isLoad: false
+            isLoad: false,
+			isLoading: false
         }
     }
 

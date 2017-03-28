@@ -86,7 +86,7 @@ class FormalProductsPage extends React.Component {
         this.setState({
             modalVisible: true
              });
-        this.state.defaultExportNumber =  this.state.formalProductIds.length>0? this.state.formalProductIds.length:this.state.amount;
+        this.state.defaultExportNumber =  this.state.formalProductIds.length>0? 0:this.state.amount;
         this.state.exportNumberDisabled = this.state.formalProductIds.length>0? false:true;
     }
 
@@ -190,9 +190,9 @@ class FormalProductsPage extends React.Component {
                     <ul>
                         {this.state.formalProducts.map((item,index) => {
                             const scenarioWhat = item.scenarioWhat == 1?"disabled":"";
-                            return <li className="ant-col-6" key={index}>
+                            return <li className="ant-col-6 zhijian-product" key={index}>
                                 <Card>
-                                    <div className="zhijian-checkbox">
+                                    <div>
                                         <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
                                     </div>
                                     <div>
@@ -200,18 +200,6 @@ class FormalProductsPage extends React.Component {
                                     </div>
                                     <div className="zhijan-productName">
                                         {item.productName}
-                                    </div>
-                                    <div className="zhijian-category">
-                                        <span>分类：{item.productTypeName}</span>
-                                    </div>
-                                    <div className="zhijian-brand">
-                                        <span>品牌：{item.brand}</span>
-                                    </div>
-                                    <div className="zhijian-size">
-                                        <span>尺寸：{item.productSize}</span>
-                                    </div>
-                                    <div className="zhijian-colour">
-                                        <span>颜色：{item.productColour}</span>
                                     </div>
                                     <div className="zhijian-price">
                                         <span>评论数：{item.commentNumber}</span>
@@ -234,10 +222,10 @@ class FormalProductsPage extends React.Component {
             <Modal {...modalOpts}>
                 <Form layout="horizontal">
                     <FormItem {...formItemLayout} label="汇出条数：">
-                        {getFieldDecorator('exportNumber', { initialValue: this.state.defaultExportNumber },{
+                        {getFieldDecorator('exportNumber', {
                             rules: [{ required: true, message: '汇出条数必填！'}]
                         })(
-                            <InputNumber min={1}  disabled={this.state.exportNumberDisabled}/>
+                            <InputNumber min={1} defaultValue={this.state.defaultExportNumber} />
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label="库存：">

@@ -11,7 +11,8 @@ class Search {
     onSearch(dataSource, searchText, searchColumn) {
         const reg = new RegExp(searchText, 'gi');
         let data = dataSource.map((record) => {
-            const match = record[searchColumn].match(reg);
+			let recordValue = record[searchColumn].value || record[searchColumn] || ''
+            const match = recordValue.match(reg);
             if (!match) {
                 return null;
             }
@@ -20,7 +21,7 @@ class Search {
                 name: (
                     <span>
                         {
-                            record[searchColumn].split(reg).map((text, i) => (
+                            recordValue.split(reg).map((text, i) => (
                                 i > 0 ? [<span className="highlight">{match[0]}</span>, text] : text
                             ))
                         }

@@ -5,7 +5,7 @@ import React from 'react';
 import TmpProductsStore from '../stores/TmpProductsStore';
 import TmpProductsActions from '../actions/TmpProductsActions';
 import moment from 'moment';
-import { Form, Select, Input, Button, Checkbox, DatePicker, Card, Modal, Upload, Icon  } from 'antd';
+import { Form, Select, Input, Button, Checkbox, DatePicker, Card, Modal, Upload, Icon, Spin  } from 'antd';
 import { message } from 'antd';
 import InnerPagination from '../common/InnerPagination';
 import { RESTAPI_HOST } from '../common/Config'
@@ -93,8 +93,10 @@ class TmpProductsPage extends React.Component {
         TmpProductsActions.showSizeChange(this.state.productRequest,page,pageSize);
     }
 
-    uploadFile() {
-
+    beforeUpload() {
+        this.setState({
+            isLoading: true
+        });
     }
 
     onClose(e) {
@@ -121,11 +123,17 @@ class TmpProductsPage extends React.Component {
 
     onFileUpload(info) {
         if (info.file.status === 'done') {
+			this.setState({
+				isLoading: false
+			});			
             message.success(`${info.file.name} 文件上传成功`);
             setTimeout(function() {
                 Util.changLocation("/zhijian/tmpProducts")
             }, 500);
         } else if (info.file.status === 'error') {
+			this.setState({
+				isLoading: false
+			});			
             message.error(`${info.file.name} 文件上传失败`);
         }
     }
@@ -150,6 +158,7 @@ class TmpProductsPage extends React.Component {
         let deleter = this.handleDelete.bind(this);
         let { filterInfo } = this.state;
         return (
+		<Spin spinning={this.state.isLoading}>
             <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">
@@ -203,12 +212,12 @@ class TmpProductsPage extends React.Component {
                         </FormItem>
                         <FormItem className="buttons">
                             <Button type="primary" onClick={this.onShowModelBatch.bind(this)} >批量添加正式库</Button>
-                            <Upload name="file" onChange={this.onFileUpload.bind(this)} {...uploadProps1}>
+                            <Upload name="file" onChange={this.onFileUpload.bind(this)} beforeUpload={this.beforeUpload.bind(this)} {...uploadProps1}>
                                 <Button>
                                     <Icon type="upload" />导入出单文件
                                 </Button>
                             </Upload>
-                            <Upload name="file" onChange={this.onFileUpload.bind(this)} {...uploadProps0}>
+                            <Upload name="file" onChange={this.onFileUpload.bind(this)} beforeUpload={this.beforeUpload.bind(this)} {...uploadProps0}>
                                 <Button>
                                     <Icon type="upload" />导入文件
                                 </Button>
@@ -223,7 +232,7 @@ class TmpProductsPage extends React.Component {
                 <div>
                     <ul>
                         {this.state.tmpProducts.map((item,index) => {
-                            return <li className="ant-col-6" key={index}>
+                            return <li className="ant-col-6 zhijian-product" key={index}>
                                 <Card>
                                     <div>
                                         <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
@@ -279,6 +288,7 @@ class TmpProductsPage extends React.Component {
             </Modal>
 
             </div>
+		</Spin>
         );
     }
 }

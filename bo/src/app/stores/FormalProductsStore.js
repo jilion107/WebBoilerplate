@@ -5,6 +5,7 @@ import alt from '../common/alt';
 import FormalProductsActions from '../actions/FormalProductsActions';
 import { message } from 'antd';
 import $ from 'jquery';
+import { DEFAULTPAGESIZE } from '../common/Config';
 
 class FormalProductsStore {
     constructor() {
@@ -17,7 +18,7 @@ class FormalProductsStore {
             selectColours:[],
             amount:0,
             offset:0,
-            fetchSize:10,
+            fetchSize:DEFAULTPAGESIZE,
             productRequest:{
                 userId:localStorage.getItem("loginUserId"),
                 companyId:localStorage.getItem("loginCompanyId"),

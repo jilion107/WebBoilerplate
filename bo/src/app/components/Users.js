@@ -34,22 +34,24 @@ class UsersPage extends React.Component {
 
     handleUpdate(data, index) {
         let rawUser = data[index];
-        let newUser = {};
-        let isCancel = false;
-        Object.keys(rawUser).forEach((prop) => {
-            if(prop !== "key") {
-                newUser[prop] = rawUser[prop].value
-                if(rawUser[prop].status === "cancel") {
-                    isCancel = true;
-                }
-            }
-        });
-        UsersActions.updateUser(newUser, data, isCancel);
+		if (rawUser) {
+			let newUser = {};
+			let isCancel = false;
+			Object.keys(rawUser).forEach((prop) => {
+				if(prop !== "key") {
+					newUser[prop] = rawUser[prop].value
+					if(rawUser[prop].status === "cancel") {
+						isCancel = true;
+					}
+				}
+			});
+			UsersActions.updateUser(newUser, data, isCancel);			
+		}
     }
 
     handleSearch() {
         const search = new Search();
-        let data = search.onSearch(this.state.users, this.state.searchName, 'userName');
+        let data = search.onSearch(this.state.dataSource, this.state.searchName, 'userName');
         this.setState({
             dataSource: data
         });
@@ -96,7 +98,7 @@ class UsersPage extends React.Component {
 
         return( this.state.isLoad ?
                 <div>
-                    <Form layout="inline" onSubmit={this.handleUpdate.bind(this)}>
+                    <Form layout="inline">
                         <FormItem label="姓名">
                             {getFieldDecorator('searchName', {
                                 rules: []
