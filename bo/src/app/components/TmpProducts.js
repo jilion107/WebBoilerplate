@@ -17,7 +17,7 @@ const dateFormat = 'YYYY-MM-DD';
 const userId = localStorage.getItem("loginUserId");
 const companyId = localStorage.getItem("loginCompanyId");
 const uploadProps0 = {
-    action: RESTAPI_HOST + "/api/upload?scenarioWhat=0&userId="+userId+"&companyId="+companyId,
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=0&userId="+userId,
     headers: {
         Authorization : localStorage.getItem("accessToken")
     },
@@ -25,7 +25,7 @@ const uploadProps0 = {
 }
 
 const uploadProps1 = {
-    action: RESTAPI_HOST + "/api/upload?scenarioWhat=1&userId="+userId+"&companyId="+companyId,
+    action: RESTAPI_HOST + "/api/upload?scenarioWhat=1&userId="+userId,
     headers: {
         Authorization : localStorage.getItem("accessToken")
     }
