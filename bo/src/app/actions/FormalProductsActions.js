@@ -50,6 +50,7 @@ class FormalProductsActions {
     }
 
     loadFormalProducts(productRequest,offet,fetchSize){
+        productRequest.hasParent = true;
         let getFormalProducts = this.formalProductsInstance.getAllFormalProducts(productRequest,offet,fetchSize);
         let getAmount = this.formalProductsInstance.getFormalProductsAmount(productRequest);
         let getColours = this.colourInstance.getAllColours();

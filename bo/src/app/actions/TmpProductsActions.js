@@ -39,6 +39,7 @@ class TmpProductsActions {
     }
 
     loadTmpProducts(productRequest, offet, fetchSize) {
+        productRequest.hasParent = true;
         let getFormalProducts = this.tmpProductsInstance.getAllTmpProducts(productRequest, offet, fetchSize);
         let getAmount = this.tmpProductsInstance.getTmpProductsAmount(productRequest);
         let getCategories = this.categoryInstance.getAllCategories();

@@ -41,6 +41,7 @@ class TortProductsActions {
     }
 
     getAllTortProducts(productRequest,offet,fetchSize) {
+        productRequest.hasParent = true;
         this.tortProductsInstance.getAllTortProducts(productRequest,offet,fetchSize).then((response) => {
             this.getAllTortProductsSuccess(response);
         }, (response) => {
