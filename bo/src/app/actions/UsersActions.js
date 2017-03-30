@@ -20,7 +20,9 @@ class UsersActions {
             'getUserSuccess',
             'getUserFail',
             'deleteUserSuccess',
-            'deleteUserFail'
+            'deleteUserFail',
+			'searchUsersSuccess',
+			'searchUsersFail'
         );
         this.userInstance = new UsersTransport();
         this.companyInstance = new CompanyTransport();
@@ -92,6 +94,15 @@ class UsersActions {
             this.deleteUserFail(response);
         });
     }
+	
+    searchUsers(query) {
+        this.userInstance.searchUsers(query).then((response) => {
+            _.assign(response, history)
+            this.searchUsersSuccess(response.users);
+        }, (response) => {
+            this.searchUsersFail(response);
+        });
+    }	
 }
 
 export default alt.createActions(UsersActions);

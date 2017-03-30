@@ -69,13 +69,8 @@ class FilterPage extends React.Component {
         });
     }
 
-    handleSearch() {
-        //const search = new Search();
-        // to do more filter
-        //let data = search.onSearch(this.state.categories, this.state.searchName, 'categoryName');
-        //this.setState({
-           // dataSource: data
-        //});
+    handleSearch(data) {
+        FilterActions.searchFilters(data);
     }
 
     handleDelete(index){
@@ -164,20 +159,23 @@ class FilterPage extends React.Component {
                 span: 15
             }
         }
+		
+		const searchGroupProps = {
+			keyword: '',
+			size: 'large',
+			select: true,
+			selectOptions: [{ value: 'productCategoryName', name: '分类' }, { value: 'productSizeName', name: '尺寸' }, { value: 'productColourName', name: '颜色' }],
+			selectProps: {
+				defaultValue: 'productCategoryName',
+			},
+			onSearch: this.handleSearch.bind(this)
+		}		
 
         return ( this.state.isLoad ?
                 <div>
+					<Search {...searchGroupProps} />
+					<br/>
                     <Form layout="inline">
-                        <FormItem label="搜索分类：">
-                            {getFieldDecorator('searchName', {
-                                rules: []
-                            })(
-                                <Input size="large"  onChange={FilterActions.onUpdateSearchName}/>
-                            )}
-                        </FormItem>
-                        <FormItem>
-                            <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
-                        </FormItem>
                         <FormItem>
                             <Button type="primary" htmlType="submit" onClick={this.onAdd.bind(this)}>新建</Button>
                         </FormItem>

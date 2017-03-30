@@ -121,6 +121,17 @@ class UsersStore {
     onDeleteUserFail(data) {
         message.error('删除失败: ' + data);
     }
+	
+    onSearchUsersSuccess(data) {
+        this.setState({
+            dataSource: this.createDataSource(data),
+            isLoad: true
+        });
+    }	
+	
+    onSearchUsersFail(data) {
+        message.error('获取失败: ' + data);
+    }	
 }
 
 export default alt.createStore(UsersStore);

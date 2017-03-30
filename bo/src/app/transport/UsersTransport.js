@@ -12,7 +12,7 @@ class UsersTransport extends Transport {
     getAllUsers() {
         return this.ajaxRequest({
             method: 'get',
-            url: RESTAPI_HOST + '/api/users',
+            url: RESTAPI_HOST + '/api/users/',
             requestBody: {}
         });
     }
@@ -50,6 +50,13 @@ class UsersTransport extends Transport {
             headers: HEARDS
         });
     }
+	
+    searchUsers(query) {
+        return this.ajaxRequest({
+            method: 'get',
+            url: RESTAPI_HOST + '/api/users?' + query.field + '=' + query.keyword
+        });
+    }	
 
 }
 

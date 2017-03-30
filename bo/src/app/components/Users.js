@@ -49,12 +49,8 @@ class UsersPage extends React.Component {
 		}
     }
 
-    handleSearch() {
-        const search = new Search();
-        let data = search.onSearch(this.state.dataSource, this.state.searchName, 'userName');
-        this.setState({
-            dataSource: data
-        });
+    handleSearch(data) {
+        UsersActions.searchUsers(data);
     }
 
     handleDelete(index){
@@ -63,7 +59,6 @@ class UsersPage extends React.Component {
     }
 
     render() {
-        const { getFieldDecorator } = this.props.form;
         let dataSource = this.state.dataSource;
         let columns = [
             {
@@ -95,33 +90,26 @@ class UsersPage extends React.Component {
                 dataIndex: 'operation'
             }
         ];
+		
+		const searchGroupProps = {
+			keyword: '',
+			size: 'large',
+			select: true,
+			selectOptions: [{ value: 'userName', name: '姓名' }, { value: 'phone', name: '电话' }],
+			selectProps: {
+				defaultValue: 'userName',
+			},
+			onSearch: this.handleSearch.bind(this)
+		}		
 
         return( this.state.isLoad ?
                 <div>
-                    <Form layout="inline">
-                        <FormItem label="姓名">
-                            {getFieldDecorator('searchName', {
-                                rules: []
-                            })(
-                                <Input size="large"  onChange={UsersActions.onUpdateSearchName}/>
-                            )}
-                        </FormItem>
-                        <FormItem label="电话">
-                            {getFieldDecorator('searchPhone', {
-                                rules: []
-                            })(
-                                <Input size="large"  onChange={UsersActions.onUpdateSearchPhone}/>
-                            )}
-                        </FormItem>
-                        <FormItem>
-                            <Button type="primary" htmlType="submit" onClick={this.handleSearch.bind(this)}>搜索</Button>
-                        </FormItem>
-                    </Form>
+                    <Search {...searchGroupProps} />
                     <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 6 }/>
                 </div> : null
         );
     }
 }
 
-let Users = Form.create()(UsersPage);
+let Users = UsersPage;
 export default Users;

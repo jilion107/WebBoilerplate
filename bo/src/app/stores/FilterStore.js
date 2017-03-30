@@ -140,6 +140,17 @@ class FilterStore {
     onDeleteUserFail(data) {
         message.error('删除失败: ' + data);
     }
+	
+    onSearchFiltersSuccess(data) {
+        this.setState({
+            dataSource: this.createDataSource(data),
+            isLoad: true
+        });
+    }	
+	
+    onSearchFiltersFail(data) {
+        message.error('获取失败: ' + data);
+    }	
 }
 
 export default alt.createStore(FilterStore);

@@ -12,7 +12,7 @@ class FilterTransport extends Transport {
     getAllFilters() {
         return this.ajaxRequest({
             method: 'get',
-            url: RESTAPI_HOST + '/api/filters',
+            url: RESTAPI_HOST + '/api/filters/',
             requestBody: {}
         });
     }
@@ -52,6 +52,13 @@ class FilterTransport extends Transport {
             }
         });
     }
+	
+    searchFilters(query) {
+        return this.ajaxRequest({
+            method: 'get',
+            url: RESTAPI_HOST + '/api/filters?' + query.field + '=' + query.keyword
+        });
+    }	
 }
 
 export default FilterTransport;

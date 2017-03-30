@@ -20,7 +20,9 @@ class FilterActions {
             'addFilterFail',
             'deleteFilterSuccess',
             'deleteFilterFail',
-            'addFail'
+            'addFail',
+			'searchFiltersSuccess',
+			'searchFiltersFail'
         );
         this.filterInstance = new FilterTransport();
         this.sizeInstance = new SizeTransport();
@@ -76,6 +78,15 @@ class FilterActions {
             this.deleteFilterFail(response);
         });
     }
+	
+    searchFilters(query) {
+        this.filterInstance.searchFilters(query).then((response) => {
+            _.assign(response, history)
+            this.searchFiltersSuccess(response.filters);
+        }, (response) => {
+            this.searchFiltersFail(response);
+        });
+    }	
 }
 
 export default alt.createActions(FilterActions);
