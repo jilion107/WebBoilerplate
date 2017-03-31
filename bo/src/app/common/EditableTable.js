@@ -57,12 +57,6 @@ class EditableTable extends React.Component {
         if (typeof editable === 'undefined') {
             return text;
         }
-        if(groups) {
-            let selected = groups.filter((item) => {
-                return item.key == text;
-            });
-            text = selected[0].value;
-        }
         return (<EditableCell
             editable={editable}
             changeable={changeable}

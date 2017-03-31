@@ -2,7 +2,7 @@
  * Created by Jilion on 2017/3/10.
  */
 import React from 'react';
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Spin, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import CategoryStore from '../stores/CategoryStore';
 import CategoryActions from '../actions/CategoryActions';
@@ -18,6 +18,9 @@ class CategoryPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            isLoad: false
+        });
         CategoryStore.listen(this.onChange);
         CategoryActions.getAllCategories();
     }
@@ -83,7 +86,8 @@ class CategoryPage extends React.Component {
             }
         ];
 
-        return ( this.state.isLoad ?
+        return (
+            <Spin spinning={!this.state.isLoad}>
                 <div>
                     <Form layout="inline">
                         <FormItem label="类 别:">
@@ -98,7 +102,8 @@ class CategoryPage extends React.Component {
                         </FormItem>
                     </Form>
                     <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 3 }/>
-                </div> : null
+                </div>
+            </Spin>
         );
     }
 

@@ -30,8 +30,7 @@ class TmpProductsStore {
             checkAll:false,
             visible: false,
             modalType:null,
-            isLoad: false,
-			isLoading: false
+            isLoad: false
         }
     }
 

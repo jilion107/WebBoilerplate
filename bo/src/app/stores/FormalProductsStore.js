@@ -258,9 +258,15 @@ class FormalProductsStore {
 
     onExportDataSuccess(response){
         this.downloadFile("/zhijian/poem.txt", "汇出");
+        this.setState({
+            isLoad: true
+        });
     }
 
     onSetExportDate(values){
+        this.setState({
+            isLoad: false
+        });
         this.state.exportDataRequest.total = values.exportNumber;
         this.state.exportDataRequest.minQuantity = values.minQuantity;
         this.state.exportDataRequest.maxQuantity = values.maxQuantity;

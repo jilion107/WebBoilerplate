@@ -83,6 +83,14 @@ class AddUserPage extends React.Component {
                             <Input size="large" />
                         )}
                     </FormItem>
+                    <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="密  码：">
+                        {getFieldDecorator('password', {
+                            rules: [{ required: true, message: '请输入密码！'}],
+                            initialValue: userInfo ? userInfo.password : ''
+                        })(
+                            <Input type="password" placeholder="密码"/>
+                        )}
+                    </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="电  话：">
                         {getFieldDecorator('phone', {
                             rules: [{ required: true, message: '请输入电话！'}],
@@ -103,7 +111,7 @@ class AddUserPage extends React.Component {
                     </FormItem>
                     <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="公  司：">
                         {getFieldDecorator('companyId', {
-                            rules: [{ }],
+                            rules: [{required: true, message: '请选择公司！', type: 'number' }],
                             initialValue: userInfo ? userInfo.companyId : ''
                         })(
                             <Select placeholder="选择公司" >

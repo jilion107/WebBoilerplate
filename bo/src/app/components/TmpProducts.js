@@ -39,6 +39,9 @@ class TmpProductsPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            isLoad: false
+        });
         TmpProductsStore.listen(this.onChange);
         TmpProductsActions.loadTmpProducts(this.state.productRequest,this.state.offset,this.state.fetchSize);
     }
@@ -95,7 +98,7 @@ class TmpProductsPage extends React.Component {
 
     beforeUpload() {
         this.setState({
-            isLoading: true
+            isLoad: false
         });
     }
 
@@ -124,7 +127,7 @@ class TmpProductsPage extends React.Component {
     onFileUpload(info) {
         if (info.file.status === 'done') {
 			this.setState({
-				isLoading: false
+				isLoad: true
 			});			
             message.success(`${info.file.name} 文件上传成功`);
             setTimeout(function() {
@@ -132,7 +135,7 @@ class TmpProductsPage extends React.Component {
             }, 500);
         } else if (info.file.status === 'error') {
 			this.setState({
-				isLoading: false
+				isLoad: true
 			});			
             message.error(`${info.file.name} 文件上传失败`);
         }
@@ -158,7 +161,7 @@ class TmpProductsPage extends React.Component {
         let deleter = this.handleDelete.bind(this);
         let { filterInfo } = this.state;
         return (
-		<Spin spinning={this.state.isLoading}>
+		<Spin spinning={!this.state.isLoad}>
             <div className="zhijian-tmpProducts">
                 <Form layout="horizontal" >
                     <FormItem {...formItemLayout} label="品牌词：">

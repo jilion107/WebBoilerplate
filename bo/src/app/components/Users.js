@@ -2,13 +2,11 @@
  * Created by Jilion on 2017/3/9.
  */
 import React from 'react';
-import { Form, Icon, Input, Button} from 'antd';
+import {Spin} from 'antd';
 import EditableTable from '../common/EditableTable';
 import UsersStore from '../stores/UsersStore';
 import UsersActions from '../actions/UsersActions';
 import Search from '../common/Search';
-
-const FormItem = Form.Item;
 
 class UsersPage extends React.Component {
     constructor(props) {
@@ -16,10 +14,12 @@ class UsersPage extends React.Component {
         this.state = UsersStore.getState();
         this.onChange = this.onChange.bind(this);
         this.state.dataSource = [];
-        this.state.isLoad = true;
     }
 
     componentDidMount() {
+        this.setState({
+            isLoad: false
+        });
         UsersStore.listen(this.onChange);
         UsersActions.getAllUsers();
     }
@@ -102,11 +102,13 @@ class UsersPage extends React.Component {
 			onSearch: this.handleSearch.bind(this)
 		}		
 
-        return( this.state.isLoad ?
+        return(
+            <Spin spinning={!this.state.isLoad}>
                 <div>
                     <Search {...searchGroupProps} />
                     <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 6 }/>
-                </div> : null
+                </div>
+            </Spin>
         );
     }
 }

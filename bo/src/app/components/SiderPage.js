@@ -66,7 +66,7 @@ const subMenus = [
         value: ["12", "13", "14", "15"]
     }
 ];
-const isValid = localStorage.getItem("loginRole")!='1';
+const isAdmin = localStorage.getItem("loginRole") === '1';
 
 class SiderPage extends React.Component {
     constructor(props) {
@@ -129,23 +129,35 @@ class SiderPage extends React.Component {
                             <Icon type="filter" />
                             <span className="nav-text"><Link to="/zhijian/filters">过滤尺寸和颜色列表</Link></span>
                         </MenuItem>
-                        <SubMenu key="sub3" title={<span><Icon type="share-alt" /><span className="nav-text">账号与权限管理</span></span>} disabled={isValid}>
-                            <MenuItem key="11">
-                                <Icon type="user" />
-                                <span className="nav-text"><Link to="/zhijian/users">账号管理</Link></span>
-                            </MenuItem>
-                            <MenuItem key="12">
-                                <Icon type="user-add" />
-                                <span className="nav-text"><Link to="/zhijian/addUser">新建账号</Link></span>
-                            </MenuItem>
+                        <SubMenu key="sub3" title={<span><Icon type="share-alt" /><span className="nav-text">{isAdmin ? '账号与权限管理': '账号管理'}</span></span>}>
+                            {isAdmin ?
+                                <MenuItem key="11">
+                                    <Icon type="user" />
+                                    <span className="nav-text"><Link to="/zhijian/users">账号管理</Link></span>
+                                </MenuItem>
+                                :
+                                null
+                            }
+                            {isAdmin ?
+                                <MenuItem key="12">
+                                    <Icon type="user-add" />
+                                    <span className="nav-text"><Link to="/zhijian/addUser">新建账号</Link></span>
+                                </MenuItem>
+                                :
+                                null
+                            }
                             <MenuItem key="13">
                                 <Icon type="setting" />
                                 <span className="nav-text"><Link to={updateUserPath}>修改账号</Link></span>
                             </MenuItem>
-                            <MenuItem key="14">
-                                <Icon type="team" />
-                                <span className="nav-text"><Link to="/zhijian/companies">公司管理</Link></span>
-                            </MenuItem>
+                            {isAdmin ?
+                                <MenuItem key="14">
+                                    <Icon type="team" />
+                                    <span className="nav-text"><Link to="/zhijian/companies">公司管理</Link></span>
+                                </MenuItem>
+                                :
+                                null
+                            }
                         </SubMenu>
                     </Menu>
                 </Sider>

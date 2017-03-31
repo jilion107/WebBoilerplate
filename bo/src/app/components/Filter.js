@@ -2,14 +2,14 @@
  * Created by Jilion on 2017/3/11.
  */
 import React from 'react';
-import { Form, Select, Input, Button, Modal, message} from 'antd';
+import { Form, Select, Button, Modal, message, Spin} from 'antd';
 import EditableTable from '../common/EditableTable';
 import FilterStore from '../stores/FilterStore';
 import FilterActions from '../actions/FilterActions';
 import Search from '../common/Search';
 
-
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class FilterPage extends React.Component {
     constructor(props) {
@@ -19,6 +19,9 @@ class FilterPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            isLoad: false
+        });
         FilterStore.listen(this.onChange);
         FilterActions.getAllFilters();
     }
@@ -139,9 +142,12 @@ class FilterPage extends React.Component {
                 dataIndex: 'operation'
             }
         ];
-        const categoryOptions = this.state.categories && this.state.categories.map(category => <Option key={category.id} value={category.id}>{category.categoryName}</Option>);
-        const colourOptions = this.state.colours && this.state.colours.map(colour => <Option key={colour.id} value={colour.id}>{colour.colourName}</Option>);
-        const sizeOptions = this.state.sizes && this.state.sizes.map(size => <Option key={size.id} value={size.id}>{size.sizeName}</Option>);
+        const categoryOptions = (this.state.categories.length > 0) && this.state.categories.map(category => <Option key={category.id} value={category.id}>{category.categoryName}</Option>);
+        const colourOptions = (this.state.colours.length > 0) && this.state.colours.map(colour => <Option key={colour.id} value={colour.id}>{colour.colourName}</Option>);
+        const sizeOptions = (this.state.sizes.length > 0) && this.state.sizes.map(size => <Option key={size.id} value={size.id}>{size.sizeName}</Option>);
+        const defaultCategory = (this.state.categories.length > 0) && this.state.categories[0].id;
+        const defaultColour = (this.state.colours.length > 0) && this.state.colours[0].id;
+        const defaultSize = (this.state.sizes.length > 0) && this.state.sizes[0].id;
 
         const modalOpts = {
             title: this.state.modalType == "create" ? '新建过滤器' : '修改过滤器',
@@ -171,21 +177,17 @@ class FilterPage extends React.Component {
 			onSearch: this.handleSearch.bind(this)
 		}		
 
-        return ( this.state.isLoad ?
+        return (
+            <Spin spinning={!this.state.isLoad}>
                 <div>
-					<Search {...searchGroupProps} />
-					<br/>
-                    <Form layout="inline">
-                        <FormItem>
-                            <Button type="primary" htmlType="submit" onClick={this.onAdd.bind(this)}>新建</Button>
-                        </FormItem>
-                    </Form>
+                    <Search {...searchGroupProps} />
+                    <Button className="zhijian-newFilter" type="primary" htmlType="submit" size="large" onClick={this.onAdd.bind(this)}>新建</Button>
                     <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.onUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 4 } modalUpdate={true}/>
                     <Modal {...modalOpts}>
                         <Form layout="horizontal">
                             <FormItem {...formItemLayout} label="类别：">
                                 {getFieldDecorator('categoryId', {
-                                    initialValue: filterInfo ? filterInfo.productCategoryId : ''
+                                    initialValue: filterInfo.id ? filterInfo.productCategoryId : defaultCategory
                                 })(
                                     <Select placeholder="选择类别">
                                         {categoryOptions}
@@ -194,7 +196,7 @@ class FilterPage extends React.Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="尺寸：">
                                 {getFieldDecorator('sizeId', {
-                                    initialValue: filterInfo ? filterInfo.productSizeId : ''
+                                    initialValue: filterInfo.id ? filterInfo.productSizeId : defaultSize
                                 })(
                                     <Select placeholder="选择尺寸">
                                         {sizeOptions}
@@ -203,7 +205,7 @@ class FilterPage extends React.Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="颜色：">
                                 {getFieldDecorator('colourId', {
-                                    initialValue: filterInfo ? filterInfo.productColourId : ''
+                                    initialValue: filterInfo.id ? filterInfo.productColourId : defaultColour
                                 })(
                                     <Select placeholder="选择颜色">
                                         {colourOptions}
@@ -212,7 +214,8 @@ class FilterPage extends React.Component {
                             </FormItem>
                         </Form>
                     </Modal>
-                </div> : null
+                </div>
+            </Spin>
         );
     }
 

@@ -2,7 +2,7 @@
  * Created by jilion.chen on 3/8/2017.
  */
 import React from 'react';
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Spin, Input, Button} from 'antd';
 import EditableTable from '../common/EditableTable';
 import CompanyStore from '../stores/CompanyStore';
 import CompanyActions from '../actions/CompanyActions';
@@ -18,6 +18,9 @@ class CompanyPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            isLoad: false
+        });
         CompanyStore.listen(this.onChange);
         CompanyActions.getAllCompany();
     }
@@ -80,22 +83,24 @@ class CompanyPage extends React.Component {
             }
         ];
 
-        return ( this.state.isLoad ?
-            <div>
-                <Form layout="inline">
-                    <FormItem label="公司名">
-                        {getFieldDecorator('companyname', {
-                            rules: [{ required: true, message: '请输入公司名！'}]
-                        })(
-                            <Input size="large"  onChange={CompanyActions.onUpdateCompanyName}/>
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
-                    </FormItem>
-                </Form>
-                <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 2 }/>
-            </div> : null
+        return (
+            <Spin spinning={!this.state.isLoad}>
+                <div>
+                    <Form layout="inline">
+                        <FormItem label="公司名">
+                            {getFieldDecorator('companyname', {
+                                rules: [{ required: true, message: '请输入公司名！'}]
+                            })(
+                                <Input size="large"  onChange={CompanyActions.onUpdateCompanyName}/>
+                            )}
+                        </FormItem>
+                        <FormItem>
+                            <Button type="primary" htmlType="submit" onClick={this.handleAdd.bind(this)}>添加</Button>
+                        </FormItem>
+                    </Form>
+                    <EditableTable data= { dataSource } columns= { columns } tableWidth= { "30%" } updateHandler={this.handleUpdate.bind(this)} deleteHandler={this.handleDelete.bind(this)} fields={ 2 }/>
+                </div>
+            </Spin>
         );
     }
 
