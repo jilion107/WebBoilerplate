@@ -24,4 +24,4 @@ export const ROLEEBUM = [
 ];
 
 export const PAGESIZEOPTIONS = ['200','500','800','1000','1500']
-export const DEFAULTPAGESIZE = '200';
+export const DEFAULTPAGESIZE = 200;

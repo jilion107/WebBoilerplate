@@ -112,7 +112,7 @@ class AddUserPage extends React.Component {
                        onOk={this.addMore.bind(this)}
                        onCancel={this.goToUsers.bind(this)}
                        maskClosable
-                       width="300"
+                       width={300}
                 >
                     <p>继续添加用户?</p>
                 </Modal>

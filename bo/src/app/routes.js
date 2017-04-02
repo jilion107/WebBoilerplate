@@ -22,7 +22,6 @@ import TortRemit from './components/TortRemit';
 
 let routes =
     <Router>
-        /*<Route path="/zhijian/index.html" component={ Login } />*/
         <Route path="/zhijian/index" component={ Login } />
         <Route path="/zhijian" components={ App }>
             <Route path='companies' component={ Company } />

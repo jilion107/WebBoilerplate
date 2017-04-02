@@ -97,6 +97,7 @@ class FormalProductsPage extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const rangeConfig = {
             rules: [],
+			initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]
         };
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -159,7 +160,6 @@ class FormalProductsPage extends React.Component {
                         >
                             {getFieldDecorator('range-picker', rangeConfig)(
                                 <RangePicker
-                                    defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
                                     format={dateFormat}  onChange={FormalProductsActions.onUpdateSearchRangeTime}
                                 />
                             )}
@@ -197,10 +197,9 @@ class FormalProductsPage extends React.Component {
                                 return <li className="ant-col-6 zhijian-product" key={index}>
                                     <Card>
                                         <div>
-                                            <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
-                                        </div>
-                                        <div>
-                                            <img alt="example" width="100%" src={item.productThumbnail} />
+                                            <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}>
+												<img alt="example" width="100%" src={item.productThumbnail} />
+											</Checkbox>
                                         </div>
                                         <div className="zhijan-productName">
                                             {item.productName}

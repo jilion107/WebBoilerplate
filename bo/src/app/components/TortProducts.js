@@ -73,6 +73,7 @@ class TortProductsPage extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const rangeConfig = {
             rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+			initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]
         };
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -124,7 +125,6 @@ class TortProductsPage extends React.Component {
                     >
                     {getFieldDecorator('range-picker', rangeConfig)(
                 <RangePicker
-                defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
                 format={dateFormat}  onChange={TortProductsActions.onUpdateSearchRangeTime}
             />
             )}
@@ -159,27 +159,25 @@ class TortProductsPage extends React.Component {
                 const scenarioWhat = item.scenarioWhat == 1?"disabled":"";
                 return <li className="ant-col-6 zhijian-product" key={index}>
                     <Card>
-                    <div>
-                    <Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}/>
-                </div>
-                <div>
-                <img alt="example" width="100%" src={item.productThumbnail} />
-                </div>
-                <div className="zhijan-productName">
-                    {item.productName}
-                </div>
-                <div className="zhijian-price">
-                    <span>评论数：{item.commentNumber}</span>
-                </div>
-                <div className="zhijian-productId">
-                    <span>{item.asin}</span>
-                </div>
-                <div>
-                <Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleDelete.bind(this,index)}>删除</Button>
-                <Button type="primary" disabled={scenarioWhat} htmlType="submit" className="zhijian-button-margin" onClick={this.updateScenarioWhat.bind(this,index)}>出单</Button>
-    
-                </div>
-                </Card>
+						<div>
+						<Checkbox onChange={this.onUpdateIds.bind(this,item.id)} checked={item.checked}>
+							<img alt="example" width="100%" src={item.productThumbnail} />
+						</Checkbox>
+						</div>
+						<div className="zhijan-productName">
+							{item.productName}
+						</div>
+						<div className="zhijian-price">
+							<span>评论数：{item.commentNumber}</span>
+						</div>
+						<div className="zhijian-productId">
+							<span>{item.asin}</span>
+						</div>
+						<div>
+						<Button type="primary" htmlType="submit" className="zhijian-button-margin" onClick={this.handleDelete.bind(this,index)}>删除</Button>
+						<Button type="primary" disabled={scenarioWhat} htmlType="submit" className="zhijian-button-margin" onClick={this.updateScenarioWhat.bind(this,index)}>出单</Button>
+						</div>
+					</Card>
                 </li>
             })}
         </ul>
