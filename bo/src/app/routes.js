@@ -19,6 +19,8 @@ import FormalProducts from './components/FormalProducts';
 import TortProducts from './components/TortProducts';
 import FormalRemit from './components/FormalRemit';
 import TortRemit from './components/TortRemit';
+import AmazonCrawl from './components/AmazonCrawl';
+import AmazonApiCrawl from './components/AmazonApiCrawl';
 
 let routes =
     <Router>
@@ -38,6 +40,8 @@ let routes =
             <Route path='tortProducts' component={ TortProducts } />
             <Route path='formalRemit' component={ FormalRemit } />
             <Route path='tortRemit' component={ TortRemit } />
+            <Route path='amazonCrawl' component={ AmazonCrawl } />
+            <Route path='amazonApi' component={ AmazonApiCrawl } />
         </Route>
         <Redirect from="*" to="/zhijian/index" />
     </Router>

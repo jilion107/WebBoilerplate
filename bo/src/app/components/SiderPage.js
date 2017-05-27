@@ -51,6 +51,12 @@ const menuUrls = [
     }, {
         key: "14",
         url: "/zhijian/companies"
+    },{
+        key: "15",
+        url: "/zhijian/amazonCrawl"
+    },{
+        key: "16",
+        url: "/zhijian/amazonApi"
     },
 ];
 
@@ -63,7 +69,10 @@ const subMenus = [
         value: ["4", "5"]
     },{
         key: "sub3",
-        value: ["12", "13", "14", "15"]
+        value: ["12", "13", "14"]
+    },{
+        key: "sub4",
+        value: ["15", "16"]
     }
 ];
 const isAdmin = localStorage.getItem("loginRole") === '1';
@@ -158,6 +167,16 @@ class SiderPage extends React.Component {
                                 :
                                 null
                             }
+                        </SubMenu>
+                        <SubMenu key="sub4" title={<span><Icon type="share-alt" /><span className="nav-text">Amazon 爬虫</span></span>}>
+                            <MenuItem key="15">
+                                <Icon type="team" />
+                                <span className="nav-text"><Link to="/zhijian/amazonCrawl">爬虫</Link></span>
+                            </MenuItem>
+                            <MenuItem key="16">
+                                <Icon type="team" />
+                                <span className="nav-text"><Link to="/zhijian/amazonApi">API</Link></span>
+                            </MenuItem>
                         </SubMenu>
                     </Menu>
                 </Sider>
